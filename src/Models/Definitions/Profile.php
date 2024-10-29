@@ -981,7 +981,7 @@ class Profile
       [
         'title' => $translator->translate('Setup'),
         'icon' => 'tools',
-        'link' => '',
+        'link' => $rootUrl . '/setup',
       ],
       [
         'title' => $translator->translatePlural('User', 'Users', 2),

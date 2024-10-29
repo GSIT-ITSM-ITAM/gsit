@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DomainItem extends Common
 {
-
   protected $definition = '\App\Models\Definitions\DomainItem';
   protected $titles = ['DomainItem', 'DomainItems'];
   protected $icon = 'globe americas';

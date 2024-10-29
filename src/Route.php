@@ -753,6 +753,8 @@ final class Route
             $sub->map(['POST'], 'tools', \App\v1\Controllers\Profile::class . ':itemSubTools');
             $sub->map(['GET'], 'administration', \App\v1\Controllers\Profile::class . ':showSubAdministration');
             $sub->map(['POST'], 'administration', \App\v1\Controllers\Profile::class . ':itemSubAdministration');
+            $sub->map(['GET'], 'setup', \App\v1\Controllers\Profile::class . ':showSubSetup');
+            $sub->map(['POST'], 'setup', \App\v1\Controllers\Profile::class . ':itemSubSetup');
 
             $sub->map(['GET'], 'history', \App\v1\Controllers\Profile::class . ':showSubHistory');
           });
@@ -939,11 +941,11 @@ final class Route
             });
           });
         });
-        $dropdowns->group('/itilfollowuptemplates', function (RouteCollectorProxy $itilfollowuptemplates)
+        $dropdowns->group('/followuptemplates', function (RouteCollectorProxy $followuptemplates)
         {
-          $itilfollowuptemplates->map(['GET'], '', \App\v1\Controllers\Followuptemplate::class . ':getAll');
-          $itilfollowuptemplates->map(['POST'], '', \App\v1\Controllers\Followuptemplate::class . ':postItem');
-          $itilfollowuptemplates->group("/{id:[0-9]+}", function (RouteCollectorProxy $itilfollowuptemplateId)
+          $followuptemplates->map(['GET'], '', \App\v1\Controllers\Followuptemplate::class . ':getAll');
+          $followuptemplates->map(['POST'], '', \App\v1\Controllers\Followuptemplate::class . ':postItem');
+          $followuptemplates->group("/{id:[0-9]+}", function (RouteCollectorProxy $itilfollowuptemplateId)
           {
             $itilfollowuptemplateId->map(['GET'], '', \App\v1\Controllers\Followuptemplate::class . ':showItem');
             $itilfollowuptemplateId->map(['POST'], '', \App\v1\Controllers\Followuptemplate::class . ':updateItem');

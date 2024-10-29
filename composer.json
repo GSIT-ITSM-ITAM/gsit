@@ -14,6 +14,7 @@
         "ext-fileinfo": "*",
         "ext-gd": "*",
         "ext-iconv": "*",
+        "ext-imap": "*",
         "ext-intl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
@@ -27,20 +28,13 @@
         "guzzlehttp/guzzle": "^7.4",
         "guzzlehttp/psr7": "^1.8",
         "htmlawed/htmlawed": "^1.2",
-        "illuminate/container": "^10.48",
-        "illuminate/database": "^10.48",
-        "illuminate/events": "^10.48",
-        "laminas/laminas-cache": "^3.1",
-        "laminas/laminas-cache-storage-adapter-apcu": "^2.0",
-        "laminas/laminas-cache-storage-adapter-filesystem": "^2.0",
-        "laminas/laminas-cache-storage-adapter-memory": "^2.0",
-        "laminas/laminas-cache-storage-deprecated-factory": "^1.0",
-        "laminas/laminas-i18n": "^2.10",
-        "laminas/laminas-mail": "^2.12",
-        "laminas/laminas-mime": "^2.7",
-        "laminas/laminas-serializer": "^2.8",
-        "laminas/laminas-servicemanager": "^3.22",
+        "illuminate/container": "^10",
+        "illuminate/database": "^10",
+        "illuminate/events": "^10",
+        "laminas/laminas-i18n": "^2.29",
         "league/commonmark": "^2.5",
+        "league/flysystem": "^3.0",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "league/html-to-markdown": "^5.1",
         "paragonie/sodium_compat": "^1.14",
         "phpmailer/phpmailer": "^6.6",
@@ -49,31 +43,31 @@
         "ramsey/uuid": "^4.0",
         "rlanvin/php-rrule": "^2.1",
         "robmorgan/phinx": "^0.14.0",
-        "sebastian/diff": "^3.0",
         "slim/psr7": "^1.7",
         "slim/slim": "4.*",
         "slim/twig-view": "^3.4",
         "socialconnect/auth": "^3.3",
         "socialconnect/http-client": "^1.0",
         "spatie/array-to-xml": "^3.3",
-        "symfony/console": "^5.0",
+        "symfony/console": "^6.0",
         "symfony/error-handler": "^6.4",
         "tecnickcom/tcpdf": "^6.2",
         "true/punycode": "^2.1",
         "tuupola/base62": "^2.1",
         "tuupola/slim-jwt-auth": "^3.8",
-        "wapmorgan/unified-archive": "^1.0"
+        "wapmorgan/unified-archive": "^1.0",
+        "webklex/php-imap": "^5.5"
     },
     "require-dev": {
         "ext-xml": "*",
-        "atoum/atoum": "^4.0",
-        "consolidation/robo": "^2.0",
-        "laminas/laminas-cli": "1.5.0",
-        "maglnet/composer-require-checker": "^3.0",
+        "consolidation/robo": "^4.0",
+        "laminas/laminas-cli": "^1.10",
+        "maglnet/composer-require-checker": "^4.7",
         "mikey179/vfsstream": "^1.6",
         "natxet/cssmin": "^3.0",
         "php-parallel-lint/php-parallel-lint": "^1.1",
-        "phpstan/phpstan": "^1.11",
+        "phpstan/phpstan": "^1.12",
+        "phpunit/phpunit": "^10",
         "slevomat/coding-standard": "~8.0",
         "squizlabs/php_codesniffer": "*"
     },
@@ -91,24 +85,14 @@
         }
     },
     "scripts": {
-        "testdb": "php vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --no-code-coverage --max-children-number 1 -d tests/database",
-        "testfunc": "php vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --no-code-coverage --max-children-number 1 -d tests/functionnal/",
-        "testunits": "php vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --no-code-coverage -d tests/units",
-        "testweb": "php vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --no-code-coverage --max-children-number 1 -d tests/web",
-        "testldap": "php vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --no-code-coverage --max-children-number 1 -d tests/LDAP",
-        "testimap": "php vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --no-code-coverage --max-children-number 1 -d tests/imap",
         "csp": "vendor/bin/phpcs --parallel=500 --cache -p --extensions=php --standard=vendor/glpi-project/coding-standard/GlpiStandard/ --ignore=\"/.git/,^$(pwd)/(config|files|lib|node_modules|plugins|tests/config|vendor)/\" ./",
         "cs": "vendor/bin/phpcs -d memory_limit=512M --cache -p --extensions=php --standard=vendor/glpi-project/coding-standard/GlpiStandard/ --ignore=\"/.git/,^$(pwd)/(config|files|lib|node_modules|plugins|tests/config|vendor)/\" ./",
         "lint": "vendor/bin/parallel-lint  --exclude files --exclude plugins --exclude vendor --exclude tools/vendor .",
         "post-install-cmd": [
-            "@php -r \"file_put_contents('.composer.hash', sha1_file('composer.lock'));\"",
-            "patch -f -p1 -d vendor/laminas/laminas-mail/ < tools/laminas-mail-128.patch || echo 'Error applying patch, retrieving some mail attachement could fail'",
-            "patch -f -p1 -d vendor/blueimp/jquery-file-upload/ < tools/jquery-file-upload.patch || echo 'Error applying patch, will have problem to upload files on PHP 8.1'"
+            "@php -r \"file_put_contents('.composer.hash', sha1_file('composer.lock'));\""
         ],
         "post-update-cmd": [
-            "@php -r \"file_put_contents('.composer.hash', sha1_file('composer.lock'));\"",
-            "patch -f -p1 -d vendor/laminas/laminas-mail/ < tools/laminas-mail-128.patch || echo 'Error applying patch, retrieving some mail attachement could fail'",
-            "patch -f -p1 -d vendor/blueimp/jquery-file-upload/ < tools/jquery-file-upload.patch || echo 'Error applying patch, will have problem to upload files on PHP 8.1'"
+            "@php -r \"file_put_contents('.composer.hash', sha1_file('composer.lock'));\""
         ]
     },
     "repositories": {
@@ -119,7 +103,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src"
+            "App\\": "src",
+            "Tests\\": "tests"
         }
     }
 }

@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
 use Slim\Routing\RouteContext;
+use Illuminate\Support\Facades\Schedule;
 
 final class Computer extends Common
 {
@@ -14,6 +15,15 @@ final class Computer extends Common
 
   public function getAll(Request $request, Response $response, $args): Response
   {
+    $mail = new \App\v1\Controllers\Mailcollector();
+    $mail->collect();
+
+    // include('../config/storage.php');
+    // $filesystem = new \League\Flysystem\Filesystem($adapter);
+    // $filesystem->write('my-file.txt', 'Hello from MinIO!!');
+
+
+
     $item = new \App\Models\Computer();
     return $this->commonGetAll($request, $response, $args, $item);
   }
@@ -284,7 +294,9 @@ final class Computer extends Common
       ];
       $tabInfos[] = [
         'key'   => 'processor_' . $processor->id . '_nbcores_nbthreads',
-        'value' => ' - ' . $translator->translate('Nombre de cœurs') . ' / ' . $translator->translate('Nombre de threads') . ' : ' . $processor->pivot->nbcores . ' / ' . $processor->pivot->nbthreads,
+        'value' => ' - ' . $translator->translate('Nombre de cœurs') . ' / ' .
+                   $translator->translate('Nombre de threads') . ' : ' . $processor->pivot->nbcores . ' / ' .
+                   $processor->pivot->nbthreads,
         'link'  => null,
       ];
     }
@@ -313,7 +325,15 @@ final class Computer extends Common
     $item = new \App\Models\Computer();
     $view = Twig::fromRequest($request);
 
-    $myItem = $item::with('memories', 'firmwares', 'processors', 'harddrives', 'batteries', 'soundcards', 'controllers')->find($args['id']);
+    $myItem = $item::with(
+      'memories',
+      'firmwares',
+      'processors',
+      'harddrives',
+      'batteries',
+      'soundcards',
+      'controllers'
+    )->find($args['id']);
 
     $myMemories = [];
     foreach ($myItem->memories as $memory)
@@ -327,7 +347,7 @@ final class Computer extends Common
       }
 
       $manufacturer = '';
-      if ($memory->manufacturer !== null )
+      if ($memory->manufacturer !== null)
       {
         $manufacturer = $memory->manufacturer->name;
       }
@@ -357,13 +377,13 @@ final class Computer extends Common
       }
 
       $manufacturer = '';
-      if ($firmware->manufacturer !== null )
+      if ($firmware->manufacturer !== null)
       {
         $manufacturer = $firmware->manufacturer->name;
       }
 
       $type = '';
-      if ($firmware->type !== null )
+      if ($firmware->type !== null)
       {
         $type = $firmware->type->name;
       }
@@ -391,7 +411,7 @@ final class Computer extends Common
       }
 
       $manufacturer = '';
-      if ($processor->manufacturer !== null )
+      if ($processor->manufacturer !== null)
       {
         $manufacturer = $processor->manufacturer->name;
       }
@@ -419,13 +439,13 @@ final class Computer extends Common
       }
 
       $manufacturer = '';
-      if ($harddrive->manufacturer !== null )
+      if ($harddrive->manufacturer !== null)
       {
         $manufacturer = $harddrive->manufacturer->name;
       }
 
       $interface = '';
-      if ($harddrive->interface !== null )
+      if ($harddrive->interface !== null)
       {
         $interface = $harddrive->interface->name;
       }
@@ -455,13 +475,13 @@ final class Computer extends Common
       }
 
       $manufacturer = '';
-      if ($battery->manufacturer !== null )
+      if ($battery->manufacturer !== null)
       {
         $manufacturer = $battery->manufacturer->name;
       }
 
       $type = '';
-      if ($battery->type !== null )
+      if ($battery->type !== null)
       {
         $type = $battery->type->name;
       }
@@ -491,7 +511,7 @@ final class Computer extends Common
       }
 
       $manufacturer = '';
-      if ($soundcard->manufacturer !== null )
+      if ($soundcard->manufacturer !== null)
       {
         $manufacturer = $soundcard->manufacturer->name;
       }
@@ -517,13 +537,13 @@ final class Computer extends Common
       }
 
       $manufacturer = '';
-      if ($controller->manufacturer !== null )
+      if ($controller->manufacturer !== null)
       {
         $manufacturer = $controller->manufacturer->name;
       }
 
       $interface = '';
-      if ($controller->interface !== null )
+      if ($controller->interface !== null)
       {
         $interface = $controller->interface->name;
       }
@@ -595,7 +615,6 @@ final class Computer extends Common
     $myVolumes = [];
     foreach ($myItem->volumes as $volume)
     {
-
       if ($volume->is_dynamic == 1)
       {
         $auto_val = $translator->translate('Yes');
@@ -619,9 +638,18 @@ final class Computer extends Common
       }
 
       $encryption_status_val = '';
-      if ($volume->encryption_status == 0) $encryption_status_val = $translator->translate('Non chiffré');
-      if ($volume->encryption_status == 1) $encryption_status_val = $translator->translate('Chiffré');
-      if ($volume->encryption_status == 2) $encryption_status_val = $translator->translate('Partiellement chiffré');
+      if ($volume->encryption_status == 0)
+      {
+        $encryption_status_val = $translator->translate('Non chiffré');
+      }
+      if ($volume->encryption_status == 1)
+      {
+        $encryption_status_val = $translator->translate('Chiffré');
+      }
+      if ($volume->encryption_status == 2)
+      {
+        $encryption_status_val = $translator->translate('Partiellement chiffré');
+      }
 
       $myVolumes[] = [
         'name'                      => $volume->name,
@@ -754,4 +782,289 @@ final class Computer extends Common
     return $view->render($response, 'subitem/virtualization.html.twig', (array)$viewData);
   }
 
+  public function showCertificates(Request $request, Response $response, $args): Response
+  {
+    global $translator;
+
+    $item = new \App\Models\Computer();
+    $view = Twig::fromRequest($request);
+
+    $myItem = $item::with('certificates')->find($args['id']);
+
+    $myCertificates = [];
+    foreach ($myItem->certificates as $certificate)
+    {
+      $type = '';
+      if ($certificate->type !== null)
+      {
+        $type = $certificate->type->name;
+      }
+      $entity = '';
+      if ($certificate->entity !== null)
+      {
+        $entity = $certificate->entity->name;
+      }
+
+      $date_expiration = $certificate->date_expiration;
+      if ($date_expiration == null)
+      {
+        $date_expiration = $translator->translate("N'expire pas");
+      }
+      $state = '';
+      if ($certificate->state !== null)
+      {
+        $state = $certificate->state->name;
+      }
+
+
+      $myCertificates[] = [
+        'name'              => $certificate->name,
+        'entity'            => $entity,
+        'type'              => $type,
+        'dns_name'          => $certificate->dns_name,
+        'dns_suffix'        => $certificate->dns_suffix,
+        'created_at'        => $certificate->created_at,
+        'date_expiration'   => $date_expiration,
+        'state'             => $state,
+      ];
+    }
+
+    $rootUrl = $this->getUrlWithoutQuery($request);
+    $rootUrl = rtrim($rootUrl, '/certificates');
+
+    $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
+    $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
+
+    $viewData->addData('fields', $item->getFormData($myItem));
+    $viewData->addData('certificates', $myCertificates);
+
+    $viewData->addTranslation('name', 'Nom');
+    $viewData->addTranslation('entity', 'Entité');
+    $viewData->addTranslation('type', 'Type');
+    $viewData->addTranslation('dns_name', 'Nom DNS');
+    $viewData->addTranslation('dns_suffix', 'Suffixe DNS');
+    $viewData->addTranslation('created_at', 'Date de création');
+    $viewData->addTranslation('date_expiration', "Date d'expiration");
+    $viewData->addTranslation('state', 'Statut');
+
+    return $view->render($response, 'subitem/certificates.html.twig', (array)$viewData);
+  }
+
+  public function showExternalLinks(Request $request, Response $response, $args): Response
+  {
+    global $translator;
+
+    $computermodelclass = str_ireplace('\\v1\\Controllers\\', '\\Models\\', get_class($this));
+
+
+    $item = new \App\Models\Computer();
+    $view = Twig::fromRequest($request);
+
+    $myItem = $item::find($args['id']);
+
+    $item2 = new \App\Models\LinkItemtype();
+    $externallinks = $item2::with('links')->where('item_type', $computermodelclass)->get();
+
+    $item3 = new \App\Models\DomainItem();
+    $domainitems = $item3->where(['item_id' => $args['id'], 'item_type' => $computermodelclass])->get();
+
+    $myExternalLinks = [];
+    foreach ($externallinks as $externallink)
+    {
+      $name = '';
+      $open_window = 0;
+      $link = '';
+      $data = '';
+      $generate = '';
+      if ($externallink->links !== null)
+      {
+        $name = $externallink->links->name;
+        $open_window = $externallink->links->open_window;
+        $link = $externallink->links->link;
+        $data = $externallink->links->data;
+
+        if ($myItem->location == null)
+        {
+          $myItem->location->id = '';
+          $myItem->location->name = '';
+        }
+
+        $domains = [];
+        foreach ($domainitems as $domainitem)
+        {
+          if ($domainitem->domain != null)
+          {
+            $domains[] = $domainitem->domain->name;
+          }
+        }
+
+        if ($myItem->network == null)
+        {
+          $myItem->network->name = '';
+        }
+
+        if ($myItem->user == null)
+        {
+          $myItem->user->name = '';
+        }
+        if ($myItem->group == null)
+        {
+          $myItem->group->name = '';
+        }
+
+        $ips = [];
+        $macs = [];
+
+        $itemsLink = [
+          'id' => $externallink->links->id,
+          'name' => $myItem->name,
+          'serial' => $myItem->serial,
+          'otherserial' => $myItem->otherserial,
+          'location_id' => $myItem->location->id,
+          'location' => $myItem->location->name,
+          'domains' => $domains,
+          'network' => $myItem->network->name,
+          'comment' => $myItem->comment,
+          'user' => $myItem->user->name,
+          'group' => $myItem->group->name,
+          // 'realname' => $realname,
+          // 'firstname' => $firstname,
+          // 'login' => $login,
+          // 'ips' => $ips,
+          // 'macs' => $macs,
+        ];
+
+        $generate = $name . ' : ' . self::generateLinkContents($data, $itemsLink, true);
+      }
+
+
+      $myExternalLinks[] = [
+        'name'          => $name,
+        'open_window'   => $open_window,
+        'link'          => $link,
+        'generate'      => $generate,
+      ];
+    }
+
+    $rootUrl = $this->getUrlWithoutQuery($request);
+    $rootUrl = rtrim($rootUrl, '/externallinks');
+
+    $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
+    $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
+
+    $viewData->addData('fields', $item->getFormData($myItem));
+    $viewData->addData('externallinks', $myExternalLinks);
+
+    return $view->render($response, 'subitem/externallinks.html.twig', (array)$viewData);
+  }
+
+
+  private function generateLinkContents($link, $item, $replaceByBr = false)
+  {
+    $new_link = $link;
+    if ($replaceByBr === true)
+    {
+      $new_link = str_ireplace("\n", "<br>", $new_link);
+    }
+    $matches = [];
+    if (preg_match_all('/\[FIELD:(\w+)\]/', $new_link, $matches))
+    {
+      foreach ($matches[1] as $key => $field)
+      {
+        $new_link = self::checkAndReplaceProperty($item, $field, $matches[0][$key], $new_link, $replaceByBr);
+      }
+    }
+
+    if (strstr($new_link, "[ID]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'id', "[ID]", $new_link, $replaceByBr);
+    }
+    if (strstr($link, "[NAME]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'name', "[NAME]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[SERIAL]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'serial', "[SERIAL]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[OTHERSERIAL]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'otherserial', "[OTHERSERIAL]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[LOCATIONID]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'location_id', "[LOCATIONID]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[LOCATION]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'location', "[LOCATION]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[DOMAIN]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'domains', "[DOMAIN]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[NETWORK]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'network', "[NETWORK]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[REALNAME]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'realname', "[REALNAME]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[FIRSTNAME]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'firstname', "[FIRSTNAME]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[LOGIN]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'login', "[LOGIN]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[USER]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'user', "[USER]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[GROUP]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'group', "[GROUP]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[IP]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'ips', "[IP]", $new_link, $replaceByBr);
+    }
+    if (strstr($new_link, "[MAC]"))
+    {
+      $new_link = self::checkAndReplaceProperty($item, 'macs', "[MAC]", $new_link, $replaceByBr);
+    }
+
+    return $new_link;
+  }
+
+  private function checkAndReplaceProperty($item, $field, $strToReplace, $new_link, $replaceByBr = false)
+  {
+    $ret = $new_link;
+
+    if (array_key_exists($field, $item))
+    {
+      if (is_array($item[$field]))
+      {
+        $tmp = '';
+        foreach ($item[$field] as $val)
+        {
+          if ($tmp != '')
+          {
+            $tmp = $tmp  . "\n";
+          }
+          $tmp = $tmp . $val;
+        }
+        $ret = str_replace($strToReplace, $tmp, $ret);
+      } else {
+        $ret = str_replace($strToReplace, $item[$field], $ret);
+      }
+      if ($replaceByBr === true)
+      {
+        $ret = str_ireplace("\n", "<br>", $ret);
+      }
+    }
+    return $ret;
+  }
 }

@@ -70,10 +70,12 @@ final class Translation
     'es_CL'  => ['Español chileno',           'es_CL',       'es',    'es', 'spanish chilean',      2]
   ];
 
-  public function loadLanguage()
+  public function loadLanguage($lang = null)
   {
-    $lang = $this->getPreferredLanguage();
-    $lang = 'fr_FR';
+    if (is_null($lang))
+    {
+      $lang = $this->getPreferredLanguage();
+    }
     $mofile = __DIR__ . '/../locales/' . $this->languages[$lang][1];
 
     $translator = new Translator();

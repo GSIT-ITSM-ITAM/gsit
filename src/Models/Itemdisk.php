@@ -24,5 +24,4 @@ class Itemdisk extends Common
   {
     return $this->belongsTo('\App\Models\Filesystem');
   }
-
 }

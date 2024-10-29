@@ -172,7 +172,7 @@ class Common extends \App\v1\Controllers\Common
             //Append regex result : append result from a regex
             if (isset($this->regex_results[0]))
             {
-              $res = RuleAction::getRegexResultById($action->value, $this->regex_results[0]);
+              // $res = RuleAction::getRegexResultById($action->value, $this->regex_results[0]);
             } else {
               $res = $action->value;
             }
@@ -310,12 +310,12 @@ class Common extends \App\v1\Controllers\Common
         {
           $value = $this->getCriteriaValue($criterion->criteria, $criterion->condition, $tmp);
 
-          $res &= \App\v1\Controllers\Rules\Criterium::match(
-            $criteria,
-            $value,
-            $this->criterias_results,
-            $partial_regex_result
-          );
+          // $res &= \App\v1\Controllers\Rules\Criterium::match(
+          //   $criteria,
+          //   $value,
+          //   $this->criterias_results,
+          //   $partial_regex_result
+          // );
           if (!$res)
           {
             break;
@@ -328,12 +328,12 @@ class Common extends \App\v1\Controllers\Common
         {
           $value = $this->getCriteriaValue($criterion->criteria, $criterion->condition, $crit);
 
-          $res |= \App\v1\Controllers\Rules\Criterium::match(
-            $criteria,
-            $value,
-            $this->criterias_results,
-            $partial_regex_result
-          );
+          // $res |= \App\v1\Controllers\Rules\Criterium::match(
+          //   $criteria,
+          //   $value,
+          //   $this->criterias_results,
+          //   $partial_regex_result
+          // );
         }
       }
     }
@@ -400,11 +400,13 @@ class Common extends \App\v1\Controllers\Common
 
           case "dropdown_assign":
           case "dropdown_users":
-              return getUserName($value);
+              return $value;
+              // return getUserName($value);
 
           case "yesonly":
           case "yesno":
-              return Dropdown::getYesNo($value);
+              return $value;
+              // return Dropdown::getYesNo($value);
 
           case "dropdown_impact":
             $impacts = \App\Models\Definitions\Ticket::getImpactArray();

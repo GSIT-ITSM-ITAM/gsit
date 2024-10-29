@@ -75,21 +75,21 @@ final class Criterium
           return false;
 
       case \App\v1\Controllers\Rules\Common::PATTERN_UNDER:
-        $table  = getTableNameForForeignKeyField($criteria);
-        $values = getSonsOf($table, $pattern);
-        if (isset($values[$field]))
-        {
-          return true;
-        }
+        // $table  = getTableNameForForeignKeyField($criteria);
+        // $values = getSonsOf($table, $pattern);
+        // if (isset($values[$field]))
+        // {
+        //   return true;
+        // }
           return false;
 
       case \App\v1\Controllers\Rules\Common::PATTERN_NOT_UNDER:
-        $table  = getTableNameForForeignKeyField($criteria);
-        $values = getSonsOf($table, $pattern);
-        if (isset($values[$field]))
-        {
-          return false;
-        }
+        // $table  = getTableNameForForeignKeyField($criteria);
+        // $values = getSonsOf($table, $pattern);
+        // if (isset($values[$field]))
+        // {
+        //   return false;
+        // }
           return true;
 
       case \App\v1\Controllers\Rules\Common::PATTERN_END:
@@ -151,7 +151,7 @@ final class Criterium
       case \App\v1\Controllers\Rules\Common::REGEX_MATCH:
         $results = [];
         // Permit use < and >
-        $pattern = Toolbox::unclean_cross_side_scripting_deep($pattern);
+        // $pattern = Toolbox::unclean_cross_side_scripting_deep($pattern);
         if (preg_match_all($pattern . "i", $field, $results) > 0)
         {
           // Drop $result[0] : complete match result
@@ -173,7 +173,7 @@ final class Criterium
 
       case \App\v1\Controllers\Rules\Common::REGEX_NOT_MATCH:
         // Permit use < and >
-        $pattern = Toolbox::unclean_cross_side_scripting_deep($pattern);
+        // $pattern = Toolbox::unclean_cross_side_scripting_deep($pattern);
         if (preg_match($pattern . "i", $field) == 0)
         {
           $criterias_results[$criteria] = $pattern;

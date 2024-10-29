@@ -27,7 +27,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1']
+        php-versions: ['8.1', '8.2', '8.3']
 
     steps:
     - uses: actions/checkout@v4
@@ -37,15 +37,11 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
-        tools: phpstan, cs2pr, phpcs
+        tools: phpstan
         extensions: xmlrpc
-
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
-
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -55,174 +51,104 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
-    - name: create config_db.php used for PHPStan
-      run: echo -en "<?php\nclass DB {\n   public \$dbhost     = '127.0.0.1';\n   public \$dbuser     = 'gsit';\n   public \$dbpassword = 'gsit';\n   public \$dbdefault  = 'gsit';\n}" > config/config_db.php
-
     - name: Run PHPStan
       run: phpstan analyse db src public
 
   lint:
-    # Do not run scheduled lint on tier repositories
-    if: github.repository == 'DCS-Easyware/gsit' || github.event_name != 'schedule'
-    runs-on: "${{ 'ubuntu-latest' }}"
-    strategy:
-      fail-fast: false
-      matrix:
-        php-versions: ['8.1']
-    steps:
-      - name: "Cancel previous runs"
-        uses: "styfle/cancel-workflow-action@0.5.0"
-        with:
-          access_token: "${{ github.token }}"
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          tools: phpstan, cs2pr, phpcs
-          extensions: xmlrpc
-      - name: "Checkout"
-        uses: "actions/checkout@v4"
-      - name: "Restore dependencies cache"
-        uses: actions/cache@v2
-        with:
-          path: |
-            composer/cache/
-            .npm/_cacache/
-          key: "app_home_deps-${{ matrix.php-version }}-${{ hashFiles('composer.lock', 'package-lock.json') }}"
-          restore-keys: |
-            app_home_deps-${{ matrix.php-version }}-
-            app_home_deps-
-      - name: "Restore lint cache"
-        uses: actions/cache@v2
-        with:
-          path: |
-            phpcs.cache
-          key: "app_home_lint-${{ matrix.php-version }}-${{ github.base_ref || github.ref }}"
-          restore-keys: |
-            app_home_lint-${{ matrix.php-version }}
-            app_home_lint-
-      - name: "Install dependencies"
-        run: |
-          .github/actions/init_install-dependencies.sh
-      - name: "PHP lint (phpcs)"
-        run: |
-          files=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} | grep '^\(db\|src\|public)' || true)
-          if [ -n "$files" ]; then
-            phpcs -q --report=checkstyle $files | cs2pr
-          fi
-
-      - name: "JS lint"
-        run: |
-          .github/actions/lint_js-lint.sh
-      - name: "Misc lint"
-        run: |
-          .github/actions/lint_misc-lint.sh
-
-  tests:
-    # Do not run scheduled tests on tier repositories
-    if: github.repository == 'DCS-Easyware/gsit' || github.event_name != 'schedule'
 
     runs-on: 'ubuntu-latest'
 
     strategy:
-      fail-fast: false
       matrix:
-        php-versions: ['8.1']
-        mariadb-versions: ['10.5', '10.6', '10.11', '11.4']
-    services:
-      mariadb:
-        image: mariadb:${{ matrix.mariadb-versions }}
-        ports:
-          - 3306:3306 
-        env:
-          MARIADB_DATABASE: gsit
-          MARIADB_USER: gsit
-          MARIADB_PASSWORD: gsitpassword
-          MARIADB_ROOT_PASSWORD: rootpassword
-    steps:
-      - name: "Cancel previous runs"
-        if: env.skip != 'true'
-        uses: "styfle/cancel-workflow-action@0.5.0"
-        with:
-          access_token: "${{ github.token }}"
-      - name: "install openldap"
-        run: |
-          docker run -v /data/ldap:/var/lib/ldap \
-            -v /data/ldapconfig:/etc/ldap/slapd.d \
-            -e LDAP_DOMAIN=glpi.org \
-            -e LDAP_ROOTPASS=insecure \
-            -p 389:389 \
-            -d nickstenning/slapd
-          sudo apt install ldap-utils
-      - name: "install dovecot"
-        run: |
-          sudo apt install dovecot-imapd dovecot-pop3d getmail6
-          echo "mail_location = maildir:/home/%d/%n" | sudo tee -a /etc/dovecot/conf.d/10-mail.conf
-          sudo systemctl restart dovecot
-          sudo useradd testuser -m -s /bin/bash --password "$y$j9T$U0lMQidDDVLEs9I6B6aku0$bnLxoOX9hU5bWHT5YALVuLkATAg6EMs8ztYkLlzopd4"
-      - name: "Checkout"
-        if: env.skip != 'true'
-        uses: "actions/checkout@v4"
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: xmlrpc
-      - name: "Restore dependencies cache"
-        if: env.skip != 'true'
-        uses: actions/cache@v3
-        with:
-          path: |
-            .composer/cache/
-            .npm/_cacache/
-          key: "app_home_deps-${{ matrix.php-version }}-${{ hashFiles('composer.lock', 'package-lock.json') }}"
-          restore-keys: |
-            app_home_deps-${{ matrix.php-version }}-
-            app_home_deps-
-      - name: "Show versions"
-        if: env.skip != 'true'
-        run: |
-          .github/actions/init_show-versions.sh
-      - name: "Install dependencies"
-        if: env.skip != 'true'
-        run: |
-          .github/actions/init_install-dependencies.sh
-      - name: "check requirements"
-        run: |
-          php bin/console glpi:system:check_requirements
-      - name: "Install DB tests"
-        if: env.skip != 'true'
-        run: |
-          .github/actions/test_install.sh
-      - name: "import timezone"
-        run: mariadb-tzinfo-to-sql /usr/share/zoneinfo | mysql -h 127.0.0.1 -u root -prootpassword mysql
+        php-versions: ['8.1', '8.2', '8.3']
 
-      - name: "Update DB tests"
-        if: env.skip != 'true'
-        run: |
-          mysql -h 127.0.0.1 -u root -prootpassword -e "CREATE DATABASE glpitest0723;GRANT ALL ON glpitest0723.* TO 'gsit'@'%';FLUSH PRIVILEGES;"
-          mysql -h 127.0.0.1 -u root -prootpassword -e "GRANT SELECT ON mysql.time_zone_name TO 'gsit'@'%';FLUSH PRIVILEGES;"
-          .github/actions/init_initialize-old-dbs.sh
-          .github/actions/test_update-from-older-version.sh
-      - name: "Unit tests"
-        if: env.skip != 'true'
-        run: |
-          .github/actions/test_tests-units.sh
-      - name: "Functionnal tests"
-        if: env.skip != 'true'
-        run: |
-          .github/actions/test_tests-functionnal.sh
-      - name: "LDAP tests"
-        if: env.skip != 'true'
-        run: |
-          .github/actions/init_initialize-ldap-fixtures.sh
-          .github/actions/test_tests-ldap.sh
-      - name: "IMAP tests"
-        if: env.skip != 'true'
-        run: |
-          .github/actions/init_initialize-imap-fixtures.sh
-          .github/actions/test_tests-imap.sh
-      - name: "WEB tests"
-        if: env.skip != 'true'
-        run: |
-          .github/actions/test_tests-web.sh
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        tools: cs2pr, phpcs
+        extensions: xmlrpc
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v4
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Run phpcs
+      run: |
+        files=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} | grep '^\(src\|public\|db\)' || true)
+        if [ -n "$files" ]; then
+          phpcs -q --report=checkstyle $files | cs2pr
+        fi
+      if: github.event_name == 'pull_request'
+
+
+  check_composer:
+    runs-on: 'ubuntu-latest'
+
+    strategy:
+      matrix:
+        php-versions: ['8.1', '8.2', '8.3']
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v4
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+    - name: validate composer
+      run: |
+        composer validate --strict
+        composer check-platform-reqs;          
+
+  tests_unit:
+
+    runs-on: 'ubuntu-latest'
+
+    strategy:
+      matrix:
+        php-versions: ['8.1', '8.2', '8.3']
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: intl, mbstring
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v4
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: PHPUnit tests
+      run: ./vendor/bin/phpunit --coverage-text

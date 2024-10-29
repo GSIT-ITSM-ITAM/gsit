@@ -162,5 +162,4 @@ final class Form extends \App\v1\Controllers\Common
 
     return $view->render($response, 'subitem/answers.html.twig', (array)$viewData);
   }
-
 }

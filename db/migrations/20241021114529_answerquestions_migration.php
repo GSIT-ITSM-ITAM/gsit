@@ -40,7 +40,8 @@ final class AnswerquestionsMigration extends AbstractMigration
       $nbLoops = ceil($nbRows / 5000);
 
       for ($i = 0; $i < $nbLoops; $i++) {
-        $stmt = $pdo->query('SELECT * FROM glpi_plugin_formcreator_answers ORDER BY id LIMIT 5000 OFFSET ' . ($i * 5000));
+        $stmt = $pdo->query('SELECT * FROM glpi_plugin_formcreator_answers ORDER BY id LIMIT 5000 OFFSET ' .
+                ($i * 5000));
         $rows = $stmt->fetchAll();
         foreach ($rows as $row)
         {

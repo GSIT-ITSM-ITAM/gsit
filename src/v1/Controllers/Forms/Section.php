@@ -68,7 +68,7 @@ final class Section extends \App\v1\Controllers\Common
   {
     global $translator;
 
-    $item = new \App\Models\Forms\Section;
+    $item = new \App\Models\Forms\Section();
     $view = Twig::fromRequest($request);
 
     $myItem = $item::with('forms')->find($args['id']);

@@ -53,7 +53,7 @@ final class Answer extends \App\v1\Controllers\Common
       $answers['sections'][$section->id]['name'] = $section->name;
       $answers['sections'][$section->id]['questions'] = [];
 
-      $item3 = new \App\Models\Forms\Section;
+      $item3 = new \App\Models\Forms\Section();
       $myItem3 = $item3::with('questions')->find($section->id);
       foreach ($myItem3->questions as $question) {
         $answer = '';

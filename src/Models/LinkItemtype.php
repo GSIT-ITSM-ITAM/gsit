@@ -35,5 +35,4 @@ class LinkItemtype extends Common
   {
     return $this->belongsTo('\App\Models\Link', 'link_id');
   }
-
 }
