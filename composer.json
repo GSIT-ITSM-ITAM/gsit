@@ -8,7 +8,7 @@
         "issues": "https://github.com/DCS-Easyware/gsit/issues"
     },
     "require": {
-        "php": "^8.1|^8.2|^8.3",
+        "php": "^8.2|^8.3",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-fileinfo": "*",
@@ -22,15 +22,16 @@
         "ext-simplexml": "*",
         "ext-zlib": "*",
         "bryanjhv/slim-session": "~4.0",
+        "crunzphp/crunz": "^3.7",
         "directorytree/ldaprecord": "^3.7",
         "fico7489/laravel-pivot": "^3.0",
         "genealabs/laravel-pivot-events": "~11.0",
         "guzzlehttp/guzzle": "^7.4",
         "guzzlehttp/psr7": "^1.8",
         "htmlawed/htmlawed": "^1.2",
-        "illuminate/container": "^10",
-        "illuminate/database": "^10",
-        "illuminate/events": "^10",
+        "illuminate/container": "^11",
+        "illuminate/database": "^11",
+        "illuminate/events": "^11",
         "laminas/laminas-i18n": "^2.29",
         "league/commonmark": "^2.5",
         "league/flysystem": "^3.0",
@@ -104,6 +105,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "src",
+            "Tasks\\": "tasks",
             "Tests\\": "tests"
         }
     }

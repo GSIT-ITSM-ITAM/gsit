@@ -366,8 +366,12 @@ final class Ticket extends Common
     $definitions = $myItem->getDefinitions();
 
 
-    if ($myItem->priority == $data->priority)
+    if (!property_exists($data, 'priority') || ($myItem->priority == $data->priority))
     {
+      if (!property_exists($data, 'impact'))
+      {
+        $data->impact = 3;
+      }
       $data->priority = self::computePriority($data->urgency, $data->impact);
     }
 

@@ -6,7 +6,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
 use Slim\Routing\RouteContext;
-use Illuminate\Support\Facades\Schedule;
 
 final class Computer extends Common
 {
@@ -15,15 +14,6 @@ final class Computer extends Common
 
   public function getAll(Request $request, Response $response, $args): Response
   {
-    $mail = new \App\v1\Controllers\Mailcollector();
-    $mail->collect();
-
-    // include('../config/storage.php');
-    // $filesystem = new \League\Flysystem\Filesystem($adapter);
-    // $filesystem->write('my-file.txt', 'Hello from MinIO!!');
-
-
-
     $item = new \App\Models\Computer();
     return $this->commonGetAll($request, $response, $args, $item);
   }

@@ -64,14 +64,38 @@ $container["jwt"] = function ($container)
 
 $secret = sodium_base642bin('TEST', SODIUM_BASE64_VARIANT_ORIGINAL);
 
+$capsule = new Capsule();
+$dbConfig = include('../phinx.php');
+$myDatabase = $dbConfig['environments'][$dbConfig['environments']['default_environment']];
+$configdb = [
+  'driver'    => $myDatabase['adapter'],
+  'host'      => $myDatabase['host'],
+  'database'  => $myDatabase['name'],
+  'username'  => $myDatabase['user'],
+  'password'  => $myDatabase['pass'],
+  'charset'   => $myDatabase['charset'],
+  'collation' => $myDatabase['collation'],
+];
+$capsule->addConnection($configdb);
+$capsule->setEventDispatcher(new Dispatcher(new Container()));
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
+
+$ignoreList = [
+  $basePath . "/ping",
+  $basePath . "/view/login",
+  $basePath . "/view/sso",
+  $basePath . "/view/sso/cb",
+  $basePath . "/api/v1/fusioninventory",
+];
+$mailcollectors = \App\Models\Mailcollector::where('is_active', true)->where('is_oauth', true)->get();
+foreach ($mailcollectors as $collector)
+{
+  $ignoreList[] = $basePath . "/view/mailcollectors/" . $collector->id . "/oauth/cb";
+}
+
 $app->add(new Tuupola\Middleware\JwtAuthentication([
-  "ignore" => [
-    $basePath . "/ping",
-    $basePath . "/view/login",
-    $basePath . "/view/sso",
-    $basePath . "/view/sso/cb",
-    $basePath . "/api/v1/fusioninventory",
-  ],
+  "ignore" => $ignoreList,
   "secure" => false,
   "secret" => $secret,
   "before" => function ($request, $arguments)
@@ -107,24 +131,6 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
     throw new Exception($arguments["message"], 401);
   }
 ]));
-
-
-$capsule = new Capsule();
-$dbConfig = include('../phinx.php');
-$myDatabase = $dbConfig['environments'][$dbConfig['environments']['default_environment']];
-$configdb = [
-  'driver'    => $myDatabase['adapter'],
-  'host'      => $myDatabase['host'],
-  'database'  => $myDatabase['name'],
-  'username'  => $myDatabase['user'],
-  'password'  => $myDatabase['pass'],
-  'charset'   => $myDatabase['charset'],
-  'collation' => $myDatabase['collation'],
-];
-$capsule->addConnection($configdb);
-$capsule->setEventDispatcher(new Dispatcher(new Container()));
-$capsule->setAsGlobal();
-$capsule->bootEloquent();
 
 // Init session
 $app->add(

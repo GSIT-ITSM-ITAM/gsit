@@ -21,7 +21,7 @@ final class TreepathsMigration extends AbstractMigration
     if (!$table->hasColumn('treepath'))
     {
       $table->addColumn('treepath', 'string', ['null' => true])
-      ->update();
+            ->update();
     }
 
     $table = $this->table('categories');

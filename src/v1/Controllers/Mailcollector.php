@@ -33,6 +33,10 @@ final class Mailcollector extends Common
 
   public function collect()
   {
+    $createdTickets = 0;
+
+    $collector = \App\Models\Mailcollector::find(65);
+
     $cm = new ClientManager($options = []);
     $client = $cm->account('account_identifier');
     $client = $cm->make([
@@ -42,63 +46,212 @@ final class Mailcollector extends Common
       'validate_cert' => true,
       'username'      => 'd.durieux@dcsit-group.com',
       // 'password'      => 'password',
-      'password'       => 'e2ce19b4-f43b-4db4-aafc-be07f2d71cd9',
+      'password'       => $collector->oauth_token,
       'authentication' => "oauth",
-
       'protocol'      => 'imap'
     ]);
 
     //Connect to the IMAP Server
     $client->connect();
 
-    //Loop through every Mailbox
-    /** @var \Webklex\PHPIMAP\Folder $folder */
-    // foreach($folders as $folder)
-    // {
-    //   //Get all Messages of the current Mailbox $folder
-    //   /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
-    //   $messages = $folder->messages()->all()->get();
+    $status = $client->isConnected();
 
-    //   /** @var \Webklex\PHPIMAP\Message $message */
-    //   foreach($messages as $message)
-    //   {
-    //     echo $message->getSubject() . '<br />';
-    //     // echo 'Attachments: ' . $message->getAttachments()->count() . '<br />';
-    //     echo $message->getHTMLBody();
-
-    //     //Move the current Message to 'INBOX.read'
-    //     // if($message->move('INBOX.read') == true)
-    //     // {
-    //     //   echo 'Message has ben moved';
-    //     // } else {
-    //     //   echo 'Message could not be moved';
-    //     // }
-    //   }
-    // }
-
-// end
-// $mailbox = new \PhpImap\Mailbox(
-//   '{imap.gmail.com:993/imap/ssl/novalidate-cert}INBOX', // IMAP server and mailbox folder
-//   'david.durieux.dcs@gmail.com', // Username for the before configured mailbox
-//   'jvaXvMzKx5zZX2xu5jVVf3JmKvTQ5inyfezM5QDp', // Password for the before configured username
-//   false,
-// );
-
-// try {
-//   // Search in mailbox folder for specific emails
-//   // PHP.net imap_search criteria: http://php.net/manual/en/function.imap-search.php
-//   // Here, we search for "all" emails
-//   $mails_ids = $mailbox->searchMailbox('SINCE "20240901"');
-// } catch(\PhpImap\Exceptions\ConnectionException $ex) {
-//   echo "IMAP connection failed: " . $ex;
-//   die();
-// }
-
-// // TODO
-// // https://github.com/barbushin/php-imap/wiki/Getting-Started
+    // print_r($client->getFolders(false));
+    $folder = $client->getFolderByPath('INBOX');
+    $messages = $folder->messages()->setFetchOrder('desc')->all()->limit($limit = 10, $page = 0)->get();
+    //                             ->all()->count();
 
 
-// // Disconnect from mailbox
-// $mailbox->disconnect();
+    /** @var \Webklex\PHPIMAP\Message $message */
+    foreach($messages as $message)
+    {
+      // echo 'Attachments: ' . $message->getAttachments()->count() . '<br />';
+
+      //Move the current Message to 'INBOX.read'
+      // if($message->move('INBOX.read') == true)
+      // {
+      //   echo 'Message has ben moved';
+      // } else {
+      //   echo 'Message could not be moved';
+      // }
+
+      // TODO: Create tickets
+
+      $requesters = [];
+
+      $from = $message->get("from");
+      $values = $from->toArray();
+
+      foreach ($values as $sender)
+      {
+        $user = \App\Models\User::where('name', $sender->mail)->first();
+        if (!is_null($user))
+        {
+          $requesters[] = $user->id;
+        }
+      }
+
+      // get priority => urgency
+      $urgency = 3;
+      $prio = $message->get("priority");
+      $values = $prio->toArray();
+      foreach ($values as $priority)
+      {
+        switch ($priority) {
+          case '1':
+            $urgency = 5;
+              break;
+
+          case '2':
+            $urgency = 4;
+              break;
+
+          case '4':
+            $urgency = 2;
+              break;
+
+          case '5':
+            $urgency = 1;
+              break;
+        }
+      }
+
+
+      $data = (object) [
+        'name'    => $message->getSubject(),
+        'content' => \App\v1\Controllers\Toolbox::convertHtmlToMarkdown($message->getHTMLBody()),
+        'requester' => implode(',', $requesters),
+        'urgency' => $urgency,
+      ];
+
+      $t = new \App\v1\Controllers\Ticket();
+      $data = $t->prepareDataSave($data);
+      $t->saveItem($data);
+      $createdTickets++;
+    }
+    return $createdTickets;
+  }
+
+  protected function getInformationTop($item, $request)
+  {
+    global $translator, $basePath;
+
+    $uri = $request->getUri();
+
+    $information = [];
+    if ($item->is_oauth)
+    {
+      $information[] = [
+        'key'   => 'callbackurl',
+        'value' => $translator->translate('Redirect URL') . ' ' . $uri->getScheme() . '://' . $uri->getHost() .
+                   $basePath . '/view/mailcollectors/' . $item->id . '/oauth/cb',
+        'link'  => null,
+      ];
+      $information[] = [
+        'key'   => 'loginoauth',
+        'value' => $translator->translate('Authenticate with oauth'),
+        'link'  => $basePath . '/view/mailcollectors/' . $item->id . '/oauth',
+      ];
+
+      if ($item->oauth_provider == 'azure')
+      {
+        $information[] = [
+          'key'   => 'documentation',
+          'value' => $translator->translate('Provider documentation'),
+          'link'  => 'https://learn.microsoft.com/en-us/exchange/client-developer/legacy-protocols/how-to-authenticate-an-imap-pop-smtp-application-by-using-oauth',
+        ];
+      }
+      elseif ($item->oauth_provider == 'google')
+      {
+        $information[] = [
+          'key'   => 'documentation',
+          'value' => $translator->translate('Provider documentation'),
+          'link'  => 'https://developers.google.com/gmail/imap/xoauth2-protocol',
+        ];
+      }
+    }
+
+    return $information;
+
+    return [
+      [
+        'key'   => 'callbackurl',
+        'value' => $translator->translate('Redirect URL') . ' ' . $uri->getScheme() . '://' . $uri->getHost() .
+                   $basePath . '/view/mailcollectors/' . $item->id . '/oauth/cb',
+        'link'  => null,
+      ],
+      [
+        'key'   => 'loginoauth',
+        'value' => $translator->translate('Go login with oauth'),
+        'link'  => $basePath . '/view/mailcollectors/' . $item->id . '/oauth',
+      ],
+    ];
+  }
+
+  public function doOauth(Request $request, Response $response, $args)
+  {
+    $provider = $this->getMyProvider($request, $args);
+    header('Location: ' . $provider->makeAuthUrl());
+    exit;
+  }
+
+  public function getMyProvider($request, $args)
+  {
+    global $basePath;
+
+    $collector = \App\Models\Mailcollector::find($args['id']);
+
+    $dataProvider = [
+      'title'             => 'Azure AD',
+      'applicationId'     => $collector->oauth_applicationid,
+      'directoryId'       => $collector->oauth_directoryid,
+      'applicationSecret' => $collector->oauth_applicationsecret,
+      'scope'             => [
+        'openid',
+        'https://outlook.office365.com/IMAP.AccessAsUser.All',
+        // 'https://outlook.office.com/POP.AccessAsUser.All',
+        // 'https://outlook.office.com/SMTP.Send',
+        'offline_access',
+      ],
+    ];
+    $uri = $request->getUri();
+
+    $configureProviders = [
+      'redirectUri' => $uri->getScheme() . '://' . $uri->getHost() . $basePath . '/view/mailcollectors/' .
+      $collector->id . '/oauth/cb',
+      'provider' => [
+        'azure-ad' => $dataProvider,
+      ],
+    ];
+    return \App\v1\Controllers\Authsso::getProviderInstance('azure-ad', $configureProviders);
+  }
+
+  public function callbackOauth(Request $request, Response $response, $args)
+  {
+    global $basePath;
+
+    $provider = $this->getMyProvider($request, $args);
+    $accessToken = $provider->getAccessTokenByRequestParameters($_GET);
+    $token = $accessToken->getToken();
+    $refreshtoken = $accessToken->getRefreshToken();
+    if (!is_null($token) && !is_null($refreshtoken))
+    {
+      $mailcollector = \App\Models\Mailcollector::find($args['id']);
+      $mailcollector->oauth_token = $token;
+      $mailcollector->oauth_refresh_token = $refreshtoken;
+      $mailcollector->save();
+
+      // add message to session
+      $session = new \SlimSession\Helper();
+      $session->message = "Authentication done with success";
+
+      $uri = $request->getUri();
+
+      header('Location: ' . $uri->getScheme() . '://' . $uri->getHost() . $basePath . '/view/mailcollectors/' .
+             $mailcollector->id);
+      exit;
+    }
+    echo "Error :/";
+    exit;
   }
 }

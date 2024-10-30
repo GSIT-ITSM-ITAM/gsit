@@ -227,21 +227,7 @@ final class Login extends Common
         $authsso->provider => $dataProvider,
       ],
     ];
-
-    $httpClient = new \SocialConnect\HttpClient\Curl();
-
-    $collectionFactory = null;
-    $service =  new \SocialConnect\Auth\Service(
-      new \SocialConnect\Common\HttpStack(
-        $httpClient,
-        new \SocialConnect\HttpClient\RequestFactory(),
-        new \SocialConnect\HttpClient\StreamFactory()
-      ),
-      new \SocialConnect\Provider\Session\Session(),
-      $configureProviders,
-      $collectionFactory
-    );
-    return $service->getProvider($authsso->provider);
+    return \App\v1\Controllers\Authsso::getProviderInstance($authsso->provider, $configureProviders);
   }
 
   public function logout(Request $request, Response $response, $args)

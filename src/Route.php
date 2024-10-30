@@ -2647,10 +2647,20 @@ final class Route
       {
         $mailcollectors->map(['GET'], '', \App\v1\Controllers\Mailcollector::class . ':getAll');
         $mailcollectors->map(['POST'], '', \App\v1\Controllers\Mailcollector::class . ':postItem');
+
+        $mailcollectors->group("/new", function (RouteCollectorProxy $collectorNew)
+        {
+          $collectorNew->map(['GET'], '', \App\v1\Controllers\Mailcollector::class . ':showNewItem');
+          $collectorNew->map(['POST'], '', \App\v1\Controllers\Mailcollector::class . ':newItem');
+        });
+
         $mailcollectors->group("/{id:[0-9]+}", function (RouteCollectorProxy $mailcollectorId)
         {
           $mailcollectorId->map(['GET'], '', \App\v1\Controllers\Mailcollector::class . ':showItem');
           $mailcollectorId->map(['POST'], '', \App\v1\Controllers\Mailcollector::class . ':updateItem');
+          $mailcollectorId->map(['GET'], '/oauth', \App\v1\Controllers\Mailcollector::class . ':doOauth');
+          $mailcollectorId->map(['GET'], '/oauth/cb', \App\v1\Controllers\Mailcollector::class . ':callbackOauth');
+
           $mailcollectorId->group('/', function (RouteCollectorProxy $sub)
           {
             $sub->map(['GET'], 'history', \App\v1\Controllers\Mailcollector::class . ':showSubHistory');

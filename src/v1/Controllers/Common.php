@@ -379,36 +379,34 @@ class Common
       }
 
       $item = $this->model::create((array) $data);
-      return $item->id;
-    }
-
-    // update
-    $item = $this->model::find($id);
-    if (is_null($item))
-    {
-      // Error
-      return $id;
-    }
-
-    $aData = (array) $data;
-    foreach ($aData as $key => $value)
-    {
-      if (isset($fieldsDef[$key]))
+    } else {
+      // update
+      $item = $this->model::find($id);
+      if (is_null($item))
       {
-        $aData[$fieldsDef[$key]] = $value;
+        // Error
+        return $id;
       }
-      if (isset($booleans[$key]))
+
+      $aData = (array) $data;
+      foreach ($aData as $key => $value)
       {
-        if ($value == 'on')
+        if (isset($fieldsDef[$key]))
         {
-          $aData[$key] = true;
-        } else {
-          $aData[$key] = false;
+          $aData[$fieldsDef[$key]] = $value;
+        }
+        if (isset($booleans[$key]))
+        {
+          if ($value == 'on')
+          {
+            $aData[$key] = true;
+          } else {
+            $aData[$key] = false;
+          }
         }
       }
+      $item->update($aData);
     }
-
-    $item->update($aData);
 
     // manage multiple
     foreach ($definitions as $def)
@@ -420,6 +418,10 @@ class Common
         if (isset($def['pivot']))
         {
           $pivot = $def['pivot'];
+        }
+        if (!property_exists($data, $key))
+        {
+          continue;
         }
         if (!is_array($data->{$key}))
         {

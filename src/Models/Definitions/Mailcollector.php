@@ -10,7 +10,7 @@ class Mailcollector
     return [
       [
         'id'    => 1,
-        'title' => $translator->translate('Name'),
+        'title' => $translator->translate('Email address'),
         'type'  => 'input',
         'name'  => 'name',
         'fillable' => true,
@@ -43,15 +43,15 @@ class Mailcollector
         'name'  => 'refused',
         'fillable' => true,
       ],
-      [
-        'id'    => 5,
-        'title' => $translator->translate('Maximum size of each file imported by the mails receiver'),
-        'type'  => 'dropdown',
-        'name'  => 'filesize_max',
-        'dbname'  => 'filesize_max',
-        'values' => self::showMaxFilesize(),
-        'fillable' => true,
-      ],
+      // [
+      //   'id'    => 5,
+      //   'title' => $translator->translate('Maximum size of each file imported by the mails receiver'),
+      //   'type'  => 'dropdown',
+      //   'name'  => 'filesize_max',
+      //   'dbname'  => 'filesize_max',
+      //   'values' => self::showMaxFilesize(),
+      //   'fillable' => true,
+      // ],
       [
         'id'    => 201,
         'title' => $translator->translate('Use mail date, instead of collect one'),
@@ -62,9 +62,8 @@ class Mailcollector
       [
         'id'    => 202,
         'title' => $translator->translate('Use Reply-To as requester (when available)'),
-        'type'  => 'dropdown',
+        'type'  => 'boolean',
         'name'  => 'requester_field',
-        'dbname'  => 'requester_field',
         'values' => self::getRequesterField(),
         'fillable' => true,
       ],
@@ -93,13 +92,46 @@ class Mailcollector
         'name'  => 'comment',
         'fillable' => true,
       ],
+
       [
-        'id'    => 19,
-        'title' => $translator->translate('Last update'),
-        'type'  => 'datetime',
-        'name'  => 'updated_at',
-        'readonly'  => 'readonly',
+        'id'    => 301,
+        'title' => $translator->translate('Use Oauth'),
+        'type'  => 'boolean',
+        'name'  => 'is_oauth',
+        'fillable' => true,
       ],
+      [
+        'id'            => 302,
+        'title'         => $translator->translate('Provider'),
+        'type'          => 'dropdown',
+        'name'          => 'oauth_provider',
+        'dbname'        => 'oauth_provider',
+        'values'        => self::getProvidersArray(),
+        'fillable' => true,
+      ],
+      [
+        'id'    => 303,
+        'title' => $translator->translate('ApplicationID'),
+        'type'  => 'input',
+        'name'  => 'oauth_applicationid',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 304,
+        'title' => $translator->translate('DirectoryID (Only for Microsoft Azure)'),
+        'type'  => 'input',
+        'name'  => 'oauth_directoryid',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 305,
+        'title' => $translator->translate('ApplicationSecret'),
+        'type'  => 'inputpassword',
+        'name'  => 'oauth_applicationsecret',
+        'fillable' => true,
+      ],
+
+
 /*
       $tab[] = [
          'id'                 => '3',
@@ -167,6 +199,23 @@ class Mailcollector
         'title' => $translator->translate('Historical'),
         'icon' => 'history',
         'link' => $rootUrl . '/history',
+      ],
+    ];
+  }
+
+  public static function getProvidersArray()
+  {
+    global $translator;
+
+    return [
+      null => [
+        'title' => $translator->translate('None'),
+      ],
+      'azure' => [
+        'title' => 'Microsoft Azure',
+      ],
+      'google' => [
+        'title' => 'Google',
       ],
     ];
   }

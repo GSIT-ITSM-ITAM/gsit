@@ -74,6 +74,7 @@ class Ticket extends Common
     'urgency'   => 3,
     'impact'    => 3,
     'priority'  => 3,
+    'entity_id' => 1,
   ];
 
   protected $fillable = [

@@ -81,4 +81,22 @@ final class Authsso extends Common
       ],
     ];
   }
+
+  public static function getProviderInstance($providerName, $configuration)
+  {
+    $httpClient = new \SocialConnect\HttpClient\Curl();
+
+    $collectionFactory = null;
+    $service =  new \SocialConnect\Auth\Service(
+      new \SocialConnect\Common\HttpStack(
+        $httpClient,
+        new \SocialConnect\HttpClient\RequestFactory(),
+        new \SocialConnect\HttpClient\StreamFactory()
+      ),
+      new \SocialConnect\Provider\Session\Session(),
+      $configuration,
+      $collectionFactory
+    );
+    return $service->getProvider($providerName);
+  }
 }
