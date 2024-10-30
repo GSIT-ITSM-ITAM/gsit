@@ -45,8 +45,6 @@ jobs:
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
@@ -78,8 +76,6 @@ jobs:
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
@@ -114,12 +110,10 @@ jobs:
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
     - name: validate composer
-      run: |
-        composer validate --strict
-        composer check-platform-reqs;          
+      run: composer validate --strict
+    - name: validate extensions required
+      run: composer check-platform-reqs
 
   tests_unit:
 
@@ -144,8 +138,6 @@ jobs:
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress

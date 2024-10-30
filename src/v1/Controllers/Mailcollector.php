@@ -158,7 +158,8 @@ final class Mailcollector extends Common
         $information[] = [
           'key'   => 'documentation',
           'value' => $translator->translate('Provider documentation'),
-          'link'  => 'https://learn.microsoft.com/en-us/exchange/client-developer/legacy-protocols/how-to-authenticate-an-imap-pop-smtp-application-by-using-oauth',
+          'link'  => 'https://learn.microsoft.com/en-us/exchange/client-developer/legacy-protocols/' .
+                     'how-to-authenticate-an-imap-pop-smtp-application-by-using-oauth',
         ];
       }
       elseif ($item->oauth_provider == 'google')
