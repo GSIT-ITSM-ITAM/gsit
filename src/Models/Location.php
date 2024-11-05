@@ -52,17 +52,20 @@ class Location extends Common
 
   public function getCompletenameAttribute()
   {
-    $itemsId = str_split($this->treepath, 5);
-    array_pop($itemsId);
-    foreach ($itemsId as $key => $value)
-    {
-      $itemsId[$key] = (int) $value;
-    }
-    $items = \App\Models\Location::whereIn('id', $itemsId)->orderBy('treepath');
     $names = [];
-    foreach ($items as $item)
+    if ($this->treepath != null)
     {
-      $names[] = $item->name;
+      $itemsId = str_split($this->treepath, 5);
+      array_pop($itemsId);
+      foreach ($itemsId as $key => $value)
+      {
+        $itemsId[$key] = (int) $value;
+      }
+      $items = \App\Models\Location::whereIn('id', $itemsId)->orderBy('treepath');
+      foreach ($items as $item)
+      {
+        $names[] = $item->name;
+      }
     }
     $names[] = $this->name;
     return implode(' > ', $names);

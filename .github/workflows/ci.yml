@@ -163,7 +163,7 @@ jobs:
     strategy:
       matrix:
         php-versions: ['8.2', '8.3']
-        pg-versions: ['13', '14', '15', '16']
+        pg-versions: ['13', '14', '15', '16', '17']
     services:
       postgres:
         image: postgres:${{ matrix.pg-versions }}
@@ -184,7 +184,10 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         extensions: intl, mbstring
     - name: update databaseconfiguration
-      run: sed -i 's/mysql/pgsql/g' phinx.php
+      run: |
+        sed -i 's/mysql/pgsql/g' phinx.php
+        sed -i 's/utf8mb4/utf8/g' phinx.php
+        sed -i 's/3306/5432/g' phinx.php
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v4

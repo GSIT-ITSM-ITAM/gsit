@@ -77,7 +77,8 @@ final class Queuednotification extends Common
         // $mailer->Username   = 'user@example.com';                     //SMTP username
         // $mailer->Password   = 'secret';                               //SMTP password
         // $mailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-        $mailer->Port       = 2525;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        $mailer->Port = 2525;
 
         //Recipients
         $mailer->setFrom($mail->sender, $mail->sendername);

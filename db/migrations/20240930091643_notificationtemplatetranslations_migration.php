@@ -128,7 +128,7 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     // FOREACHvalidations
     // author.category
     // author.email
-    // author.id 
+    // author.id
     // author.location
     // author.mobile
     // author.name

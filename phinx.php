@@ -41,7 +41,7 @@ return
     // ],
     'tests' => [
       'adapter' => 'mysql',
-      'host' => 'localhost',
+      'host' => '127.0.0.1',
       'name' => 'gsittests',
       'user' => 'gsittests',
       'pass' => 'gsittests',

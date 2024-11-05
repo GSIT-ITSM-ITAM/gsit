@@ -79,7 +79,6 @@ final class FillemptydatabaseMigration extends AbstractMigration
       }
       $item->insert($data)
            ->saveData();
-
     }
   }
 }

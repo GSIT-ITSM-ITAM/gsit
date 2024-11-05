@@ -28,7 +28,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('type', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('date', 'timestamp', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
-          ->addIndex(['item_type', 'item_id', 'type'], ['unique' => true, 'name' => 'unicity'])
+          ->addIndex(['item_type', 'item_id', 'type'], ['unique' => true])
           ->addIndex(['type'])
           ->addIndex(['date'])
           ->create();
@@ -48,7 +48,6 @@ final class Tables95 extends AbstractMigration
           ->addColumn('app_token', 'string', ['null' => true])
           ->addColumn('app_token_date', 'timestamp', ['null' => true])
           ->addColumn('dolog_method', 'integer', ['null' => false, 'default' => 0, 'limit' => MysqlAdapter::INT_TINY])
-          ->addIndex(['updated_at'])
           ->addIndex(['is_active'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -76,7 +75,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('serial', 'string', ['null' => true])
           ->addColumn('otherserial', 'string', ['null' => true])
           ->addColumn('is_helpdesk_visible', 'boolean', ['null' => false, 'default' => true])
-          ->addIndex(['externalidentifier'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['externalidentifier'], ['unique' => true])
           ->addIndex(['entity_id'])
           ->addIndex(['name'])
           ->addIndex(['appliancetype_id'])
@@ -100,9 +99,9 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('appliance_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('item_type', 'string', ['null' => false, 'default' => '', 'limit' => 100])
-          ->addIndex(['appliance_id', 'item_id', 'item_type'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['appliance_id', 'item_id', 'item_type'], ['unique' => true])
           ->addIndex(['appliance_id'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->create();
 
     $table = $this->table('appliancetypes');
@@ -114,7 +113,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('entity_id', 'integer', ['null' => false, 'default' => 1])
           ->addColumn('is_recursive', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('externalidentifier', 'string', ['null' => true])
-          ->addIndex(['externalidentifier'], ['name' => 'externalidentifier', 'unique' => true])
+          ->addIndex(['externalidentifier'], ['unique' => true])
           ->addIndex(['name'])
           ->addIndex(['entity_id'])
           ->addIndex(['created_at'])
@@ -312,7 +311,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('ancestors_cache', 'text', ['limit' => MysqlAdapter::TEXT_LONG])
           ->addColumn('sons_cache', 'text', ['limit' => MysqlAdapter::TEXT_LONG])
           ->addIndex(['name'])
-          ->addIndex(['businesscriticity_id', 'name'], ['unique' => true, 'name' => 'unicity'])
+          ->addIndex(['businesscriticity_id', 'name'], ['unique' => true])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -339,7 +338,7 @@ final class Tables95 extends AbstractMigration
     $table = $this->table('calendar_holiday');
     $table->addColumn('calendar_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('holiday_id', 'integer', ['null' => false, 'default' => 0])
-          ->addIndex(['calendar_id', 'holiday_id'], ['unique' => true, 'name' => 'unicity'])
+          ->addIndex(['calendar_id', 'holiday_id'], ['unique' => true])
           ->addIndex(['holiday_id'])
           ->create();
 
@@ -410,7 +409,7 @@ final class Tables95 extends AbstractMigration
     $table = $this->table('cartridgeitem_printermodel');
     $table->addColumn('cartridgeitem_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('printermodel_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['printermodel_id', 'cartridgeitem_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['printermodel_id', 'cartridgeitem_id'], ['unique' => true])
           ->addIndex(['cartridgeitem_id'])
           ->create();
 
@@ -525,9 +524,9 @@ final class Tables95 extends AbstractMigration
           ->addColumn('certificate_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('item_type', 'string', ['null' => false, 'length' => 100])
-          ->addIndex(['certificate_id', 'item_type', 'item_id'], ['unique' => true, 'name' => 'unicity'])
-          ->addIndex(['item_id', 'item_type'], ['name' => 'device'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['certificate_id', 'item_type', 'item_id'], ['unique' => true])
+          ->addIndex(['item_id', 'item_type'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -619,7 +618,7 @@ final class Tables95 extends AbstractMigration
     $table = $this->table('changetemplatehiddenfields');
     $table->addColumn('changetemplate_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('num', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['changetemplate_id', 'num'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['changetemplate_id', 'num'], ['unique' => true])
           ->addIndex(['changetemplate_id'])
           ->create();
 
@@ -627,7 +626,7 @@ final class Tables95 extends AbstractMigration
     $table = $this->table('changetemplatemandatoryfields');
     $table->addColumn('changetemplate_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('num', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['changetemplate_id', 'num'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['changetemplate_id', 'num'], ['unique' => true])
           ->addIndex(['changetemplate_id'])
           ->create();
 
@@ -678,22 +677,22 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('change_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('group_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('type', 'integer', ['null' => false, 'default' => 1])
-          ->addIndex(['change_id', 'type', 'group_id'], ['unique' => true, 'name' => 'unicity'])
-          ->addIndex(['group_id', 'type'], ['name' => 'group'])
+          ->addIndex(['change_id', 'type', 'group_id'], ['unique' => true])
+          ->addIndex(['group_id', 'type'])
           ->create();
 
     $table = $this->table('change_item');
     $table->addColumn('change_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('item_type', 'string', ['null' => true, 'length' => 100])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => 0])
-          ->addIndex(['change_id', 'item_type', 'item_id'], ['unique' => true, 'name' => 'unicity'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['change_id', 'item_type', 'item_id'], ['unique' => true])
+          ->addIndex(['item_type', 'item_id'])
           ->create();
 
     $table = $this->table('change_problem');
     $table->addColumn('change_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('problem_id', 'integer', ['null' => false, 'default' => 0])
-          ->addIndex(['change_id', 'problem_id'], ['unique' => true, 'name' => 'unicity'])
+          ->addIndex(['change_id', 'problem_id'], ['unique' => true])
           ->addIndex(['problem_id'])
           ->create();
 
@@ -703,14 +702,14 @@ final class Tables95 extends AbstractMigration
           ->addColumn('type', 'integer', ['null' => false, 'default' => 1])
           ->addColumn('use_notification', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('alternative_email', 'string', ['null' => true])
-          ->addIndex(['change_id', 'type', 'supplier_id'], ['unique' => true, 'name' => 'unicity'])
-          ->addIndex(['supplier_id', 'type'], ['name' => 'group'])
+          ->addIndex(['change_id', 'type', 'supplier_id'], ['unique' => true])
+          ->addIndex(['supplier_id', 'type'])
           ->create();
 
     $table = $this->table('change_ticket');
     $table->addColumn('change_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('ticket_id', 'integer', ['null' => false, 'default' => 0])
-          ->addIndex(['change_id', 'ticket_id'], ['unique' => true, 'name' => 'unicity'])
+          ->addIndex(['change_id', 'ticket_id'], ['unique' => true])
           ->addIndex(['ticket_id'])
           ->create();
 
@@ -720,8 +719,8 @@ final class Tables95 extends AbstractMigration
           ->addColumn('type', 'integer', ['null' => false, 'default' => 1])
           ->addColumn('use_notification', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('alternative_email', 'string', ['null' => true])
-          ->addIndex(['change_id', 'type', 'user_id', 'alternative_email'], ['unique' => true, 'name' => 'unicity'])
-          ->addIndex(['user_id', 'type'], ['name' => 'user'])
+          ->addIndex(['change_id', 'type', 'user_id', 'alternative_email'], ['unique' => true])
+          ->addIndex(['user_id', 'type'])
           ->create();
 
     $table = $this->table('changevalidations');
@@ -916,7 +915,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('item_type', 'string', ['null' => false, 'length' => 100])
           ->addColumn('is_dynamic', 'boolean', ['null' => false, 'default' => false])
           ->addIndex(['computer_id'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['is_dynamic'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -939,7 +938,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('ram', 'string', ['null' => false, 'default' => ''])
           ->addColumn('is_dynamic', 'boolean', ['null' => false, 'default' => false])
           ->addIndex(['computer_id'])
-          ->addIndex(['entitY_id'])
+          ->addIndex(['entity_id'])
           ->addIndex(['name'])
           ->addIndex(['virtualmachinestate_id'])
           ->addIndex(['virtualmachinesystem_id'])
@@ -1008,7 +1007,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['date_out'])
           ->addIndex(['consumableitem_id'])
           ->addIndex(['entity_id'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -1018,7 +1017,7 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('name', 'string', ['null' => true, 'limit' => 150])
           ->addColumn('context', 'string', ['null' => true, 'limit' => 150])
           ->addColumn('value', 'text', ['null' => true])
-          ->addIndex(['context', 'name'], ['unique' => true, 'name' => 'unicity'])
+          ->addIndex(['context', 'name'], ['unique' => true])
           ->create();
 
     $table = $this->table('contacts');
@@ -1054,7 +1053,7 @@ final class Tables95 extends AbstractMigration
     $table = $this->table('contact_supplier');
     $table->addColumn('supplier_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('contact_id', 'integer', ['null' => false, 'default' => 0])
-          ->addIndex(['supplier_id', 'contact_id'], ['unique' => true, 'name' => 'unicity'])
+          ->addIndex(['supplier_id', 'contact_id'], ['unique' => true])
           ->addIndex(['contact_id'])
           ->create();
 
@@ -1117,15 +1116,15 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('contract_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('item_type', 'string', ['null' => false, 'limit' => 100])
-          ->addIndex(['contract_id', 'item_type', 'item_id'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['item_id', 'item_type'], ['name' => 'item'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item1'])
+          ->addIndex(['contract_id', 'item_type', 'item_id'], ['unique' => true])
+          ->addIndex(['item_id', 'item_type'])
+          ->addIndex(['item_type', 'item_id'])
           ->create();
 
     $table = $this->table('contract_supplier');
     $table->addColumn('supplier_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('contract_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['supplier_id', 'contract_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['supplier_id', 'contract_id'], ['unique' => true])
           ->addIndex(['contract_id'])
           ->create();
 
@@ -1176,7 +1175,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('content', 'string', ['null' => true])
           ->addIndex(['date'])
           ->addIndex(['crontask_id'])
-          ->addIndex(['crontasklog_id', 'state'], ['name' => 'crontasklog_id_state'])
+          ->addIndex(['crontasklog_id', 'state'])
           ->create();
 
     $table = $this->table('crontasks');
@@ -1196,7 +1195,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('logs_lifetime', 'integer', ['null' => false, 'default' => '30'])
           ->addColumn('lastrun', 'timestamp', ['null' => true])
           ->addColumn('lastcode', 'integer', ['null' => true])
-          ->addIndex(['item_type', 'name'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['item_type', 'name'], ['unique' => true])
           ->addIndex(['mode'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -1287,7 +1286,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('created_at', 'timestamp', ['null' => true])
           ->addColumn('updated_at', 'timestamp', ['null' => true])
           ->addColumn('deleted_at', 'timestamp', ['null' => true])
-          ->addIndex(['name'], ['name' => 'name'])
+          ->addIndex(['name'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -1952,7 +1951,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('num', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('rank', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('user_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['user_id', 'itemtype', 'num'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['user_id', 'itemtype', 'num'], ['unique' => true])
           ->addIndex(['rank'])
           ->addIndex(['num'])
           ->addIndex(['itemtype'])
@@ -1999,7 +1998,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('level', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('ancestors_cache', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_LONG])
           ->addColumn('sons_cache', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_LONG])
-          ->addIndex(['documentcategory_id', 'name'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['documentcategory_id', 'name'], ['unique' => true])
           ->addIndex(['name'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -2020,9 +2019,9 @@ final class Tables95 extends AbstractMigration
           ->addColumn('date', 'timestamp', ['null' => true])
           ->addIndex(
             ['document_id', 'item_type', 'item_id', 'timeline_position'],
-            ['name' => 'unicity', 'unique' => true]
+            ['unique' => true]
           )
-          ->addIndex(['item_type', 'item_id', 'entity_id', 'is_recursive'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id', 'entity_id', 'is_recursive'])
           ->addIndex(['user_id'])
           ->addIndex(['date'])
           ->addIndex(['created_at'])
@@ -2040,7 +2039,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('icon', 'string', ['null' => true])
           ->addColumn('mime', 'string', ['null' => true])
           ->addColumn('is_uploadable', 'boolean', ['null' => false, 'default' => true])
-          ->addIndex(['ext'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['ext'], ['unique' => true])
           ->addIndex(['name'])
           ->addIndex(['is_uploadable'])
           ->addIndex(['created_at'])
@@ -2105,11 +2104,11 @@ final class Tables95 extends AbstractMigration
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('item_type', 'string', ['null' => false, 'limit' => 100])
           ->addColumn('domainrelation_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['domain_id', 'item_type', 'item_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['domain_id', 'item_type', 'item_id'], ['unique' => true])
           ->addIndex(['domain_id'])
           ->addIndex(['domainrelation_id'])
-          ->addIndex(['item_id', 'item_type'], ['name' => 'device'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_id', 'item_type'])
+          ->addIndex(['item_type', 'item_id'])
           ->create();
 
     $table = $this->table('domainrecords');
@@ -2160,8 +2159,8 @@ final class Tables95 extends AbstractMigration
           ->addColumn('language', 'string', ['null' => true, 'limit' => 10])
           ->addColumn('field', 'string', ['null' => true, 'limit' => 100])
           ->addColumn('value', 'text', ['null' => true])
-          ->addIndex(['item_type', 'item_id', 'language', 'field'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'typeid'])
+          ->addIndex(['item_type', 'item_id', 'language', 'field'], ['unique' => true])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['language'])
           ->addIndex(['field'])
           ->addIndex(['created_at'])
@@ -2306,7 +2305,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('latitude', 'string', ['null' => true])
           ->addColumn('longitude', 'string', ['null' => true])
           ->addColumn('altitude', 'string', ['null' => true])
-          ->addIndex(['entity_id', 'name'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['entity_id', 'name'], ['unique' => true])
           ->addIndex(['entity_id'])
           ->addIndex(['tickettemplate_id'])
           ->addIndex(['changetemplate_id'])
@@ -2353,7 +2352,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('message', 'text', ['null' => true])
           ->addIndex(['date'])
           ->addIndex(['level'])
-          ->addIndex(['type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['type', 'item_id'])
           ->create();
 
     // F
@@ -2440,7 +2439,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('is_tech', 'boolean', ['null' => false, 'default' => false])
           ->addIndex(['item_type'])
           ->addIndex(['item_id'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['date'])
           ->addIndex(['user_id'])
           ->addIndex(['user_id_editor'])
@@ -2521,8 +2520,8 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('ticket_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('group_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('type', 'integer', ['null' => false, 'default' => '1'])
-          ->addIndex(['ticket_id', 'type', 'group_id'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['group_id', 'type'], ['name' => 'group'])
+          ->addIndex(['ticket_id', 'type', 'group_id'], ['unique' => true])
+          ->addIndex(['group_id', 'type'])
           ->create();
 
     $table = $this->table('group_knowbaseitem');
@@ -2540,8 +2539,8 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('problem_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('group_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('type', 'integer', ['null' => false, 'default' => '1'])
-          ->addIndex(['problem_id', 'type', 'group_id'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['group_id', 'type'], ['name' => 'group'])
+          ->addIndex(['problem_id', 'type', 'group_id'], ['unique' => true])
+          ->addIndex(['group_id', 'type'])
           ->create();
 
     $table = $this->table('group_reminder');
@@ -2572,7 +2571,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('is_dynamic', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('is_manager', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('is_userdelegate', 'boolean', ['null' => false, 'default' => false])
-          ->addIndex(['user_id', 'group_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['user_id', 'group_id'], ['unique' => true])
           ->addIndex(['group_id'])
           ->addIndex(['is_manager'])
           ->addIndex(['is_userdelegate'])
@@ -2608,10 +2607,10 @@ final class Tables95 extends AbstractMigration
           ->addColumn('item_id_impacted', 'integer', ['null' => false, 'default' => 0])
           ->addIndex(
             ['item_type_source', 'item_id_source', 'item_type_impacted', 'item_id_impacted'],
-            ['unique' => true, 'name' => 'unicity']
+            ['unique' => true]
           )
-          ->addIndex(['item_type_source', 'item_id_source'], ['name' => 'source_asset'])
-          ->addIndex(['item_type_impacted', 'item_id_impacted'], ['name' => 'impacted_asset'])
+          ->addIndex(['item_type_source', 'item_id_source'])
+          ->addIndex(['item_type_impacted', 'item_id_impacted'])
           ->create();
 
     $table = $this->table('impactcompounds');
@@ -2625,8 +2624,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('parent_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('impactcontext_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('is_slave', 'boolean', ['null' => false, 'default' => true])
-          ->addIndex(['item_type', 'item_id'], ['unique' => true, 'name' => 'unicity'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'source'])
+          ->addIndex(['item_type', 'item_id'], ['unique' => true])
           ->addIndex(['parent_id'])
           ->addIndex(['impactcontext_id'])
           ->create();
@@ -2679,7 +2677,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('warranty_date', 'date', ['null' => true])
           ->addColumn('decommission_date', 'timestamp', ['null' => true])
           ->addColumn('businesscriticity_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['item_type', 'item_id'], ['unique' => true])
           ->addIndex(['buy_date'])
           ->addIndex(['alert'])
           ->addIndex(['budget_id'])
@@ -2725,11 +2723,11 @@ final class Tables95 extends AbstractMigration
           ->addColumn('mainitem_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('mainitem_type', 'string', ['null' => true])
           ->addIndex(['entity_id'])
-          ->addIndex(['name'], ['name' => 'textual'])
-          ->addIndex(['binary_0', 'binary_1', 'binary_2', 'binary_3'], ['name' => 'binary'])
+          ->addIndex(['name'])
+          ->addIndex(['binary_0', 'binary_1', 'binary_2', 'binary_3'])
           ->addIndex(['is_dynamic'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
-          ->addIndex(['mainitem_type', 'mainitem_id'], ['name' => 'mainitem'])
+          ->addIndex(['item_type', 'item_id'])
+          ->addIndex(['mainitem_type', 'mainitem_id'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -2738,7 +2736,7 @@ final class Tables95 extends AbstractMigration
     $table = $this->table('ipaddress_ipnetwork');
     $table->addColumn('ipaddress_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('ipnetwork_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['ipaddress_id', 'ipnetwork_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['ipaddress_id', 'ipnetwork_id'], ['unique' => true])
           ->addIndex(['ipnetwork_id'])
           ->addIndex(['ipaddress_id'])
           ->create();
@@ -2777,10 +2775,10 @@ final class Tables95 extends AbstractMigration
           ->addColumn('gateway_1', 'integer', ['null' => false, 'default' => '0', 'limit' => 10, 'signed' => false])
           ->addColumn('gateway_2', 'integer', ['null' => false, 'default' => '0', 'limit' => 10, 'signed' => false])
           ->addColumn('gateway_3', 'integer', ['null' => false, 'default' => '0', 'limit' => 10, 'signed' => false])
-          ->addIndex(['entity_id', 'address', 'netmask'], ['name' => 'network_definition'])
-          ->addIndex(['address_0', 'address_1', 'address_2', 'address_3'], ['name' => 'address'])
-          ->addIndex(['netmask_0', 'netmask_1', 'netmask_2', 'netmask_3'], ['name' => 'netmask'])
-          ->addIndex(['gateway_0', 'gateway_1', 'gateway_2', 'gateway_3'], ['name' => 'gateway'])
+          ->addIndex(['entity_id', 'address', 'netmask'])
+          ->addIndex(['address_0', 'address_1', 'address_2', 'address_3'])
+          ->addIndex(['netmask_0', 'netmask_1', 'netmask_2', 'netmask_3'])
+          ->addIndex(['gateway_0', 'gateway_1', 'gateway_2', 'gateway_3'])
           ->addIndex(['name'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -2790,7 +2788,7 @@ final class Tables95 extends AbstractMigration
     $table = $this->table('ipnetworks_vlans');
     $table->addColumn('ipnetwork_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('vlan_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['ipnetwork_id', 'vlan_id'], ['name' => 'link', 'unique' => true])
+          ->addIndex(['ipnetwork_id', 'vlan_id'], ['unique' => true])
           ->create();
 
     $table = $this->table('itemdisks');
@@ -2818,7 +2816,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['freesize'])
           ->addIndex(['item_type'])
           ->addIndex(['item_id'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['filesystem_id'])
           ->addIndex(['entity_id'])
           ->addIndex(['is_dynamic'])
@@ -2837,7 +2835,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('is_dynamic', 'boolean', ['null' => false, 'default' => false])
           ->addIndex(['item_id'])
           ->addIndex(['item_type'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['softwarelicense_id'])
           ->addIndex(['is_dynamic'])
           ->addIndex(['created_at'])
@@ -2857,12 +2855,12 @@ final class Tables95 extends AbstractMigration
           ->addColumn('entity_id', 'integer', ['null' => false, 'default' => 1])
           ->addColumn('is_dynamic', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('date_install', 'date', ['null' => true])
-          ->addIndex(['item_type', 'item_id', 'softwareversion_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['item_type', 'item_id', 'softwareversion_id'], ['unique' => true])
           ->addIndex(['item_id'])
           ->addIndex(['item_type'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['softwareversion_id'])
-          ->addIndex(['entity_id', 'is_template_item', 'is_deleted_item'], ['name' => 'computers_info'])
+          ->addIndex(['entity_id', 'is_template_item', 'is_deleted_item'])
           ->addIndex(['is_template_item'])
           ->addIndex(['is_deleted_item'])
           ->addIndex(['is_dynamic'])
@@ -2890,7 +2888,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('operatingsystemedition_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('is_dynamic', 'boolean', ['null' => false, 'default' => false])
           ->addIndex(['item_id'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['operatingsystem_id'])
           ->addIndex(['operatingsystemservicepack_id'])
           ->addIndex(['operatingsystemversion_id'])
@@ -2902,7 +2900,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['is_recursive'])
           ->addIndex(
             ['item_id', 'item_type', 'operatingsystem_id', 'operatingsystemarchitecture_id'],
-            ['unique' => true, 'name' => 'unicity']
+            ['unique' => true]
           )
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -2931,7 +2929,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('puk', 'string', ['null' => false, 'default' => ''])
           ->addColumn('puk2', 'string', ['null' => false, 'default' => ''])
           ->addColumn('msin', 'string', ['null' => false, 'default' => ''])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['devicesimcard_id'])
           ->addIndex(['is_dynamic'])
           ->addIndex(['entity_id'])
@@ -2968,7 +2966,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['location_id'])
           ->addIndex(['state_id'])
@@ -2999,7 +2997,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
           ->addIndex(['busID'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['location_id'])
           ->addIndex(['state_id'])
@@ -3030,7 +3028,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
           ->addIndex(['busID'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['location_id'])
           ->addIndex(['state_id'])
@@ -3059,7 +3057,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -3090,7 +3088,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
           ->addIndex(['busID'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['location_id'])
           ->addIndex(['state_id'])
@@ -3123,7 +3121,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
           ->addIndex(['busID'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['location_id'])
           ->addIndex(['state_id'])
@@ -3156,7 +3154,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
           ->addIndex(['busID'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['location_id'])
           ->addIndex(['state_id'])
@@ -3185,7 +3183,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['location_id'])
           ->addIndex(['state_id'])
@@ -3218,7 +3216,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
           ->addIndex(['busID'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['location_id'])
           ->addIndex(['state_id'])
@@ -3249,7 +3247,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
           ->addIndex(['busID'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['location_id'])
           ->addIndex(['state_id'])
@@ -3278,7 +3276,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['location_id'])
           ->addIndex(['state_id'])
@@ -3315,7 +3313,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
           ->addIndex(['busID'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['location_id'])
           ->addIndex(['state_id'])
@@ -3344,7 +3342,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -3373,8 +3371,8 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
           ->addIndex(['busID'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
-          ->addIndex(['otherserial'], ['name' => 'otherserial'])
+          ->addIndex(['item_type', 'item_id'])
+          ->addIndex(['otherserial'])
           ->addIndex(['location_id'])
           ->addIndex(['state_id'])
           ->addIndex(['created_at'])
@@ -3386,23 +3384,23 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('problem_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('item_type', 'string', ['null' => true, 'limit' => 100])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['problem_id', 'item_type', 'item_id'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['problem_id', 'item_type', 'item_id'], ['unique' => true])
+          ->addIndex(['item_type', 'item_id'])
           ->create();
 
     $table = $this->table('item_project');
     $table->addColumn('project_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('item_type', 'string', ['null' => true, 'limit' => 100])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['project_id', 'item_type', 'item_id'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['project_id', 'item_type', 'item_id'], ['unique' => true])
+          ->addIndex(['item_type', 'item_id'])
           ->create();
 
     $table = $this->table('item_ticket');
     $table->addColumn('item_type', 'string', ['null' => true])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('ticket_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['item_type', 'item_id', 'ticket_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['item_type', 'item_id', 'ticket_id'], ['unique' => true])
           ->addIndex(['ticket_id'])
           ->create();
 
@@ -3427,7 +3425,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -3454,7 +3452,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
           ->addIndex(['serial'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['otherserial'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -3470,8 +3468,8 @@ final class Tables95 extends AbstractMigration
           ->addColumn('bgcolor', 'string', ['null' => true, 'limit' => 7])
           ->addColumn('hpos', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('is_reserved', 'boolean', ['null' => false, 'default' => false])
-          ->addIndex(['item_type', 'item_id', 'is_reserved'], ['name' => 'item', 'unique' => true])
-          ->addIndex(['rack_id', 'item_type', 'item_id'], ['name' => 'relation'])
+          ->addIndex(['item_type', 'item_id', 'is_reserved'], ['unique' => true])
+          ->addIndex(['rack_id', 'item_type', 'item_id'])
           ->create();
 
     $table = $this->table('item_enclosure');
@@ -3479,16 +3477,16 @@ final class Tables95 extends AbstractMigration
           ->addColumn('item_type', 'string', ['null' => false])
           ->addColumn('item_id', 'integer', ['null' => false])
           ->addColumn('position', 'integer', ['null' => false])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item', 'unique' => true])
-          ->addIndex(['enclosure_id', 'item_type', 'item_id'], ['name' => 'relation'])
+          ->addIndex(['item_type', 'item_id'], ['unique' => true])
+          ->addIndex(['enclosure_id', 'item_type', 'item_id'])
           ->create();
 
     $table = $this->table('item_cluster');
     $table->addColumn('cluster_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('item_type', 'string', ['null' => true, 'limit' => 100])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['cluster_id', 'item_type', 'item_id'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['cluster_id', 'item_type', 'item_id'], ['unique' => true])
+          ->addIndex(['item_type', 'item_id'])
           ->create();
 
     $table = $this->table('item_kanban');
@@ -3499,7 +3497,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('item_id', 'integer', ['null' => true])
           ->addColumn('user_id', 'integer', ['null' => false])
           ->addColumn('state', 'text', ['null' => true])
-          ->addIndex(['item_type', 'item_id', 'user_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['item_type', 'item_id', 'user_id'], ['unique' => true])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -3509,7 +3507,7 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('item_type', 'string', ['null' => false, 'default' => '', 'limit' => 100])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('project_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['item_type', 'item_id', 'project_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['item_type', 'item_id', 'project_id'], ['unique' => true])
           ->addIndex(['project_id'])
           ->create();
 
@@ -3535,7 +3533,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['is_faq'])
           ->addIndex(['begin_date'])
           ->addIndex(['end_date'])
-          ->addIndex(['name', 'answer'], ['name' => 'fulltext', 'type' => 'fulltext'])
+          ->addIndex(['name', 'answer'], ['type' => 'fulltext'])
           ->addIndex(['name'], ['type' => 'fulltext'])
           ->addIndex(['answer'], ['type' => 'fulltext'])
           ->addIndex(['created_at'])
@@ -3556,7 +3554,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('level', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('sons_cache', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_LONG])
           ->addColumn('ancestors_cache', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_LONG])
-          ->addIndex(['entity_id', 'knowbaseitemcategory_id', 'name'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['entity_id', 'knowbaseitemcategory_id', 'name'], ['unique' => true])
           ->addIndex(['name'])
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
@@ -3592,9 +3590,9 @@ final class Tables95 extends AbstractMigration
           ->addColumn('language', 'string', ['null' => true, 'limit' => 10])
           ->addColumn('answer', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_LONG])
           ->addColumn('user_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['knowbaseitem_id', 'language'], ['name' => 'item'])
+          ->addIndex(['knowbaseitem_id', 'language'])
           ->addIndex(['user_id'])
-          ->addIndex(['name', 'answer'], ['name' => 'fulltext', 'type' => 'fulltext'])
+          ->addIndex(['name', 'answer'], ['type' => 'fulltext'])
           ->addIndex(['name'], ['type' => 'fulltext'])
           ->addIndex(['answer'], ['type' => 'fulltext'])
           ->addIndex(['created_at'])
@@ -3609,10 +3607,10 @@ final class Tables95 extends AbstractMigration
           ->addColumn('knowbaseitem_id', 'integer', ['null' => false])
           ->addColumn('item_type', 'string', ['null' => false, 'limit' => 100])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['item_type', 'item_id', 'knowbaseitem_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['item_type', 'item_id', 'knowbaseitem_id'], ['unique' => true])
           ->addIndex(['item_type'])
           ->addIndex(['item_id'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -3628,7 +3626,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('answer', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_LONG])
           ->addColumn('language', 'string', ['null' => true, 'limit' => 10])
           ->addColumn('user_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['knowbaseitem_id', 'revision', 'language'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['knowbaseitem_id', 'revision', 'language'], ['unique' => true])
           ->addIndex(['revision'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -3685,7 +3683,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('is_recursive', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('mcc', 'integer', ['null' => true])
           ->addColumn('mnc', 'integer', ['null' => true])
-          ->addIndex(['mcc', 'mnc'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['mcc', 'mnc'], ['unique' => true])
           ->addIndex(['name'])
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
@@ -3725,7 +3723,7 @@ final class Tables95 extends AbstractMigration
     $table = $this->table('link_itemtype');
     $table->addColumn('link_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('item_type', 'string', ['null' => false, 'limit' => 100])
-          ->addIndex(['item_type', 'link_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['item_type', 'link_id'], ['unique' => true])
           ->addIndex(['link_id'])
           ->create();
 
@@ -3752,7 +3750,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('latitude', 'string', ['null' => true])
           ->addColumn('longitude', 'string', ['null' => true])
           ->addColumn('altitude', 'string', ['null' => true])
-          ->addIndex(['entity_id', 'location_id', 'name'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['entity_id', 'location_id', 'name'], ['unique' => true])
           ->addIndex(['location_id'])
           ->addIndex(['name'])
           ->addIndex(['is_recursive'])
@@ -3774,7 +3772,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('old_value', 'string', ['null' => true])
           ->addColumn('new_value', 'string', ['null' => true])
           ->addIndex(['itemtype_link'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['id_search_option'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -3919,8 +3917,8 @@ final class Tables95 extends AbstractMigration
           ->addColumn('entity_id', 'integer', ['null' => false, 'default' => 1])
           ->addColumn('location_id', 'integer', ['null' => false, 'default' => '0'])
           ->addIndex(['name'])
-          ->addIndex(['entity_id', 'location_id', 'name'], ['name' => 'complete'])
-          ->addIndex(['location_id', 'name'], ['name' => 'location_name'])
+          ->addIndex(['entity_id', 'location_id', 'name'])
+          ->addIndex(['location_id', 'name'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -4061,11 +4059,11 @@ final class Tables95 extends AbstractMigration
           ->addColumn('fqdn_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('is_dynamic', 'boolean', ['null' => false, 'default' => false])
           ->addIndex(['entity_id'])
-          ->addIndex(['name', 'fqdn_id'], ['name' => 'FQDN'])
+          ->addIndex(['name', 'fqdn_id'])
           ->addIndex(['name'])
           ->addIndex(['fqdn_id'])
           ->addIndex(['is_dynamic'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -4077,7 +4075,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('deleted_at', 'timestamp', ['null' => true])
           ->addColumn('networkport_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('networkport_id_list', 'text', ['null' => true])
-          ->addIndex(['networkport_id'], ['name' => 'networkport_id', 'unique' => true])
+          ->addIndex(['networkport_id'], ['unique' => true])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -4089,7 +4087,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('deleted_at', 'timestamp', ['null' => true])
           ->addColumn('networkport_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('networkport_id_alias', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['networkport_id'], ['name' => 'networkport_id', 'unique' => true])
+          ->addIndex(['networkport_id'], ['unique' => true])
           ->addIndex(['networkport_id_alias'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -4101,7 +4099,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('updated_at', 'timestamp', ['null' => true])
           ->addColumn('deleted_at', 'timestamp', ['null' => true])
           ->addColumn('networkport_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['networkport_id'], ['name' => 'networkport_id', 'unique' => true])
+          ->addIndex(['networkport_id'], ['unique' => true])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -4116,8 +4114,8 @@ final class Tables95 extends AbstractMigration
           ->addColumn('netpoint_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('type', 'string', ['null' => true, 'default' => '', 'limit' => 10])
           ->addColumn('speed', 'integer', ['null' => false, 'default' => '10'])
-          ->addIndex(['networkport_id'], ['name' => 'networkport_id', 'unique' => true])
-          ->addIndex(['item_devicenetworkcard_id'], ['name' => 'card'])
+          ->addIndex(['networkport_id'], ['unique' => true])
+          ->addIndex(['item_devicenetworkcard_id'])
           ->addIndex(['netpoint_id'])
           ->addIndex(['type'])
           ->addIndex(['speed'])
@@ -4135,8 +4133,8 @@ final class Tables95 extends AbstractMigration
           ->addColumn('netpoint_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('wwn', 'string', ['null' => true, 'default' => '', 'limit' => 16])
           ->addColumn('speed', 'integer', ['null' => false, 'default' => '10'])
-          ->addIndex(['networkport_id'], ['name' => 'networkport_id', 'unique' => true])
-          ->addIndex(['item_devicenetworkcard_id'], ['name' => 'card'])
+          ->addIndex(['networkport_id'], ['unique' => true])
+          ->addIndex(['item_devicenetworkcard_id'])
           ->addIndex(['netpoint_id'])
           ->addIndex(['wwn'])
           ->addIndex(['speed'])
@@ -4150,7 +4148,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('updated_at', 'timestamp', ['null' => true])
           ->addColumn('deleted_at', 'timestamp', ['null' => true])
           ->addColumn('networkport_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['networkport_id'], ['name' => 'networkport_id', 'unique' => true])
+          ->addIndex(['networkport_id'], ['unique' => true])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -4170,8 +4168,8 @@ final class Tables95 extends AbstractMigration
           ->addColumn('instantiation_type', 'string', ['null' => true])
           ->addColumn('mac', 'string', ['null' => true])
           ->addColumn('is_dynamic', 'boolean', ['null' => false, 'default' => false])
-          ->addIndex(['item_id', 'item_type'], ['name' => 'on_device'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_id', 'item_type'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
           ->addIndex(['mac'])
@@ -4184,7 +4182,7 @@ final class Tables95 extends AbstractMigration
     $table = $this->table('networkport_networkport');
     $table->addColumn('networkport_id_1', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('networkport_id_2', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['networkport_id_1', 'networkport_id_2'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['networkport_id_1', 'networkport_id_2'], ['unique' => true])
           ->addIndex(['networkport_id_2'])
           ->create();
 
@@ -4192,7 +4190,7 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('networkport_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('vlan_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('tagged', 'boolean', ['null' => false, 'default' => false])
-          ->addIndex(['networkport_id', 'vlan_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['networkport_id', 'vlan_id'], ['unique' => true])
           ->addIndex(['vlan_id'])
           ->create();
 
@@ -4206,8 +4204,8 @@ final class Tables95 extends AbstractMigration
           ->addColumn('networkportwifi_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('version', 'string', ['null' => true, 'limit' => 20])
           ->addColumn('mode', 'string', ['null' => true, 'limit' => 20])
-          ->addIndex(['networkport_id'], ['name' => 'networkport_id', 'unique' => true])
-          ->addIndex(['item_devicenetworkcard_id'], ['name' => 'card'])
+          ->addIndex(['networkport_id'], ['unique' => true])
+          ->addIndex(['item_devicenetworkcard_id'])
           ->addIndex(['wifinetwork_id'])
           ->addIndex(['version'])
           ->addIndex(['mode'])
@@ -4225,7 +4223,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('user_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('user_id_lastupdater', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('content', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_LONG])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['user_id_lastupdater'])
           ->addIndex(['user_id'])
           ->addIndex(['created_at'])
@@ -4259,7 +4257,7 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('notification_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('mode', 'string', ['null' => false, 'limit' => 20])
           ->addColumn('notificationtemplate_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['notification_id', 'mode', 'notificationtemplate_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['notification_id', 'mode', 'notificationtemplate_id'], ['unique' => true])
           ->addIndex(['notification_id'])
           ->addIndex(['notificationtemplate_id'])
           ->addIndex(['mode'])
@@ -4269,7 +4267,7 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('type', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('notification_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['type', 'item_id'], ['name' => 'items'])
+          ->addIndex(['type', 'item_id'])
           ->addIndex(['notification_id'])
           ->create();
 
@@ -4301,7 +4299,7 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('from', 'string', ['null' => false])
           ->addColumn('to', 'string', ['null' => false])
           ->addColumn('mailcollector_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addColumn('date', 'timestamp', ['null' => false, 'default' => 'current_timestamp()'])
+          ->addColumn('date', 'timestamp', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
           ->addColumn('subject', 'text', ['null' => true])
           ->addColumn('messageid', 'string', ['null' => false])
           ->addColumn('reason', 'integer', ['null' => false, 'default' => '0'])
@@ -4314,12 +4312,12 @@ final class Tables95 extends AbstractMigration
     // O
     $table = $this->table('objectlocks');
     $table->addColumn('created_at', 'timestamp', ['null' => true])
-          ->addColumn('updated_at', 'timestamp', ['null' => false, 'default' => 'current_timestamp()'])
+          ->addColumn('updated_at', 'timestamp', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
           ->addColumn('deleted_at', 'timestamp', ['null' => true])
           ->addColumn('item_type', 'string', ['null' => false, 'limit' => 100])
           ->addColumn('item_id', 'integer', ['null' => false])
           ->addColumn('user_id', 'integer', ['null' => false])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item', 'unique' => true])
+          ->addIndex(['item_type', 'item_id'], ['unique' => true])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -4366,7 +4364,7 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('ticket_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('olalevel_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('date', 'timestamp', ['null' => true])
-          ->addIndex(['ticket_id', 'olalevel_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['ticket_id', 'olalevel_id'], ['unique' => true])
           ->addIndex(['ticket_id'])
           ->addIndex(['olalevel_id'])
           ->create();
@@ -4833,7 +4831,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('user_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('before_time', 'integer', ['null' => false, 'default' => '-10'])
           ->addColumn('when', 'timestamp', ['null' => true])
-          ->addIndex(['item_type', 'item_id', 'user_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['item_type', 'item_id', 'user_id'], ['unique' => true])
           ->addIndex(['user_id'])
           ->addIndex(['before_time'])
           ->addIndex(['when'])
@@ -4859,7 +4857,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('state', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('planningeventcategory_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('background', 'boolean', ['null' => false, 'default' => false])
-          ->addIndex(['uuid'], ['name' => 'uuid', 'unique' => true])
+          ->addIndex(['uuid'], ['unique' => true])
           ->addIndex(['planningexternaleventtemplate_id'])
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
@@ -5109,14 +5107,14 @@ final class Tables95 extends AbstractMigration
           ->addColumn('type', 'integer', ['null' => false, 'default' => '1'])
           ->addColumn('use_notification', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('alternative_email', 'string', ['null' => true])
-          ->addIndex(['problem_id', 'type', 'supplier_id'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['supplier_id', 'type'], ['name' => 'group'])
+          ->addIndex(['problem_id', 'type', 'supplier_id'], ['unique' => true])
+          ->addIndex(['supplier_id', 'type'])
           ->create();
 
     $table = $this->table('problem_ticket');
     $table->addColumn('problem_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('ticket_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['problem_id', 'ticket_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['problem_id', 'ticket_id'], ['unique' => true])
           ->addIndex(['ticket_id'])
           ->create();
 
@@ -5126,21 +5124,21 @@ final class Tables95 extends AbstractMigration
           ->addColumn('type', 'integer', ['null' => false, 'default' => '1'])
           ->addColumn('use_notification', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('alternative_email', 'string', ['null' => true])
-          ->addIndex(['problem_id', 'type', 'user_id', 'alternative_email'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['user_id', 'type'], ['name' => 'user'])
+          ->addIndex(['problem_id', 'type', 'user_id', 'alternative_email'], ['unique' => true])
+          ->addIndex(['user_id', 'type'])
           ->create();
 
     $table = $this->table('problemtemplatehiddenfields');
     $table->addColumn('problemtemplate_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('num', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['problemtemplate_id', 'num'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['problemtemplate_id', 'num'], ['unique' => true])
           ->addIndex(['problemtemplate_id'])
           ->create();
 
     $table = $this->table('problemtemplatemandatoryfields');
     $table->addColumn('problemtemplate_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('num', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['problemtemplate_id', 'num'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['problemtemplate_id', 'num'], ['unique' => true])
           ->addIndex(['problemtemplate_id'])
           ->create();
 
@@ -5183,7 +5181,7 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('name', 'string', ['null' => true])
           ->addColumn('profile_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('rights', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['profile_id', 'name'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['profile_id', 'name'], ['unique' => true])
           ->create();
 
     $table = $this->table('profile_reminder');
@@ -5342,7 +5340,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('projecttasktemplate_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('is_template', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('template_name', 'string', ['null' => true])
-          ->addIndex(['uuid'], ['name' => 'uuid', 'unique' => true])
+          ->addIndex(['uuid'], ['unique' => true])
           ->addIndex(['name'])
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
@@ -5409,7 +5407,7 @@ final class Tables95 extends AbstractMigration
     $table = $this->table('projecttask_ticket');
     $table->addColumn('ticket_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('projecttask_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['ticket_id', 'projecttask_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['ticket_id', 'projecttask_id'], ['unique' => true])
           ->addIndex(['projecttask_id'])
           ->create();
 
@@ -5417,8 +5415,8 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('projecttask_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('item_type', 'string', ['null' => true, 'limit' => 100])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['projecttask_id', 'item_type', 'item_id'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['projecttask_id', 'item_type', 'item_id'], ['unique' => true])
+          ->addIndex(['item_type', 'item_id'])
           ->create();
 
     $table = $this->table('projecttasktypes');
@@ -5437,8 +5435,8 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('project_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('item_type', 'string', ['null' => true, 'limit' => 100])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['project_id', 'item_type', 'item_id'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['project_id', 'item_type', 'item_id'], ['unique' => true])
+          ->addIndex(['item_type', 'item_id'])
           ->create();
 
     $table = $this->table('projecttypes');
@@ -5478,7 +5476,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('messageid', 'text', ['null' => true])
           ->addColumn('documents', 'text', ['null' => true])
           ->addColumn('mode', 'string', ['null' => false, 'limit' => 20])
-          ->addIndex(['item_type', 'item_id', 'notificationtemplate_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id', 'notificationtemplate_id'])
           ->addIndex(['entity_id'])
           ->addIndex(['sent_try'])
           ->addIndex(['send_time'])
@@ -5572,7 +5570,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('item_type', 'string', ['null' => false, 'limit' => 100])
           ->addColumn('device_type', 'string', ['null' => false, 'limit' => 100])
           ->addIndex(['name'])
-          ->addIndex(['item_id', 'item_type'], ['name' => 'item'])
+          ->addIndex(['item_id', 'item_type'])
           ->addIndex(['device_type'])
           ->create();
 
@@ -5591,7 +5589,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('state', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('begin_view_date', 'timestamp', ['null' => true])
           ->addColumn('end_view_date', 'timestamp', ['null' => true])
-          ->addIndex(['uuid'], ['name' => 'uuid', 'unique' => true])
+          ->addIndex(['uuid'], ['unique' => true])
           ->addIndex(['date'])
           ->addIndex(['begin'])
           ->addIndex(['end'])
@@ -5612,7 +5610,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('language', 'string', ['null' => true, 'limit' => 5])
           ->addColumn('text', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_LONG])
           ->addColumn('user_id', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['reminder_id', 'language'], ['name' => 'item'])
+          ->addIndex(['reminder_id', 'language'])
           ->addIndex(['user_id'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -5663,7 +5661,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('is_active', 'boolean', ['null' => false, 'default' => true])
           ->addIndex(['is_active'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['entity_id'])
           ->addIndex(['is_recursive'])
           ->addIndex(['created_at'])
@@ -5682,7 +5680,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['end'])
           ->addIndex(['reservationitem_id'])
           ->addIndex(['user_id'])
-          ->addIndex(['reservationitem_id', 'group'], ['name' => 'resagroup'])
+          ->addIndex(['reservationitem_id', 'group'])
           ->create();
 
     $table = $this->table('rssfeeds');
@@ -5719,7 +5717,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('field', 'string', ['null' => true])
           ->addColumn('value', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_LONG])
           ->addIndex(['rule_id'])
-          ->addIndex(['field', 'value'], ['name' => 'field_value', 'limit' => ['field' => 50, 'value' => 50]])
+          ->addIndex(['field', 'value'], ['limit' => ['field' => 50, 'value' => 50]])
           ->create();
 
     $table = $this->table('rulecriteria');
@@ -5804,7 +5802,7 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('user_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('item_type', 'string', ['null' => false, 'length' => 100])
           ->addColumn('savedsearch_id', 'integer', ['null' => false, 'default' => 0])
-          ->addIndex(['user_id', 'item_type'], ['unique' => true, 'name' => 'unicity'])
+          ->addIndex(['user_id', 'item_type'], ['unique' => true])
           ->addIndex(['savedsearch_id'])
           ->create();
 
@@ -5819,7 +5817,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('value', 'integer', ['null' => false])
           ->addIndex(['name'])
           ->addIndex(['is_active'])
-          ->addIndex(['savedsearch_id', 'operator', 'value'], ['unique' => true, 'name' => 'unicity'])
+          ->addIndex(['savedsearch_id', 'operator', 'value'], ['unique' => true])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])
@@ -5860,7 +5858,7 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('ticket_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('slalevel_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('date', 'timestamp', ['null' => true])
-          ->addIndex(['ticket_id', 'slalevel_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['ticket_id', 'slalevel_id'], ['unique' => true])
           ->addIndex(['ticket_id'])
           ->addIndex(['slalevel_id'])
           ->create();
@@ -5987,7 +5985,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['entity_id'])
           ->addIndex(['softwarelicensetype_id'])
           ->addIndex(['softwareversion_id_use'])
-          ->addIndex(['software_id', 'expire', 'number'], ['name' => 'software_id_expire_number'])
+          ->addIndex(['software_id', 'expire', 'number'])
           ->addIndex(['location_id'])
           ->addIndex(['user_id_tech'])
           ->addIndex(['user_id'])
@@ -6015,7 +6013,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('ancestors_cache', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_LONG])
           ->addColumn('sons_cache', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_LONG])
           ->addColumn('completename', 'text', ['null' => true])
-          ->addIndex(['name'], ['name' => 'name'])
+          ->addIndex(['name'])
           ->addIndex(['softwarelicensetype_id'])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
@@ -6080,7 +6078,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('followup_id', 'integer', ['null' => true])
           ->addIndex(['item_type'])
           ->addIndex(['item_id'])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'item'])
+          ->addIndex(['item_type', 'item_id'])
           ->addIndex(['solutiontype_id'])
           ->addIndex(['user_id'])
           ->addIndex(['user_id_editor'])
@@ -6168,7 +6166,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('is_visible_cluster', 'boolean', ['null' => false, 'default' => true])
           ->addColumn('is_visible_contract', 'boolean', ['null' => false, 'default' => true])
           ->addColumn('is_visible_appliance', 'boolean', ['null' => false, 'default' => true])
-          ->addIndex(['state_id', 'name'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['state_id', 'name'], ['unique' => true])
           ->addIndex(['name'])
           ->addIndex(['is_visible_computer'])
           ->addIndex(['is_visible_monitor'])
@@ -6226,8 +6224,8 @@ final class Tables95 extends AbstractMigration
           ->addColumn('type', 'integer', ['null' => false, 'default' => '1'])
           ->addColumn('use_notification', 'boolean', ['null' => false, 'default' => true])
           ->addColumn('alternative_email', 'string', ['null' => true])
-          ->addIndex(['ticket_id', 'type', 'supplier_id'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['supplier_id', 'type'], ['name' => 'group'])
+          ->addIndex(['ticket_id', 'type', 'supplier_id'], ['unique' => true])
+          ->addIndex(['supplier_id', 'type'])
           ->create();
 
     $table = $this->table('suppliertypes');
@@ -6358,8 +6356,8 @@ final class Tables95 extends AbstractMigration
           ->addColumn('type', 'integer', ['null' => false, 'default' => '1'])
           ->addColumn('use_notification', 'boolean', ['null' => false, 'default' => true])
           ->addColumn('alternative_email', 'string', ['null' => true])
-          ->addIndex(['ticket_id', 'type', 'user_id', 'alternative_email'], ['name' => 'unicity', 'unique' => true])
-          ->addIndex(['user_id', 'type'], ['name' => 'user'])
+          ->addIndex(['ticket_id', 'type', 'user_id', 'alternative_email'], ['unique' => true])
+          ->addIndex(['user_id', 'type'])
           ->create();
 
     $table = $this->table('ticketcosts');
@@ -6400,7 +6398,7 @@ final class Tables95 extends AbstractMigration
     $table->addColumn('ticket_id_1', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('ticket_id_2', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('link', 'integer', ['null' => false, 'default' => '1'])
-          ->addIndex(['ticket_id_1', 'ticket_id_2'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['ticket_id_1', 'ticket_id_2'], ['unique' => true])
           ->create();
 
 
@@ -6411,20 +6409,20 @@ final class Tables95 extends AbstractMigration
           ->addColumn('date_begin', 'timestamp', ['null' => true])
           ->addColumn('date_answered', 'timestamp', ['null' => true])
           ->addColumn('satisfaction', 'integer', ['null' => true])
-          ->addIndex(['ticket_id'], ['name' => 'ticket_id', 'unique' => true])
+          ->addIndex(['ticket_id'], ['unique' => true])
           ->create();
 
     $table = $this->table('tickettemplatehiddenfields');
     $table->addColumn('tickettemplate_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('num', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['tickettemplate_id', 'num'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['tickettemplate_id', 'num'], ['unique' => true])
           ->addIndex(['tickettemplate_id'])
           ->create();
 
     $table = $this->table('tickettemplatemandatoryfields');
     $table->addColumn('tickettemplate_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('num', 'integer', ['null' => false, 'default' => '0'])
-          ->addIndex(['tickettemplate_id', 'num'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['tickettemplate_id', 'num'], ['unique' => true])
           ->addIndex(['tickettemplate_id'])
           ->create();
 
@@ -6585,8 +6583,8 @@ final class Tables95 extends AbstractMigration
           ->addColumn('default_dashboard_assets', 'string', ['null' => true, 'limit' => 100])
           ->addColumn('default_dashboard_helpdesk', 'string', ['null' => true, 'limit' => 100])
           ->addColumn('default_dashboard_mini_ticket', 'string', ['null' => true, 'limit' => 100])
-          ->addIndex(['name', 'authtype', 'auth_id'], ['name' => 'unicityloginauth', 'unique' => true])
-          ->addIndex(['firstname'], ['name' => 'firstname'])
+          ->addIndex(['name', 'authtype', 'auth_id'], ['unique' => true])
+          ->addIndex(['firstname'])
           ->addIndex(['lastname'])
           ->addIndex(['entity_id'])
           ->addIndex(['profile_id'])
@@ -6594,7 +6592,7 @@ final class Tables95 extends AbstractMigration
           ->addIndex(['usertitle_id'])
           ->addIndex(['usercategory_id'])
           ->addIndex(['is_active'])
-          ->addIndex(['authtype', 'auth_id'], ['name' => 'authitem'])
+          ->addIndex(['authtype', 'auth_id'])
           ->addIndex(['is_deleted_ldap'])
           ->addIndex(['begin_date'])
           ->addIndex(['end_date'])
@@ -6623,7 +6621,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('is_default', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('is_dynamic', 'boolean', ['null' => false, 'default' => false])
           ->addColumn('email', 'string', ['null' => true])
-          ->addIndex(['user_id', 'email'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['user_id', 'email'], ['unique' => true])
           ->addIndex(['email'])
           ->addIndex(['is_default'])
           ->addIndex(['is_dynamic'])
@@ -6699,7 +6697,7 @@ final class Tables95 extends AbstractMigration
           ->addColumn('item_type', 'string', ['null' => true, 'limit' => 100])
           ->addColumn('item_id', 'integer', ['null' => false, 'default' => '0'])
           ->addColumn('data', 'text', ['null' => true])
-          ->addIndex(['item_type', 'item_id'], ['name' => 'unicity', 'unique' => true])
+          ->addIndex(['item_type', 'item_id'], ['unique' => true])
           ->addIndex(['created_at'])
           ->addIndex(['updated_at'])
           ->addIndex(['deleted_at'])

@@ -5,10 +5,29 @@ declare(strict_types=1);
 namespace Tests\unit\v1\Controllers;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * @covers \App\v1\Controllers\Notification
- */
+#[CoversClass('\App\v1\Controllers\Notification')]
+#[UsesClass('\App\Models\Category')]
+#[UsesClass('\App\Models\Common')]
+#[UsesClass('\App\Models\Definitions\Category')]
+#[UsesClass('\App\Models\Definitions\Entity')]
+#[UsesClass('\App\Models\Definitions\Followup')]
+#[UsesClass('\App\Models\Definitions\Group')]
+#[UsesClass('\App\Models\Definitions\Knowbaseitemcategory')]
+#[UsesClass('\App\Models\Definitions\Location')]
+#[UsesClass('\App\Models\Definitions\Profile')]
+#[UsesClass('\App\Models\Definitions\Ticket')]
+#[UsesClass('\App\Models\Definitions\User')]
+#[UsesClass('\App\Models\Definitions\Usercategory')]
+#[UsesClass('\App\Models\Definitions\Usertitle')]
+#[UsesClass('\App\Models\Entity')]
+#[UsesClass('\App\Models\Followup')]
+#[UsesClass('\App\Models\Group')]
+#[UsesClass('\App\Models\Location')]
+#[UsesClass('\App\Models\Ticket')]
+#[UsesClass('\App\Models\User')]
 final class NotificationTicketTest extends TestCase
 {
   private static $user2Id;

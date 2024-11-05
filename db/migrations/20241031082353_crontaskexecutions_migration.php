@@ -50,9 +50,6 @@ final class CrontaskexecutionsMigration extends AbstractMigration
           // // `content` varchar(255) DEFAULT NULL,
           // execution_duration
 
-
-
-
           // // `crontask_id` int(11) NOT NULL,
           // // `crontasklog_id` int(11) NOT NULL,
           // `crontaskexecution_id` int(11) NOT NULL,
@@ -64,6 +61,5 @@ final class CrontaskexecutionsMigration extends AbstractMigration
           // // `elapsed` float NOT NULL,
           // `volume` int(11) NOT NULL,
           // `content` varchar(255) DEFAULT NULL,
-
   }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\install;
 
-use GuzzleHttp\Psr7\BufferStream;
 use PHPUnit\Framework\TestCase;
 use Illuminate\Database\Capsule\Manager as DB;
 use Phinx\Console\PhinxApplication;
@@ -12,18 +11,19 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
- * @covers \Migration\migrations
+ * @coversNothing
  */
 final class InstallTest extends TestCase
 {
   public static function setUpBeforeClass(): void
   {
-    global $databaseName;
-
     $schema = DB::schema();
     $schema->dropAllTables();
   }
 
+  /**
+   * @coversNothing
+   */
   public function testDatabasecleaned(): void
   {
     $schema = DB::schema();
@@ -32,6 +32,9 @@ final class InstallTest extends TestCase
     $this->assertCount(0, $tables);
   }
 
+  /**
+   * @coversNothing
+   */
   public function testInstall(): void
   {
     $phinx = new PhinxApplication();
