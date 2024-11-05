@@ -39,7 +39,7 @@ class Common extends Model
     }
   }
 
-  public static function booted()
+  protected static function booted(): void
   {
     parent::booted();
 
@@ -157,7 +157,11 @@ class Common extends Model
     return $data;
   }
 
-  public function getDefinitions()
+  /**
+   * Get definition fields of model
+   * @param $bypassRights  boolean  Set true is not want manage rights (only on some features like notifications)
+   */
+  public function getDefinitions($bypassRights = false)
   {
     if (is_null($this->definition))
     {
@@ -169,7 +173,11 @@ class Common extends Model
     {
       return $definitions;
     }
-    // echo $this->getModel();exit;
+    if ($bypassRights)
+    {
+      return $definitions;
+    }
+
     $profileright = \App\Models\Profileright::
         where('profile_id', 4)
       ->where('model', get_class($this))

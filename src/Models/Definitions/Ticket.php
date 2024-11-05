@@ -24,6 +24,13 @@ class Ticket
         'fillable' => true,
       ],
       [
+        'id'      => 2,
+        'title'   => $translator->translate('ID'),
+        'type'    => 'input',
+        'name'    => 'id',
+        'display' => false,
+      ],
+      [
         'id'    => 80,
         'title' => $translator->translatePlural('Entity', 'Entities', 1),
         'type'  => 'dropdown_remote',
@@ -31,13 +38,26 @@ class Ticket
         'dbname' => 'entity_id',
         'itemtype' => '\App\Models\Entity',
         'display' => false,
+        'relationfields' => [
+          'id',
+          'name',
+          'completename',
+          'address',
+          'country',
+          'email',
+          'fax',
+          'phonenumber',
+          'postcode',
+          'state',
+          'town',
+          'website',
+        ],
       ],
       [
         'id'            => 12,
         'title'         => $translator->translate('Status'),
         'type'          => 'dropdown',
         'name'          => 'status',
-        'dbname'        => 'status',
         'values'        => self::getStatusArray(),
         'displaygroup'  => 'main',
         'fillable' => true,
@@ -51,6 +71,7 @@ class Ticket
         'itemtype'      => '\App\Models\Category',
         'displaygroup'  => 'main',
         'fillable' => true,
+        'relationfields' => ['id', 'name', 'completename'],
       ],
       [
         'id'            => 3,
@@ -61,29 +82,28 @@ class Ticket
         'itemtype'      => '\App\Models\Location',
         'displaygroup'  => 'main',
         'fillable' => true,
+        'relationfields' => ['id', 'name', 'completename'],
       ],
       [
         'id'    => 45,
         'title' => $translator->translate('Total duration'),
-        'type'  => 'dropdown',
-        'name'  => 'actiontime',
-        'dbname'  => 'actiontime',
-        'values' => self::getTimestampArray(
-          [
-            'addfirstminutes' => true
-          ]
-        ),
-        // 'type'  => 'input',
+        // 'type'  => 'dropdown',
         // 'name'  => 'actiontime',
+        // 'values' => self::getTimestampArray(
+        //   [
+        //     'addfirstminutes' => true
+        //   ]
+        // ),
+        'type'  => 'input',
+        'name'  => 'actiontime',
         'displaygroup' => 'main',
-        'fillable' => true,
+        'readonly' => true,
       ],
       [
         'id'    => 10,
         'title' => $translator->translate('Urgency'),
         'type'  => 'dropdown',
         'name'  => 'urgency',
-        'dbname'  => 'urgency',
         'values' => self::getUrgencyArray(),
         'displaygroup' => 'priority',
         'fillable' => true,
@@ -93,7 +113,6 @@ class Ticket
         'title' => $translator->translate('Impact'),
         'type'  => 'dropdown',
         'name'  => 'impact',
-        'dbname'  => 'impact',
         'values' => self::getImpactArray(),
         'displaygroup' => 'priority',
         'fillable' => true,
@@ -103,7 +122,6 @@ class Ticket
         'title' => $translator->translate('Priority'),
         'type'  => 'dropdown',
         'name'  => 'priority',
-        'dbname'  => 'priority',
         'values' => self::getPriorityArray(),
         'displaygroup' => 'priority',
         'fillable' => true,
@@ -161,6 +179,7 @@ class Ticket
         'itemtype' => '\App\Models\User',
         'displaygroup' => 'contributor',
         'fillable' => true,
+        'relationfields' => ['id', 'completename'],
       ],
       [
         'id'    => 4,
@@ -172,6 +191,7 @@ class Ticket
         'pivot' => ['type' => 1],
         'displaygroup' => 'contributor',
         'fillable' => true,
+        'relationfields' => ['id','completename'],
       ],
       [
         'id'    => 71,
@@ -183,6 +203,7 @@ class Ticket
         'pivot' => ['type' => 1],
         'displaygroup' => 'contributor',
         'fillable' => true,
+        'relationfields' => ['id', 'name', 'completename'],
       ],
       [
         'id'    => 22,
@@ -193,6 +214,7 @@ class Ticket
         'itemtype' => '\App\Models\User',
         'displaygroup' => 'contributor',
         'fillable' => true,
+        'relationfields' => ['id', 'completename'],
       ],
       [
         'id'    => 66,
@@ -204,6 +226,7 @@ class Ticket
         'pivot' => ['type' => 3],
         'displaygroup' => 'contributor',
         'fillable' => true,
+        'relationfields' => ['id', 'completename'],
       ],
       [
         'id'    => 65,
@@ -215,6 +238,7 @@ class Ticket
         'pivot' => ['type' => 3],
         'displaygroup' => 'contributor',
         'fillable' => true,
+        'relationfields' => ['id', 'name', 'completename'],
       ],
       [
         'id'    => 5,
@@ -226,6 +250,7 @@ class Ticket
         'pivot' => ['type' => 2],
         'displaygroup' => 'contributor',
         'fillable' => true,
+        'relationfields' => ['id', 'completename'],
       ],
       // [ TODO supplier
       //   'id'    => 6,
@@ -245,8 +270,20 @@ class Ticket
         'pivot' => ['type' => 2],
         'displaygroup' => 'contributor',
         'fillable' => true,
+        'relationfields' => ['id', 'name', 'completename'],
       ],
-      /**/
+      [
+        'id'    => 22,
+        'title' => 'Followups',
+        'type'  => 'input',
+        'name'  => 'followups',
+        'itemtype' => '\App\Models\Followup',
+        'multiple' => true,
+        'fillable' => false,
+        'display'  => false,
+        'relationfields' => ['id', 'content', 'user.completename'],
+        'usein' => ['search', 'notification'],
+      ],
     ];
 
     // TODO others like users

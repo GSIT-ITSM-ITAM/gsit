@@ -21,9 +21,9 @@ class Ticket extends \App\Models\Common
   protected $with = [
   ];
 
-  public static function boot()
+  protected static function booted(): void
   {
-    parent::boot();
+    parent::booted();
 
     static::addGlobalScope('ticketfilter', function (Builder $builder)
     {

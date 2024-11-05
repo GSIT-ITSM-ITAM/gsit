@@ -28,6 +28,7 @@ final class Profile extends Common
     ],
     'assistance' => [
       '\App\Models\Ticket',
+      '\App\Models\Followup',
       '\App\Models\Problem',
       '\App\Models\Change',
       '\App\Models\Ticketrecurrent',
@@ -190,7 +191,6 @@ final class Profile extends Common
       '\App\Models\Devicebattery',
       '\App\Models\Devicecase',
       '\App\Models\Devicesensor',
-      '\App\Models\Devicesimcard',
       '\App\Models\Devicegraphiccard',
       '\App\Models\Devicemotherboard',
       '\App\Models\Devicenetworkcard',
@@ -474,5 +474,10 @@ final class Profile extends Common
       $data[] = $itemData;
     }
     return $data;
+  }
+
+  public function getRigthCategories()
+  {
+    return $this->rigthCategories;
   }
 }

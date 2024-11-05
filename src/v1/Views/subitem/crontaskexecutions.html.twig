@@ -1,0 +1,25 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>State</th>
+      <th>Starting date</th>
+      <th>Duration (in seconds)</th>
+      <th>Logs</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for execution in data.executions %}
+      <tr>
+        <td>{{ execution.state | raw }}</td>
+        <td>{{ execution.created_at }}</td>
+        <td>{{ execution.duration }}</td>
+        <td><a href="{{ execution.link }}">Logs</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

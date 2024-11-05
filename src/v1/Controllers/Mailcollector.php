@@ -31,11 +31,9 @@ final class Mailcollector extends Common
     return $this->commonUpdateItem($request, $response, $args, $item);
   }
 
-  public function collect()
+  public function collect(\App\Models\Mailcollector $collector)
   {
     $createdTickets = 0;
-
-    $collector = \App\Models\Mailcollector::find(65);
 
     $cm = new ClientManager($options = []);
     $client = $cm->account('account_identifier');
@@ -52,13 +50,46 @@ final class Mailcollector extends Common
     ]);
 
     //Connect to the IMAP Server
-    $client->connect();
+    $retry = false;
+    try {
+      $client->connect();
+    } catch (\Exception $e) {
+      $retry = true;
+    }
 
-    $status = $client->isConnected();
+    if ($retry)
+    {
+      $this->refreshToken($collector);
 
-    // print_r($client->getFolders(false));
-    $folder = $client->getFolderByPath('INBOX');
-    $messages = $folder->messages()->setFetchOrder('desc')->all()->limit($limit = 10, $page = 0)->get();
+      $collector->refresh();
+
+      $client = $cm->make([
+        'host'          => 'outlook.office365.com',
+        'port'          => 993,
+        'encryption'    => 'ssl',
+        'validate_cert' => true,
+        'username'      => 'd.durieux@dcsit-group.com',
+        // 'password'      => 'password',
+        'password'       => $collector->oauth_token,
+        'authentication' => "oauth",
+        'protocol'      => 'imap'
+      ]);
+      $client->connect();
+    }
+    // $status = $client->isConnected();
+
+
+    // Code for folders
+    // $folders = $client->getFolders(false);
+    // foreach($folders as $folder)
+    // {
+    //   echo 'folder: ' . $folder->path . ' | ' . $folder->name;
+    //   echo "\n";
+    // }
+
+
+    $folder = $client->getFolderByPath('Tests gsit'); // INBOX');
+    $messages = $folder->messages()->unseen()->setFetchOrder('desc')->all()->limit($limit = 10, $page = 0)->get();
     //                             ->all()->count();
 
 
@@ -128,6 +159,7 @@ final class Mailcollector extends Common
       $data = $t->prepareDataSave($data);
       $t->saveItem($data);
       $createdTickets++;
+      $message->setFlag('Seen');
     }
     return $createdTickets;
   }
@@ -254,5 +286,65 @@ final class Mailcollector extends Common
     }
     echo "Error :/";
     exit;
+  }
+
+  public function refreshToken(\App\Models\Mailcollector $collector)
+  {
+    $parameters = [
+      'refresh_token' => $collector->oauth_refresh_token,
+      'client_id'     => $collector->oauth_applicationid,
+      'client_secret' => $collector->oauth_applicationsecret,
+      'grant_type'    => 'refresh_token',
+    ];
+
+    $streamFactory = new \SocialConnect\HttpClient\StreamFactory();
+
+    $request = new \SocialConnect\HttpClient\Request(
+      'POST',
+      'https://login.microsoftonline.com/' . $collector->oauth_directoryid . '/oauth2/v2.0/token'
+    );
+    $request = $request->withBody(
+      $streamFactory->createStream(http_build_query($parameters, '', '&'))
+    );
+
+    $client = new \SocialConnect\HttpClient\Curl();
+    $response = $client->sendRequest($request);
+    $content = $response->getBody()->getContents();
+    $result = json_decode($content, true);
+    $collector->oauth_token = $result['access_token'];
+    $collector->oauth_refresh_token = $result['refresh_token'];
+    $collector->save();
+  }
+
+  /**
+   * Run the scheduled collect mails
+   */
+  public static function scheduleCollects()
+  {
+    $crontask = \App\Models\Crontask::where('name', 'mailgate')->first();
+    if (is_null($crontask))
+    {
+      return false;
+    }
+
+    $crontaskexecution = new \App\v1\Controllers\Crontaskexecution();
+    $executionId = $crontaskexecution->createExecution($crontask);
+
+    $collectors = \App\Models\Mailcollector::where('is_active', true)->get();
+    $mailcollector = new \App\v1\Controllers\Mailcollector();
+    foreach ($collectors as $collector)
+    {
+      $nbTickets = $mailcollector->collect($collector);
+
+      $executionlog = new \App\Models\Crontaskexecutionlog();
+      $executionlog->crontaskexecution_id = $executionId;
+      $executionlog->volume = $nbTickets;
+      $executionlog->content = $collector->name . ' (' . $collector->id . ')';
+      $executionlog->save();
+    }
+
+    $crontaskexecution->endExecution($executionId);
+
+    return true;
   }
 }

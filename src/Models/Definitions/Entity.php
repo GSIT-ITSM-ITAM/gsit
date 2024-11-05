@@ -16,6 +16,20 @@ class Entity
         'fillable' => true,
       ],
       [
+        'id'    => 1,
+        'title' => $translator->translate('Complete name'),
+        'type'  => 'input',
+        'name'  => 'completename',
+        'fillable' => false,
+      ],
+      [
+        'id'      => 2,
+        'title'   => $translator->translate('ID'),
+        'type'    => 'input',
+        'name'    => 'id',
+        'display' => false,
+      ],
+      [
         'id'    => 80,
         'title' => $translator->translatePlural('Entity', 'Entities', 1),
         'type'  => 'dropdown_remote',

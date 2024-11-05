@@ -38,7 +38,7 @@
         "league/flysystem-aws-s3-v3": "^3.0",
         "league/html-to-markdown": "^5.1",
         "paragonie/sodium_compat": "^1.14",
-        "phpmailer/phpmailer": "^6.6",
+        "phpmailer/phpmailer": "^6.9",
         "psr/log": "^1.1",
         "psr/simple-cache": "^1.0",
         "ramsey/uuid": "^4.0",
@@ -62,6 +62,7 @@
     "require-dev": {
         "ext-xml": "*",
         "consolidation/robo": "^4.0",
+        "illuminate/testing": "^11.30",
         "laminas/laminas-cli": "^1.10",
         "maglnet/composer-require-checker": "^4.7",
         "mikey179/vfsstream": "^1.6",
@@ -106,7 +107,12 @@
         "psr-4": {
             "App\\": "src",
             "Tasks\\": "tasks",
-            "Tests\\": "tests"
+            "Migration\\": "db"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
         }
     }
 }

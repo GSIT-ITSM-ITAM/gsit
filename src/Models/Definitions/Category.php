@@ -16,6 +16,20 @@ class Category
         'fillable' => true,
       ],
       [
+        'id'    => 1,
+        'title' => $translator->translate('Complete name'),
+        'type'  => 'input',
+        'name'  => 'completename',
+        'fillable' => false,
+      ],
+      [
+        'id'      => 2,
+        'title'   => $translator->translate('ID'),
+        'type'    => 'input',
+        'name'    => 'id',
+        'display' => false,
+      ],
+      [
         'id'    => 13,
         'title' => $translator->translate('As child of'),
         'type'  => 'dropdown_remote',

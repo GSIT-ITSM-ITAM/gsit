@@ -24,6 +24,7 @@ class Category extends Common
     // 'changetemplates',
     // 'problemtemplates',
     'entity',
+    'completename',
   ];
 
   protected $visible = [
@@ -36,6 +37,7 @@ class Category extends Common
     // 'changetemplates',
     // 'problemtemplates',
     'entity',
+    'completename',
   ];
 
   protected $with = [
@@ -49,6 +51,24 @@ class Category extends Common
     // 'problemtemplates:id,name',
     'entity:id,name',
   ];
+
+  public function getCompletenameAttribute()
+  {
+    $itemsId = str_split($this->treepath, 5);
+    array_pop($itemsId);
+    foreach ($itemsId as $key => $value)
+    {
+      $itemsId[$key] = (int) $value;
+    }
+    $items = \App\Models\Category::whereIn('id', $itemsId)->orderBy('treepath');
+    $names = [];
+    foreach ($items as $item)
+    {
+      $names[] = $item->name;
+    }
+    $names[] = $this->name;
+    return implode(' > ', $names);
+  }
 
   public function category(): BelongsTo
   {

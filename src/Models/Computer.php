@@ -86,7 +86,7 @@ class Computer extends Common
 
   ];
 
-  public static function boot()
+  protected static function booted(): void
   {
     parent::boot();
 

@@ -1,0 +1,23 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Volume</th>
+      <th>content</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for log in data.logs %}
+      <tr>
+        <td>{{ log.date }}</td>
+        <td>{{ log.volume }}</td>
+        <td>{{ log.content }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

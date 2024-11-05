@@ -16,6 +16,13 @@ class User
         'fillable' => true,
       ],
       [
+        'id'      => 2,
+        'title'   => $translator->translate('ID'),
+        'type'    => 'input',
+        'name'    => 'id',
+        'display' => false,
+      ],
+      [
         'id'    => 34,
         'title' => $translator->translate('Last name'),
         'type'  => 'input',
@@ -210,6 +217,13 @@ class User
         'type'  => 'datetime',
         'name'  => 'created_at',
         'readonly'  => 'readonly',
+      ],
+      [
+        'id'    => 400,
+        'title' => $translator->translate('Complete name'),
+        'type'  => 'input',
+        'name'  => 'completename',
+        'fillable' => false,
       ],
 
 

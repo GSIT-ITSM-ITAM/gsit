@@ -25,7 +25,7 @@ class Authsso extends Common
   protected $with = [
   ];
 
-  public static function booted()
+  protected static function booted(): void
   {
     parent::booted();
 

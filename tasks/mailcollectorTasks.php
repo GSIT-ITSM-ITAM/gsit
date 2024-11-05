@@ -3,21 +3,20 @@
 // tasks/backupTasks.php
 
 use Crunz\Schedule;
+use Symfony\Component\Lock\Store\FlockStore;
 
+$store = new FlockStore(__DIR__ . '/../files/_lock');
 $schedule = new Schedule();
 
 $task = $schedule->run(function ()
 {
   \Tasks\Myapp::loadCapsule();
-
-  $mailcollector = new \App\v1\Controllers\Mailcollector();
-  $createdTickets = $mailcollector->collect();
-  echo 'Tickets created: ' . $createdTickets;
-  echo "\n";
+  \App\v1\Controllers\Mailcollector::scheduleCollects();
 });
 
 $task
   ->everyMinute()
-  ->description('Run actions in the queue');
+  ->description('Run actions in the queue')
+  ->preventOverlapping($store);
 
 return $schedule;

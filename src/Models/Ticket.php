@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -31,6 +32,7 @@ class Ticket extends Common
     'problems',
     'changes',
     'linkedtickets',
+    'followups',
   ];
 
   protected $visible = [
@@ -48,6 +50,7 @@ class Ticket extends Common
     'changes',
     'linkedtickets',
     'knowbaseitems',
+    'followups',
   ];
 
   protected $with = [
@@ -61,11 +64,12 @@ class Ticket extends Common
     'usersidrecipient:id,name',
     'category:id,name',
     'location:id,name',
-    'entity:id,name',
     'problems:id,name',
     'changes:id,name',
     'linkedtickets:id,name',
     'knowbaseitems:id,name',
+    'entity:id,name,completename,address,country,email,fax,phonenumber,postcode,state,town,website',
+    'followups:id,content',
   ];
 
   // For default values
@@ -92,12 +96,14 @@ class Ticket extends Common
     'location_id',
   ];
 
-  public static function boot()
+  protected static function booted(): void
   {
-    parent::boot();
+    parent::booted();
 
     static::creating(function ($model)
     {
+      $model->user_id_recipient = $GLOBALS['user_id'];
+      $model->user_id_lastupdater = $GLOBALS['user_id'];
     });
 
     static::updating(function ($model)
@@ -109,6 +115,7 @@ class Ticket extends Common
         $model->content = preg_replace('/\\\\r\\\\n/', "\n", $model->content);
         $model->content = preg_replace('/\\\\n/', "\n", $model->content);
       }
+      $model->user_id_lastupdater = $GLOBALS['user_id'];
 
 
      // TODO finish
@@ -191,6 +198,11 @@ class Ticket extends Common
   public function entity(): BelongsTo
   {
     return $this->belongsTo('\App\Models\Entity');
+  }
+
+  public function followups()
+  {
+    return $this->morphMany('\App\Models\Followup', 'item');
   }
 
   public function getFeeds($id)

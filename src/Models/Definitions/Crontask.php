@@ -456,14 +456,9 @@ class Crontask
         'link' => $rootUrl,
       ],
       [
-        'title' => $translator->translate('Statistics'),
-        'icon' => 'caret square down outline',
-        'link' => '',
-      ],
-      [
-        'title' => $translator->translatePlural('Log', 'Logs', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'title' => $translator->translatePlural('Execution', 'Executions', 2),
+        'icon' => 'cogs',
+        'link' => $rootUrl . '/executions',
       ],
       [
         'title' => $translator->translate('Historical'),

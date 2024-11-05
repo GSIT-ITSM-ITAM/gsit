@@ -13,6 +13,7 @@ Mandatory fields:
 * title: string | the title of the field, with translation
 * type: string | values are:
   * input
+  * inputpassword
   * datetime
   * dropdown
   * dropdown_remote
@@ -23,12 +24,14 @@ Optional fields:
 * dbname: string | database field in case of dropdown one to many or many to many relationship
 * itemtype: string | the model class name, used for type 'dropdown_remote'
 * multiple: boolean | if true, set it, if false, remove the field. This is required when can have multiple values
-* pivot" array | the field and value of a pivot table if required for dropdown_remote
+* pivot: array | the field and value of a pivot table if required for dropdown_remote
 * values: array | only for type 'dropdown', can define the values (see next chapter)
 * readonly: readonly | field in readonly mode
 * displaygroup: name of panel (group many fields in same panel)
 * fillable: true if database can be filled with these field (directly from form),
-
+* display: display or not in form
+* relationfields ['id', 'name', 'user.id', 'user.completename']
+* usein: ['search', 'form', 'notification']
 
 
 ## Case of values of a static list (dropdown)

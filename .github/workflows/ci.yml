@@ -115,13 +115,24 @@ jobs:
     - name: validate extensions required
       run: composer check-platform-reqs
 
-  tests_unit:
+  tests_unit_integration_MariaDB:
 
     runs-on: 'ubuntu-latest'
 
     strategy:
       matrix:
         php-versions: ['8.2', '8.3']
+        mariadb-versions: ['10.5', '10.6', '10.11', '11.4']
+    services:
+      mariadb:
+        image: mariadb:${{ matrix.mariadb-versions }}
+        ports:
+          - 3306:3306        
+        env:
+          MARIADB_DATABASE: gsittests
+          MARIADB_USER: gsittests
+          MARIADB_PASSWORD: gsittests
+          MARIADB_ROOT_PASSWORD: rootpassword
 
     steps:
     - uses: actions/checkout@v4
@@ -132,6 +143,48 @@ jobs:
       with:
         php-version: ${{ matrix.php-versions }}
         extensions: intl, mbstring
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v4
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: PHPUnit tests
+      run: ./vendor/bin/phpunit --coverage-text
+
+  tests_unit_integration_PostgreSQL:
+
+    runs-on: 'ubuntu-latest'
+
+    strategy:
+      matrix:
+        php-versions: ['8.2', '8.3']
+        pg-versions: ['13', '14', '15', '16']
+    services:
+      postgres:
+        image: postgres:${{ matrix.pg-versions }}
+        ports:
+          - 5432:5432        
+        env:
+          POSTGRES_USER: gsittests
+          POSTGRES_PASSWORD: gsittests
+          POSTGRES_DB: gsittests
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: intl, mbstring
+    - name: update databaseconfiguration
+      run: sed -i 's/mysql/pgsql/g' phinx.php
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v4

@@ -2621,8 +2621,12 @@ final class Route
         {
           $crontaskId->map(['GET'], '', \App\v1\Controllers\Crontask::class . ':showItem');
           $crontaskId->map(['POST'], '', \App\v1\Controllers\Crontask::class . ':updateItem');
+
           $crontaskId->group('/', function (RouteCollectorProxy $sub)
           {
+            $sub->map(['GET'], 'executions', \App\v1\Controllers\Crontask::class . ':showSubExecutions');
+            $sub->map(['GET'], 'executions/{executionid:[0-9]+}', \App\v1\Controllers\Crontask::class .
+                      ':showSubExecutionlogs');
             $sub->map(['GET'], 'history', \App\v1\Controllers\Crontask::class . ':showSubHistory');
           });
         });

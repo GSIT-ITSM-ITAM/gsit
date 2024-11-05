@@ -14,4 +14,9 @@ class Crontask extends Common
   protected $titles = ['Automatic action', 'Automatic actions'];
   protected $icon = 'edit';
   protected $hasEntityField = false;
+
+  public function crontaskexecutions(): HasMany
+  {
+    return $this->hasMany('App\Models\Crontaskexecution')->orderBy('created_at', 'desc');
+  }
 }

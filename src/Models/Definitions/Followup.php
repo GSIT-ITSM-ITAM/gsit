@@ -2,7 +2,7 @@
 
 namespace App\Models\Definitions;
 
-class Followuptemplate
+class Followup
 {
   public static function getDefinition()
   {
@@ -73,6 +73,17 @@ class Followuptemplate
         'name'  => 'created_at',
         'readonly'  => 'readonly',
       ],
+      [
+        'id'    => 5,
+        'title' => $translator->translatePlural('User', 'Users', 1),
+        'type'  => 'dropdown_remote',
+        'name'  => 'user',
+        'dbname' => 'user_id',
+        'itemtype' => '\App\Models\User',
+        'fillable' => true,
+        'relationfields' => ['id', 'name', 'completename'],
+      ],
+
 
       /*
       $tab[] = [
@@ -102,23 +113,6 @@ class Followuptemplate
       // add objectlock search options
       $tab = array_merge($tab, ObjectLock::rawSearchOptionsToAdd(get_class($this)));
       */
-    ];
-  }
-
-  public static function getRelatedPages($rootUrl)
-  {
-    global $translator;
-    return [
-      [
-        'title' => $translator->translatePlural('Followup template', 'Followup templates', 1),
-        'icon' => 'home',
-        'link' => $rootUrl,
-      ],
-      [
-        'title' => $translator->translate('Historical'),
-        'icon' => 'history',
-        'link' => $rootUrl . '/history',
-      ],
     ];
   }
 }

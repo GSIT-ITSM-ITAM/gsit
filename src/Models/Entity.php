@@ -19,10 +19,12 @@ class Entity extends Common
 
   protected $appends = [
     'notes',
+    'completename',
   ];
 
   protected $visible = [
     'notes',
+    'completename',
   ];
 
   protected $with = [
@@ -30,7 +32,7 @@ class Entity extends Common
     'notes:id',
   ];
 
-  public static function booted()
+  protected static function booted(): void
   {
     parent::booted();
     static::created(function ($model)
@@ -45,6 +47,24 @@ class Entity extends Common
       }
       $currItem->save();
     });
+  }
+
+  public function getCompletenameAttribute()
+  {
+    $itemsId = str_split($this->treepath, 5);
+    array_pop($itemsId);
+    foreach ($itemsId as $key => $value)
+    {
+      $itemsId[$key] = (int) $value;
+    }
+    $items = \App\Models\Entity::whereIn('id', $itemsId)->orderBy('treepath');
+    $names = [];
+    foreach ($items as $item)
+    {
+      $names[] = $item->name;
+    }
+    $names[] = $this->name;
+    return implode(' > ', $names);
   }
 
   public function entity(): BelongsTo

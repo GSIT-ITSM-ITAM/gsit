@@ -109,7 +109,7 @@ class Notification
     $types['ProjectTask'] = $translator->translatePlural('Project task', 'Project tasks', 1);
     $types['Reservation'] = $translator->translatePlural('Reservation', 'Reservations', 1);
     $types['SoftwareLicense'] = $translator->translatePlural('License', 'Licenses', 1);
-    $types['Ticket'] = $translator->translatePlural('Ticket', 'Tickets', 1);
+    $types['App\Models\Ticket'] = $translator->translatePlural('Ticket', 'Tickets', 1);
     $types['User'] = $translator->translatePlural('User', 'Users', 1);
     $types['SavedSearch_Alert'] = $translator->translatePlural('Saved search alert', 'Saved searches alerts', 1);
     $types['Certificate'] = $translator->translatePlural('Certificate', 'Certificates', 1);
@@ -214,7 +214,7 @@ class Notification
 
     $events['SoftwareLicense'] = ['alert' => $translator->translate('Alarms on expired licenses')];
 
-    $events['Ticket'] = [
+    $events['App\Models\Ticket'] = [
       'new'               => $translator->translate('New ticket'),
       'update'            => $translator->translate('Update of a ticket'),
       'solved'            => $translator->translate('Ticket solved'),
@@ -229,7 +229,7 @@ class Notification
       'satisfaction'      => $translator->translate('Satisfaction survey'),
       'replysatisfaction' => $translator->translate('Satisfaction survey answer')
     ];
-    $events['Ticket'] = array_merge($events['Ticket'], $eventsParent);
+    $events['App\Models\Ticket'] = array_merge($events['App\Models\Ticket'], $eventsParent);
 
     $events['SoftwareLicense'] = ['alert' => $translator->translate('Alarms on expired licenses')];
 

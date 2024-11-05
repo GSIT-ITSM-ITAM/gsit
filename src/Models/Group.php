@@ -19,17 +19,37 @@ class Group extends Common
   protected $appends = [
     'entity',
     'notes',
+    'completename',
   ];
 
   protected $visible = [
     'entity',
     'notes',
+    'completename',
   ];
 
   protected $with = [
     'entity:id,name',
     'notes:id',
   ];
+
+  public function getCompletenameAttribute()
+  {
+    $itemsId = str_split($this->treepath, 5);
+    array_pop($itemsId);
+    foreach ($itemsId as $key => $value)
+    {
+      $itemsId[$key] = (int) $value;
+    }
+    $items = \App\Models\Group::whereIn('id', $itemsId)->orderBy('treepath');
+    $names = [];
+    foreach ($items as $item)
+    {
+      $names[] = $item->name;
+    }
+    $names[] = $this->name;
+    return implode(' > ', $names);
+  }
 
   public function entity(): BelongsTo
   {

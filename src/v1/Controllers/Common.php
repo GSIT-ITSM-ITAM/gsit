@@ -362,7 +362,6 @@ class Common
       }
     }
 
-
     if (is_null($id))
     {
       foreach ((array) $data as $key => $value)
@@ -449,10 +448,19 @@ class Common
         $toAdd = array_diff($data->{$key}, $dbItems);
         foreach ($toAdd as $groupId)
         {
-          $item->$key()->attach($groupId, $pivot);
+          // $item->$key()->attach($groupId, $pivot);
         }
       }
     }
+
+    // notification
+    if (is_null($id))
+    {
+      \App\v1\Controllers\Notification::prepareNotification($item, 'new');
+    } else {
+      \App\v1\Controllers\Notification::prepareNotification($item, 'update');
+    }
+    exit;
     return $item->id;
   }
 
