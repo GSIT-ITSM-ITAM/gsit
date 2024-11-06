@@ -31,5 +31,4 @@ class Domainrecordtype extends Common
   {
     return $this->belongsTo('\App\Models\Entity');
   }
-
 }

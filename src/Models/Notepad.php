@@ -36,6 +36,4 @@ class Notepad extends Common
   {
     return $this->belongsTo('\App\Models\User', 'user_id_lastupdater');
   }
-
-
 }

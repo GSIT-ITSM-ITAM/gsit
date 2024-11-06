@@ -9,10 +9,10 @@ use stdClass;
 
 final class Home extends Common
 {
-  const LINK = 1;
-  const DUPLICATE = 2;
-  const SON = 3;
-  const PARENT = 4;
+  public const LINK = 1;
+  public const DUPLICATE = 2;
+  public const SON = 3;
+  public const PARENT = 4;
 
   public function homepage(Request $request, Response $response, $args): Response
   {
@@ -28,13 +28,14 @@ final class Home extends Common
     $rootUrl = $this->getUrlWithoutQuery($request);
     $rootUrl = rtrim($rootUrl, '/home');
 
-
     $myItem = new \App\Models\Home();
 
     $items = [];
     $itemByUserid = $myItem->where('user_id', $GLOBALS['user_id'])->orderBy('row', 'asc')->get();
-    if (count($itemByUserid) > 0) {
-      foreach ($itemByUserid as $item) {
+    if (count($itemByUserid) > 0)
+    {
+      foreach ($itemByUserid as $item)
+      {
         $items[$item->module] = [
           'column' => $item->column,
           'row' => $item->row,
@@ -43,8 +44,10 @@ final class Home extends Common
       }
     } else {
       $itemByProfileid = $myItem->where('profile_id', $GLOBALS['profile_id'])->orderBy('row', 'asc')->get();
-      if (count($itemByProfileid) > 0) {
-        foreach ($itemByProfileid as $item) {
+      if (count($itemByProfileid) > 0)
+      {
+        foreach ($itemByProfileid as $item)
+        {
           $items[$item->module] = [
             'column' => $item->column,
             'row' => $item->row,
@@ -52,9 +55,14 @@ final class Home extends Common
           ];
         }
       } else {
-        $itemByDefaultUseridProfileid = $myItem->where(['user_id' => 0, 'profile_id' => 0])->orderBy('row', 'asc')->get();
-        if (count($itemByDefaultUseridProfileid) > 0) {
-          foreach ($itemByDefaultUseridProfileid as $item) {
+        $itemByDefaultUseridProfileid = $myItem
+          ->where(['user_id' => 0, 'profile_id' => 0])
+          ->orderBy('row', 'asc')
+          ->get();
+        if (count($itemByDefaultUseridProfileid) > 0)
+        {
+          foreach ($itemByDefaultUseridProfileid as $item)
+          {
             $items[$item->module] = [
               'column' => $item->column,
               'row' => $item->row,
@@ -65,15 +73,21 @@ final class Home extends Common
       }
     }
 
-    foreach (array_keys($items) as $key) {
-      if ($key == 'mytickets') {
+    foreach (array_keys($items) as $key)
+    {
+      if ($key == 'mytickets')
+      {
         $item2 = new \App\Models\Ticket();
         $myItem2 = $item2::with('requester')->get();
 
-        foreach ($myItem2 as $it) {
-          if ($it->requester != null) {
-            foreach ($it->requester as $req) {
-              if ($req->pivot->user_id == $GLOBALS['user_id']) {
+        foreach ($myItem2 as $it)
+        {
+          if ($it->requester != null)
+          {
+            foreach ($it->requester as $req)
+            {
+              if ($req->pivot->user_id == $GLOBALS['user_id'])
+              {
                 $items[$key]['datas'][$it->id] = [
                   'name' => $it->name,
                   'status' => self::getStatusArray()[$it->status],
@@ -87,22 +101,29 @@ final class Home extends Common
         }
         $nbValTotal = $nbValTotal + count($items[$key]['datas']);
       }
-      if ($key == 'groupstickets') {
-        $user = new \App\Models\User;
+      if ($key == 'groupstickets')
+      {
+        $user = new \App\Models\User();
         $itemUser = $user::with('group')->find($GLOBALS['user_id']);
 
         $groups = [];
-        foreach ($itemUser->group as $grp) {
+        foreach ($itemUser->group as $grp)
+        {
           $groups[$grp->id] = $grp->name;
         }
 
-        if (count($groups) > 0) {
+        if (count($groups) > 0)
+        {
           $item2 = new \App\Models\Ticket();
           $myItem2 = $item2::with('requestergroup', 'watchergroup', 'techniciangroup')->get();
-          foreach ($myItem2 as $it) {
-            if ($it->requestergroup != null) {
-              foreach ($it->requestergroup as $req) {
-                if (array_key_exists($req->pivot->group_id, $groups)) {
+          foreach ($myItem2 as $it)
+          {
+            if ($it->requestergroup != null)
+            {
+              foreach ($it->requestergroup as $req)
+              {
+                if (array_key_exists($req->pivot->group_id, $groups))
+                {
                   $items[$key]['datas'][$it->id] = [
                     'name' => $it->name,
                     'status' => self::getStatusArray()[$it->status],
@@ -113,9 +134,12 @@ final class Home extends Common
                 }
               }
             }
-            if ($it->watchergroup != null) {
-              foreach ($it->watchergroup as $req) {
-                if (array_key_exists($req->pivot->group_id, $groups)) {
+            if ($it->watchergroup != null)
+            {
+              foreach ($it->watchergroup as $req)
+              {
+                if (array_key_exists($req->pivot->group_id, $groups))
+                {
                   $items[$key]['datas'][$it->id] = [
                     'name' => $it->name,
                     'status' => self::getStatusArray()[$it->status],
@@ -126,9 +150,12 @@ final class Home extends Common
                 }
               }
             }
-            if ($it->techniciangroup != null) {
-              foreach ($it->techniciangroup as $req) {
-                if (array_key_exists($req->pivot->group_id, $groups)) {
+            if ($it->techniciangroup != null)
+            {
+              foreach ($it->techniciangroup as $req)
+              {
+                if (array_key_exists($req->pivot->group_id, $groups))
+                {
                   $items[$key]['datas'][$it->id] = [
                     'name' => $it->name,
                     'status' => self::getStatusArray()[$it->status],
@@ -143,19 +170,22 @@ final class Home extends Common
         }
         $nbValTotal = $nbValTotal + count($items[$key]['datas']);
       }
-      if ($key == 'lastknowledgeitems') {
+      if ($key == 'lastknowledgeitems')
+      {
         $item2 = new \App\Models\Knowbaseitem();
         $myItem2 = $item2->orderBy('date', 'desc')->take($nbLast)->get();
         $myItem3 = $item2->orderBy('date', 'desc')->get()->count();
 
-        foreach ($myItem2 as $it) {
-
+        foreach ($myItem2 as $it)
+        {
           $user = '';
-          if ($it->user != null) {
+          if ($it->user != null)
+          {
             $user = $it->user->name;
           }
           $category = '';
-          if ($it->category != null) {
+          if ($it->category != null)
+          {
             $category = $it->category->name;
           }
 
@@ -169,7 +199,8 @@ final class Home extends Common
         }
         $nbValTotal = $nbValTotal + count($items[$key]['datas']);
         $limit = false;
-        if ($myItem3 > $nbLast) {
+        if ($myItem3 > $nbLast)
+        {
           $limit = true;
         }
         $items[$key]['datas']['#'] = [
@@ -178,12 +209,14 @@ final class Home extends Common
           'nb_res' => $myItem3,
         ];
       }
-      if ($key == 'lastproblems') {
+      if ($key == 'lastproblems')
+      {
         $item2 = new \App\Models\Problem();
         $myItem2 = $item2->orderBy('date', 'desc')->take($nbLast)->get();
         $myItem3 = $item2->orderBy('date', 'desc')->get()->count();
 
-        foreach ($myItem2 as $it) {
+        foreach ($myItem2 as $it)
+        {
           $items[$key]['datas'][$it->id] = [
             'name' => $it->name,
             'status' => self::getStatusArray()[$it->status],
@@ -194,7 +227,8 @@ final class Home extends Common
         }
         $nbValTotal = $nbValTotal + count($items[$key]['datas']);
         $limit = false;
-        if ($myItem3 > $nbLast) {
+        if ($myItem3 > $nbLast)
+        {
           $limit = true;
         }
         $items[$key]['datas']['#'] = [
@@ -203,48 +237,63 @@ final class Home extends Common
           'nb_res' => $myItem3,
         ];
       }
-      if ($key == 'todayincidents') {
-        $user = new \App\Models\User;
+      if ($key == 'todayincidents')
+      {
+        $user = new \App\Models\User();
         $itemUser = $user::with('group')->find($GLOBALS['user_id']);
 
         $groups = [];
-        foreach ($itemUser->group as $grp) {
+        foreach ($itemUser->group as $grp)
+        {
           $groups[$grp->id] = $grp->name;
         }
 
-        if (count($groups) > 0) {
+        if (count($groups) > 0)
+        {
           $nbTodayIncidents = 0;
 
           $item2 = new \App\Models\Ticket();
           $myItem2 = $item2::with('requester', 'requestergroup')->get();
-          foreach ($myItem2 as $it) {
-            if ($it->requestergroup != null) {
-              foreach ($it->requestergroup as $req) {
+          foreach ($myItem2 as $it)
+          {
+            if ($it->requestergroup != null)
+            {
+              foreach ($it->requestergroup as $req)
+              {
                 if (array_key_exists($req->pivot->group_id, $groups))
                 {
-                  if (substr(trim($it->date),0,10) == date('Y-m-d')) {
+                  if (substr(trim($it->date), 0, 10) == date('Y-m-d'))
+                  {
                     $nbTodayIncidents = $nbTodayIncidents + 1;
                   }
                 }
               }
             }
-            if ($it->requester != null) {
-              foreach ($it->requester as $req) {
-                if ($req->pivot->user_id == $GLOBALS['user_id']) {
-                  if (substr(trim($it->date),0,10) == date('Y-m-d')) {
+            if ($it->requester != null)
+            {
+              foreach ($it->requester as $req)
+              {
+                if ($req->pivot->user_id == $GLOBALS['user_id'])
+                {
+                  if (substr(trim($it->date), 0, 10) == date('Y-m-d'))
+                  {
                     $nbTodayIncidents = $nbTodayIncidents + 1;
                   }
                 } else  {
-                  $user2 = new \App\Models\User;
+                  $user2 = new \App\Models\User();
                   $itemUser2 = $user2::with('group')->find($req->pivot->user_id);
                   $groups2 = [];
-                  foreach ($itemUser2->group as $grp2) {
+                  foreach ($itemUser2->group as $grp2)
+                  {
                     $groups2[$grp2->id] = $grp2->name;
                   }
 
-                  foreach (array_keys($groups2) as $key2) {
-                    if (array_key_exists($key2, $groups)) {
-                      if (substr(trim($it->date),0,10) == date('Y-m-d')) {
+                  foreach (array_keys($groups2) as $key2)
+                  {
+                    if (array_key_exists($key2, $groups))
+                    {
+                      if (substr(trim($it->date), 0, 10) == date('Y-m-d'))
+                      {
                         $nbTodayIncidents = $nbTodayIncidents + 1;
                       }
                     }
@@ -258,12 +307,15 @@ final class Home extends Common
           $nbValTotal = $nbValTotal + count($items[$key]['datas']);
         }
       }
-      if ($key == 'linkedincidents') {
+      if ($key == 'linkedincidents')
+      {
         $myItem2 = \App\Models\Ticket::has('linkedtickets')->get();
         $ticketFound = [];
 
-        foreach ($myItem2 as $ticket) {
-          if (!in_array($ticket->id, $ticketFound)) {
+        foreach ($myItem2 as $ticket)
+        {
+          if (!in_array($ticket->id, $ticketFound))
+          {
             $ticketFound[] = $ticket->id;
 
 
@@ -273,8 +325,8 @@ final class Home extends Common
               self::SON => 0,
               self::PARENT => 0,
             ];
-            foreach ($ticket->linkedtickets as $linkedticket) {
-
+            foreach ($ticket->linkedtickets as $linkedticket)
+            {
               $links[$linkedticket->pivot->link]++;
               $ticketFound[] = $linkedticket->id;
             }
@@ -292,36 +344,51 @@ final class Home extends Common
 
         $nbValTotal = $nbValTotal + count($items[$key]['datas']);
       }
-      if ($key == 'lastescaladedtickets') {
-        $myItem2 = \App\Models\Ticket::with('requester', 'technician', 'techniciangroup')->orderBy('date', 'desc')->get();
+      if ($key == 'lastescaladedtickets')
+      {
+        $myItem2 = \App\Models\Ticket::
+            with('requester', 'technician', 'techniciangroup')
+          ->orderBy('date', 'desc')
+          ->get();
 
         $incr = 0;
-        foreach ($myItem2 as $it) {
-          if ($it->requester != null) {
-            foreach ($it->requester as $req) {
-              if ($req->pivot->user_id == $GLOBALS['user_id']) {
-
+        foreach ($myItem2 as $it)
+        {
+          if ($it->requester != null)
+          {
+            foreach ($it->requester as $req)
+            {
+              if ($req->pivot->user_id == $GLOBALS['user_id'])
+              {
                 $others_tech = false;
-                if ($it->technician != null) {
-                  foreach ($it->technician as $tec) {
-                    if ($tec->pivot->user_id != $GLOBALS['user_id']) {
+                if ($it->technician != null)
+                {
+                  foreach ($it->technician as $tec)
+                  {
+                    if ($tec->pivot->user_id != $GLOBALS['user_id'])
+                    {
                       $others_tech = true;
                       break;
                     }
                   }
                 }
-                if ($others_tech === false) {
-                  if ($it->techniciangroup != null) {
-                    foreach ($it->techniciangroup as $tec) {
+                if ($others_tech === false)
+                {
+                  if ($it->techniciangroup != null)
+                  {
+                    foreach ($it->techniciangroup as $tec)
+                    {
                       $others_tech = true;
                       break;
                     }
                   }
                 }
 
-                if ($others_tech) {
+                if ($others_tech)
+                {
                   $incr = $incr + 1;
-                  if ($incr <= $nbLast) {
+                  if ($incr <= $nbLast)
+                  {
                     $items[$key]['datas'][$it->id] = [
                       'name' => $it->name,
                       'status' => self::getStatusArray()[$it->status],
@@ -338,7 +405,8 @@ final class Home extends Common
 
         $nbValTotal = $nbValTotal + count($items[$key]['datas']);
         $limit = false;
-        if ($incr > $nbLast) {
+        if ($incr > $nbLast)
+        {
           $limit = true;
         }
         $items[$key]['datas']['#'] = [
@@ -347,18 +415,21 @@ final class Home extends Common
           'nb_res' => $incr,
         ];
       }
-      if ($key == 'knowledgelink') {
+      if ($key == 'knowledgelink')
+      {
         $link = '<i class="question icon"></i>';
         $link = '<a href="' . $rootUrl . '/knowledgebase">' . $link . '</a>';
 
         $items[$key]['datas']['link'] = $link;
         $nbValTotal = $nbValTotal + count($items[$key]['datas']);
       }
-      if ($key == 'forms') {
+      if ($key == 'forms')
+      {
         $myItem2 = \App\Models\Forms\Form::has('category')->get();
 
         $nb_forms = 0;
-        foreach ($myItem2 as $form) {
+        foreach ($myItem2 as $form)
+        {
           $items[$key]['datas'][$form->category->id]['category'] = $form->category->name;
           $items[$key]['datas'][$form->category->id]['forms'][$form->id] = [
             'name' => $form->name,
@@ -368,8 +439,8 @@ final class Home extends Common
 
         $nbValTotal = $nbValTotal + $nb_forms;
       }
-      if ($key == 'incidentsfromcategory') {
-
+      if ($key == 'incidentsfromcategory')
+      {
       }
     }
     // echo "<pre>";
@@ -385,7 +456,8 @@ final class Home extends Common
     // si non, vérifier si il y a une entrée pour son profile ($GLOBALS['profile_id'])
     // si non, prendre les entrées avec user_id et profile_id = 0
 
-    // L'affichage se fait sur plusieurs colonnes, on va en mettre 3 par défaut, mais si un utilisateur a un grand écran, il peut en mettre ce qu'il veut (limit de 10 quand même)
+    // L'affichage se fait sur plusieurs colonnes, on va en mettre 3 par défaut,
+    // mais si un utilisateur a un grand écran, il peut en mettre ce qu'il veut (limit de 10 quand même)
 
     // le but est d'avoir une affichage par défaut.
     // Possibilité d'en créer un pour un profile
@@ -393,7 +465,8 @@ final class Home extends Common
 
     // Modules :
 
-    // incidentsfromcategory : (voir avec Marie-Noëlle ce qu'elle veut dire) Ou le nombre d'incidents résultants d'un catégories ou d'un tag PBG
+    // incidentsfromcategory : (voir avec Marie-Noëlle ce qu'elle veut dire) Ou le nombre
+    // d'incidents résultants d'un catégories ou d'un tag PBG
 
     // pour les last, peut être afficher les 8 derniers, pas trop sûr de ça encore
 
@@ -411,7 +484,10 @@ final class Home extends Common
     $viewData->addTranslation('date_open', $translator->translate('Opening date'));
     $viewData->addTranslation('date_last_modif', $translator->translate('Last update'));
     $viewData->addTranslation('mytickets', $translator->translatePlural('My ticket', 'My tickets', 2));
-    $viewData->addTranslation('groupstickets', $translator->translatePlural('Ticket of my group', 'Tickets of my groups', 2));
+    $viewData->addTranslation(
+      'groupstickets',
+      $translator->translatePlural('Ticket of my group', 'Tickets of my groups', 2)
+    );
     $viewData->addTranslation('nb_today_incidents', $translator->translate('Number of today incidents'));
     $viewData->addTranslation('last_problems', $translator->translatePlural('Last Problem', 'Last Problems', 2));
     $viewData->addTranslation('subject', $translator->translate('Subject'));
@@ -419,12 +495,17 @@ final class Home extends Common
     $viewData->addTranslation('category', $translator->translate('Category'));
     $viewData->addTranslation('visible_since', $translator->translate('Visible since'));
     $viewData->addTranslation('visible_until', $translator->translate('Visible until'));
-    $viewData->addTranslation('last_knowbaseitems', $translator->translatePlural('Last knowbase item', 'Last knowbase items', 2));
+    $viewData->addTranslation(
+      'last_knowbaseitems',
+      $translator->translatePlural('Last knowbase item', 'Last knowbase items', 2)
+    );
     $viewData->addTranslation('linkedtickets', $translator->translatePlural('Linked ticket', 'Linked tickets', 2));
-    $viewData->addTranslation('lastescaladedtickets', $translator->translatePlural('Last escaladed ticket', 'Last escaladed tickets', 2));
+    $viewData->addTranslation(
+      'lastescaladedtickets',
+      $translator->translatePlural('Last escaladed ticket', 'Last escaladed tickets', 2)
+    );
     $viewData->addTranslation('knowledgebase', $translator->translate('Knowledge base'));
     $viewData->addTranslation('forms', $translator->translatePlural('Form', 'Forms', 2));
-
 
     return $view->render($response, 'home.html.twig', (array)$viewData);
   }
@@ -514,18 +595,29 @@ final class Home extends Common
   {
     $tab = [];
 
-    foreach ($links as $type_link => $nb_link) {
-      if ($nb_link > 0) {
-        if ($type_link == self::LINK) $nb_link = 'Lié à ' . $nb_link . ' ticket(s)';
-        if ($type_link == self::DUPLICATE) $nb_link = 'Duplique ' . $nb_link . ' ticket(s)';
-        if ($type_link == self::SON) $nb_link = 'Enfant de ' . $nb_link . ' ticket(s)';
-        if ($type_link == self::PARENT) $nb_link = 'Parent de ' . $nb_link . ' ticket(s)';
-
+    foreach ($links as $type_link => $nb_link)
+    {
+      if ($nb_link > 0)
+      {
+        if ($type_link == self::LINK)
+        {
+          $nb_link = 'Lié à ' . $nb_link . ' ticket(s)';
+        }
+        if ($type_link == self::DUPLICATE)
+        {
+          $nb_link = 'Duplique ' . $nb_link . ' ticket(s)';
+        }
+        if ($type_link == self::SON)
+        {
+          $nb_link = 'Enfant de ' . $nb_link . ' ticket(s)';
+        }
+        if ($type_link == self::PARENT)
+        {
+          $nb_link = 'Parent de ' . $nb_link . ' ticket(s)';
+        }
         $tab[$type_link] = $nb_link;
       }
     }
-
     return $tab;
   }
-
 }

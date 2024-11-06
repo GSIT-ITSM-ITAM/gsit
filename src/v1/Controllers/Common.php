@@ -286,7 +286,8 @@ class Common
     $myItem = $item->find($args['id']);
 
     $logs = [];
-    if ($myItem != null) {
+    if ($myItem != null)
+    {
       $logs = \App\Models\Log::
           where('item_type', ltrim($this->model, '\\'))
         ->where('item_id', $myItem->id)
@@ -725,7 +726,7 @@ class Common
     $externallinks = $item2::with('links')->where('item_type', $computermodelclass)->get();
 
     $item3 = new \App\Models\DomainItem();
-    $domainitems = $item3->where(['item_id'=>$args['id'],'item_type'=>$computermodelclass])->get();
+    $domainitems = $item3->where(['item_id' => $args['id'], 'item_type' => $computermodelclass])->get();
 
     $myExternalLinks = [];
     foreach ($externallinks as $externallink)
@@ -752,8 +753,10 @@ class Common
         }
 
         $domains = [];
-        foreach ($domainitems as $domainitem) {
-          if ($domainitem->domain != null) {
+        foreach ($domainitems as $domainitem)
+        {
+          if ($domainitem->domain != null)
+          {
             $domains[] = $domainitem->domain->name;
           }
         }
@@ -821,82 +824,111 @@ class Common
     return $view->render($response, 'subitem/externallinks.html.twig', (array)$viewData);
   }
 
-  public function generateLinkContents($link, $item, $replaceByBr = false)
+  private function generateLinkContents($link, $item, $replaceByBr = false)
   {
     $new_link = $link;
-    if ($replaceByBr === true) $new_link=str_ireplace("\n", "<br>", $new_link);
+    if ($replaceByBr === true)
+    {
+      $new_link = str_ireplace("\n", "<br>", $new_link);
+    }
     $matches = [];
-    if (preg_match_all('/\[FIELD:(\w+)\]/', $new_link, $matches)) {
-      foreach ($matches[1] as $key => $field) {
+    if (preg_match_all('/\[FIELD:(\w+)\]/', $new_link, $matches))
+    {
+      foreach ($matches[1] as $key => $field)
+      {
         $new_link = self::checkAndReplaceProperty($item, $field, $matches[0][$key], $new_link, $replaceByBr);
       }
     }
 
-    if (strstr($new_link, "[ID]")) {
+    if (strstr($new_link, "[ID]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'id', "[ID]", $new_link, $replaceByBr);
     }
-    if (strstr($link, "[NAME]")) {
+    if (strstr($link, "[NAME]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'name', "[NAME]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[SERIAL]")) {
+    if (strstr($new_link, "[SERIAL]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'serial', "[SERIAL]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[OTHERSERIAL]")) {
+    if (strstr($new_link, "[OTHERSERIAL]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'otherserial', "[OTHERSERIAL]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[LOCATIONID]")) {
+    if (strstr($new_link, "[LOCATIONID]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'location_id', "[LOCATIONID]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[LOCATION]")) {
+    if (strstr($new_link, "[LOCATION]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'location', "[LOCATION]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[DOMAIN]")) {
+    if (strstr($new_link, "[DOMAIN]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'domains', "[DOMAIN]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[NETWORK]")) {
+    if (strstr($new_link, "[NETWORK]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'network', "[NETWORK]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[REALNAME]")) {
+    if (strstr($new_link, "[REALNAME]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'realname', "[REALNAME]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[FIRSTNAME]")) {
+    if (strstr($new_link, "[FIRSTNAME]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'firstname', "[FIRSTNAME]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[LOGIN]")) {
+    if (strstr($new_link, "[LOGIN]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'login', "[LOGIN]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[USER]")) {
+    if (strstr($new_link, "[USER]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'user', "[USER]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[GROUP]")) {
+    if (strstr($new_link, "[GROUP]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'group', "[GROUP]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[IP]")) {
+    if (strstr($new_link, "[IP]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'ips', "[IP]", $new_link, $replaceByBr);
     }
-    if (strstr($new_link, "[MAC]")) {
+    if (strstr($new_link, "[MAC]"))
+    {
       $new_link = self::checkAndReplaceProperty($item, 'macs', "[MAC]", $new_link, $replaceByBr);
     }
 
     return $new_link;
   }
 
-  public function checkAndReplaceProperty($item, $field, $strToReplace, $new_link, $replaceByBr = false)
+  private function checkAndReplaceProperty($item, $field, $strToReplace, $new_link, $replaceByBr = false)
   {
     $ret = $new_link;
 
-    if (array_key_exists($field, $item)) {
-      if (is_array($item[$field])) {
+    if (array_key_exists($field, $item))
+    {
+      if (is_array($item[$field]))
+      {
         $tmp = '';
-        foreach ($item[$field] as $val) {
-          if ($tmp != '') $tmp = $tmp  . "\n";
+        foreach ($item[$field] as $val)
+        {
+          if ($tmp != '')
+          {
+            $tmp = $tmp  . "\n";
+          }
           $tmp = $tmp . $val;
         }
         $ret = str_replace($strToReplace, $tmp, $ret);
       } else {
         $ret = str_replace($strToReplace, $item[$field], $ret);
       }
-      if ($replaceByBr === true) $ret=str_ireplace("\n", "<br>", $ret);
+      if ($replaceByBr === true)
+      {
+        $ret = str_ireplace("\n", "<br>", $ret);
+      }
     }
 
     return $ret;
@@ -915,7 +947,8 @@ class Common
     $rootUrl = $this->getUrlWithoutQuery($request);
     $rootUrl = rtrim($rootUrl, '/knowbaseitems');
     $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
+    if ($this->rootUrl2 != '')
+    {
       $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
     }
 
@@ -923,7 +956,8 @@ class Common
     foreach ($myItem->knowbaseitems as $knowbaseitem)
     {
       $url = '';
-      if ($rootUrl2 != '') {
+      if ($rootUrl2 != '')
+      {
         $url = $rootUrl2 . "/knowbaseitems/" . $knowbaseitem->id;
       }
 
@@ -947,5 +981,4 @@ class Common
 
     return $view->render($response, 'subitem/knowbaseitems.html.twig', (array)$viewData);
   }
-
 }

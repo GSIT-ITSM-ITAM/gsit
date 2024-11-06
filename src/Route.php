@@ -1039,7 +1039,11 @@ final class Route
             $peetId->map(['POST'], '', \App\v1\Controllers\Planningexternaleventtemplate::class . ':updateItem');
             $peetId->group('/', function (RouteCollectorProxy $sub)
             {
-              $sub->map(['GET'], 'history', \App\v1\Controllers\Planningexternaleventtemplate::class . ':showSubHistory');
+              $sub->map(
+                ['GET'],
+                'history',
+                \App\v1\Controllers\Planningexternaleventtemplate::class . ':showSubHistory'
+              );
             });
           });
         });
@@ -1985,7 +1989,11 @@ final class Route
             $oskvId->map(['POST'], '', \App\v1\Controllers\Operatingsystemkernelversion::class . ':updateItem');
             $oskvId->group('/', function (RouteCollectorProxy $sub)
             {
-              $sub->map(['GET'], 'history', \App\v1\Controllers\Operatingsystemkernelversion::class . ':showSubHistory');
+              $sub->map(
+                ['GET'],
+                'history',
+                \App\v1\Controllers\Operatingsystemkernelversion::class . ':showSubHistory'
+              );
             });
           });
         });

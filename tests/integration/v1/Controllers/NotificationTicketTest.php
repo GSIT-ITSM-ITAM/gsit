@@ -12,11 +12,16 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass('\App\Models\Category')]
 #[UsesClass('\App\Models\Common')]
 #[UsesClass('\App\Models\Definitions\Category')]
+#[UsesClass('\App\Models\Definitions\Certificate')]
+#[UsesClass('\App\Models\Definitions\Change')]
 #[UsesClass('\App\Models\Definitions\Entity')]
 #[UsesClass('\App\Models\Definitions\Followup')]
 #[UsesClass('\App\Models\Definitions\Group')]
+#[UsesClass('\App\Models\Definitions\Knowbaseitem')]
 #[UsesClass('\App\Models\Definitions\Knowbaseitemcategory')]
 #[UsesClass('\App\Models\Definitions\Location')]
+#[UsesClass('\App\Models\Definitions\Notepad')]
+#[UsesClass('\App\Models\Definitions\Problem')]
 #[UsesClass('\App\Models\Definitions\Profile')]
 #[UsesClass('\App\Models\Definitions\Ticket')]
 #[UsesClass('\App\Models\Definitions\User')]
@@ -28,6 +33,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass('\App\Models\Location')]
 #[UsesClass('\App\Models\Ticket')]
 #[UsesClass('\App\Models\User')]
+
 final class NotificationTicketTest extends TestCase
 {
   private static $user2Id;

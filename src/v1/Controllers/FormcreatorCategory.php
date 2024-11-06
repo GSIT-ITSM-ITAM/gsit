@@ -11,21 +11,21 @@ final class FormcreatorCategory extends Common
 {
   protected $model = '\App\Models\FormcreatorCategory';
 
-  public function getAll(Request $request, Response $response, $args): Response
-  {
-    $item = new \App\Models\FormcreatorCategory();
-    return $this->commonGetAll($request, $response, $args, $item);
-  }
+  // public function getAll(Request $request, Response $response, $args): Response
+  // {
+  //   $item = new \App\Models\FormcreatorCategory();
+  //   return $this->commonGetAll($request, $response, $args, $item);
+  // }
 
-  public function showItem(Request $request, Response $response, $args): Response
-  {
-    $item = new \App\Models\FormcreatorCategory();
-    return $this->commonShowItem($request, $response, $args, $item);
-  }
+  // public function showItem(Request $request, Response $response, $args): Response
+  // {
+  //   $item = new \App\Models\FormcreatorCategory();
+  //   return $this->commonShowItem($request, $response, $args, $item);
+  // }
 
-  public function updateItem(Request $request, Response $response, $args): Response
-  {
-    $item = new \App\Models\FormcreatorCategory();
-    return $this->commonUpdateItem($request, $response, $args, $item);
-  }
+  // public function updateItem(Request $request, Response $response, $args): Response
+  // {
+  //   $item = new \App\Models\FormcreatorCategory();
+  //   return $this->commonUpdateItem($request, $response, $args, $item);
+  // }
 }
