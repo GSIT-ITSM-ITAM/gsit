@@ -43,7 +43,7 @@ final class GroupsMigration extends AbstractMigration
             'ldap_field'      => $row['ldap_field'],
             'ldap_value'      => $row['ldap_value'],
             'ldap_group_dn'   => $row['ldap_group_dn'],
-            'updated_at'      => $row['date_mod'],
+            'updated_at'      => Toolbox::fixDate($row['date_mod']),
             'group_id'        => $row['groups_id'],
             'completename'    => $row['completename'],
             'level'           => $row['level'],
@@ -57,7 +57,7 @@ final class GroupsMigration extends AbstractMigration
             'is_itemgroup'    => $row['is_itemgroup'],
             'is_usergroup'    => $row['is_usergroup'],
             'is_manager'      => $row['is_manager'],
-            'created_at'      => $row['date_creation'],
+            'created_at'      => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

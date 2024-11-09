@@ -47,7 +47,7 @@ final class SavedsearchesMigration extends AbstractMigration
             'query'               => $row['query'],
             'last_execution_time' => $row['last_execution_time'],
             'do_count'            => $row['do_count'],
-            'last_execution_date' => $row['last_execution_date'],
+            'last_execution_date' => Toolbox::fixDate($row['last_execution_date']),
             'counter'             => $row['counter'],
           ]
         ];

@@ -46,8 +46,8 @@ final class PlanningexternaleventtemplatesMigration extends AbstractMigration
             'state'                     => $row['state'],
             'planningeventcategory_id'  => $row['planningeventcategories_id'],
             'background'                => $row['background'],
-            'updated_at'                => $row['date_mod'],
-            'created_at'                => $row['date_creation'],
+            'updated_at'                => Toolbox::fixDate($row['date_mod']),
+            'created_at'                => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

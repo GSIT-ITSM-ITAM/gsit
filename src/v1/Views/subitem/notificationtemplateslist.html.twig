@@ -1,0 +1,62 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<div class="ui stackable cards">
+  {% for translation in data.translations %}
+    <div class="ui card">
+      <div class="content">
+        <div class="header">
+          <a href="{{ basePath }}/view/notificationtemplates/{{ header.id }}/templatetranslation/{{ translation.id }}">
+            {{ translation.lang }}
+          </a>
+        </div>
+      </div>
+      <div class="content">
+        Model validity verification
+        <div class="ui divided selection list">
+          <a class="item">
+            {% if translation.subject %}
+              <div class="ui green horizontal label">valid</div>
+            {% else %}
+              <div class="ui red horizontal label">not valid</div>
+            {% endif %}
+            Subject
+          </a>
+          {% if not translation.subject %}
+          <a class="item">
+            {{ translation.subject_error }}
+          </a>
+          {% endif %}
+          <a class="item">
+            {% if translation.text %}
+              <div class="ui green horizontal label">valid</div>
+            {% else %}
+              <div class="ui red horizontal label">not valid</div>
+            {% endif %}
+            Text format
+          </a>
+          {% if not translation.text %}
+          <a class="item">
+            {{ translation.text_error }}
+          </a>
+          {% endif %}
+          <a class="item">
+            {% if translation.html %}
+              <div class="ui green horizontal label">valid</div>
+            {% else %}
+              <div class="ui red horizontal label">not valid</div>
+            {% endif %}
+            HTML format
+          </a>
+          {% if not translation.html %}
+          <a class="item">
+            {{ translation.html_error }}
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{{ include('footer.html.twig') }}

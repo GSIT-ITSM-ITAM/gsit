@@ -36,8 +36,8 @@ final class FollowuptemplatesMigration extends AbstractMigration
         $data = [
           [
             'id'              => $row['id'],
-            'created_at'      => $row['date_creation'],
-            'updated_at'      => $row['date_mod'],
+            'created_at'      => Toolbox::fixDate($row['date_creation']),
+            'updated_at'      => Toolbox::fixDate($row['date_mod']),
             'entity_id'       => ($row['entities_id'] + 1),
             'is_recursive'    => $row['is_recursive'],
             'name'            => $row['name'],

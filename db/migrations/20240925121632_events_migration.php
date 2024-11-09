@@ -30,11 +30,11 @@ final class EventsMigration extends AbstractMigration
     if ($this->isMigratingUp())
     {
       $nbRows = $pdo->query('SELECT count(*) FROM glpi_events')->fetchColumn();
-      $nbLoops = ceil($nbRows / 100000);
+      $nbLoops = ceil($nbRows / 9200);
 
       for ($i = 0; $i < $nbLoops; $i++)
       {
-        $stmt = $pdo->query('SELECT * FROM glpi_events ORDER BY id LIMIT 100000 OFFSET ' . ($i * 100000));
+        $stmt = $pdo->query('SELECT * FROM glpi_events ORDER BY id LIMIT 9200 OFFSET ' . ($i * 9200));
 
         $rows = $stmt->fetchAll();
         $data = [];
@@ -44,7 +44,7 @@ final class EventsMigration extends AbstractMigration
             'id'      => $row['id'],
             'item_id' => $row['items_id'],
             'type'    => $row['type'],
-            'date'    => $row['date'],
+            'date'    => Toolbox::fixDate($row['date']),
             'service' => $row['service'],
             'level'   => $row['level'],
             'message' => $row['message'],

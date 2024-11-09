@@ -38,7 +38,7 @@ final class SlalevelsTicketsMigration extends AbstractMigration
             'id'          => $row['id'],
             'ticket_id'   => $row['tickets_id'],
             'slalevel_id' => $row['slalevels_id'],
-            'date'        => $row['date'],
+            'date'        => Toolbox::fixDate($row['date']),
           ]
         ];
         $item->insert($data)

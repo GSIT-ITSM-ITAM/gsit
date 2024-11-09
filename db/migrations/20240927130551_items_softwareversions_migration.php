@@ -33,17 +33,36 @@ final class ItemsSoftwareversionsMigration extends AbstractMigration
       $rows = $stmt->fetchAll();
       foreach ($rows as $row)
       {
+        $deletedItem = false;
+        $templateItem = false;
+        if (isset($row['is_deleted_computer']))
+        {
+          $deletedItem = $row['is_deleted_computer'];
+        }
+        if (isset($row['is_deleted_item']))
+        {
+          $deletedItem = $row['is_deleted_item'];
+        }
+        if (isset($row['is_template_computer']))
+        {
+          $templateItem = $row['is_template_computer'];
+        }
+        if (isset($row['is_template_item']))
+        {
+          $templateItem = $row['is_template_item'];
+        }
+
         $data = [
           [
             'id'                  => $row['id'],
             'item_id'             => $row['items_id'],
             'item_type'           => 'App\\Models\\' . $row['itemtype'],
             'softwareversion_id'  => $row['softwareversions_id'],
-            'is_deleted_item'     => $row['is_deleted_item'],
-            'is_template_item'    => $row['is_template_item'],
+            'is_deleted_item'     => $deletedItem,
+            'is_template_item'    => $templateItem,
             'entity_id'           => ($row['entities_id'] + 1),
             'is_dynamic'          => $row['is_dynamic'],
-            'date_install'        => $row['date_install'],
+            'date_install'        => Toolbox::fixDate($row['date_install']),
             'deleted_at'          => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

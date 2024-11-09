@@ -38,9 +38,9 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
             'id'                      => $row['id'],
             'notificationtemplate_id' => $row['notificationtemplates_id'],
             'language'                => $row['language'],
-            'subject'                 => $row['subject'],
-            'content_text'            => $this->convertOldTags($row['content_text']),
-            'content_html'            => $this->convertOldTags($row['content_html']),
+            'subject'                 => Toolbox::convertHtmlToMarkdown($this->convertOldTags($row['subject'])),
+            'content_text'            => Toolbox::convertHtmlToMarkdown($this->convertOldTags($row['content_text'])),
+            'content_html'            => Toolbox::convertHtmlToMarkdown($this->convertOldTags($row['content_html'])),
           ]
         ];
         $item->insert($data)
@@ -121,6 +121,7 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     // FOREACHlinkedtickets
     // FOREACHlog
     // FOREACHproblems
+    $text = str_replace('{% for problems in', '{% for problem in', $text);
     // FOREACHsuppliers
     // FOREACHtasks
     $text = str_replace('{% for tasks in tasks %}', '{% for followup in followups %}', $text);
@@ -352,6 +353,7 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     // problem.date
     // problem.id
     // problem.title
+    $text = str_replace('{{ problem.title }}', '{{ problem.name }}', $text);
     // problem.url
     // satisfaction.dateanswered
     // satisfaction.datebegin
@@ -468,6 +470,7 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     // ticket.numberoflinkedtickets
     // ticket.numberoflogs
     // ticket.numberofproblems
+    $text = str_replace('{{ ticket.numberofproblems }}', '{{ problems|length }}', $text);
     // ticket.numberoftasks
     // ticket.numberofunresolved
     // ticket.observergroups
@@ -480,7 +483,7 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     $text = str_replace('{{ ticket.priority }}', '{{ priority }}', $text);
     // ticket.requesttype
     // ticket.shortentity
-    $text = str_replace('{{ ticket.shortentity }}', '{{ ticket.entity.name }}', $text);
+    $text = str_replace('{{ ticket.shortentity }}', '{{ entity.name }}', $text);
     // ticket.sla
     // ticket.sla_tto
     // ticket.sla_ttr
@@ -496,7 +499,7 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     // ticket.suppliers
     // ticket.time
     // ticket.title
-    $text = str_replace('{{ ticket.title }}', '{{ ticket.name }}', $text);
+    $text = str_replace('{{ ticket.title }}', '{{ name }}', $text);
     // ticket.totalcost
     // ticket.type
     // ticket.urgency
@@ -516,6 +519,22 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     // validation.validationdate
     // validation.validationstatus
     // validation.validator
+
+    // From plugin notifications
+    // ##FOREACHactivitymessages##
+    $text = str_replace('{% for activitymessages in activitymessages %}', '{% for followup in followups %}', $text);
+    // '##activitymessage.type##'        => 'followup',
+    // '##activitymessage.isprivate##'   => Dropdown::getYesNo($followup['is_private']),
+    // '##activitymessage.author##'      => Html::clean(getUserName($followup['users_id'])),
+    // '##activitymessage.requesttype##' => Dropdown::getDropdownName('glpi_requesttypes', $followup['requesttypes_id']),
+    // '##activitymessage.date##'        => Html::convDateTime($followup['date']),
+    $text = str_replace('{{ activitymessage.date }}', '{{ followup.date }}', $text);
+    // '##activitymessage.description##' => Html::clean($followup['content']),
+    $text = str_replace('{{ activitymessage.description }}', '{{ followup.content }}', $text);
+    // '##activitymessage.category##'    => '',
+    // '##task.time##'                   => ''
+    // ##ticket.numberofactivitymessages##
+    $text = str_replace('{{ ticket.numberofactivitymessages }}', '{{ followups|length }}', $text);
 
     return $text;
   }

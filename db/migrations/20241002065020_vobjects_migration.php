@@ -39,8 +39,8 @@ final class VobjectsMigration extends AbstractMigration
             'item_type'   => 'App\\Models\\' . $row['itemtype'],
             'item_id'     => $row['items_id'],
             'data'        => $row['data'],
-            'updated_at'  => $row['date_mod'],
-            'created_at'  => $row['date_creation'],
+            'updated_at'  => Toolbox::fixDate($row['date_mod']),
+            'created_at'  => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

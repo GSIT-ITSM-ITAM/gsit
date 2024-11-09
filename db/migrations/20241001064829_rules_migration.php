@@ -44,11 +44,11 @@ final class RulesMigration extends AbstractMigration
             'match'         => $row['match'],
             'is_active'     => $row['is_active'],
             'comment'       => $row['comment'],
-            'updated_at'    => $row['date_mod'],
+            'updated_at'    => Toolbox::fixDate($row['date_mod']),
             'is_recursive'  => $row['is_recursive'],
             'uuid'          => $row['uuid'],
             'condition'     => $row['condition'],
-            'created_at'    => $row['date_creation'],
+            'created_at'    => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

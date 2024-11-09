@@ -408,17 +408,17 @@ final class Menu
           [
             'name' => $translator->translatePlural('Notification', 'Notifications', 2) . ' - ' .
                       $translator->translatePlural('Notification template', 'Notification templates', 2),
-            'link' => $basePath . '/view/notifications/notificationtemplates',
+            'link' => $basePath . '/view/notificationtemplates',
             'icon' => 'edit',
-            'class' => $activePath == $basePath . '/view/notifications/notificationtemplates' ? 'active blue' : '',
+            'class' => $activePath == $basePath . '/view/notificationtemplates' ? 'active blue' : '',
             'display' => $this->getRightForModel('\App\Models\Notificationtemplate'),
           ],
           [
             'name' => $translator->translatePlural('Notification', 'Notifications', 2) . ' - ' .
                       $translator->translatePlural('Notification', 'Notifications', 2),
-            'link' => $basePath . '/view/notifications/notifications',
+            'link' => $basePath . '/view/notifications',
             'icon' => 'edit',
-            'class' => $activePath == $basePath . '/view/notifications/notifications' ? 'active blue' : '',
+            'class' => $activePath == $basePath . '/view/notifications' ? 'active blue' : '',
             'display' => $this->getRightForModel('\App\Models\Notification'),
           ],
           [

@@ -42,12 +42,12 @@ final class TicketrecurrentsMigration extends AbstractMigration
             'is_recursive'        => $row['is_recursive'],
             'is_active'           => $row['is_active'],
             'tickettemplate_id'   => $row['tickettemplates_id'],
-            'begin_date'          => $row['begin_date'],
+            'begin_date'          => Toolbox::fixDate($row['begin_date']),
             'periodicity'         => $row['periodicity'],
             'create_before'       => $row['create_before'],
-            'next_creation_date'  => $row['next_creation_date'],
+            'next_creation_date'  => Toolbox::fixDate($row['next_creation_date']),
             'calendar_id'         => $row['calendars_id'],
-            'end_date'            => $row['end_date'],
+            'end_date'            => Toolbox::fixDate($row['end_date']),
           ]
         ];
         $item->insert($data)

@@ -38,8 +38,8 @@ final class CartridgeitemtypesMigration extends AbstractMigration
             'id'          => $row['id'],
             'name'        => $row['name'],
             'comment'     => $row['comment'],
-            'updated_at'  => $row['date_mod'],
-            'created_at'  => $row['date_creation'],
+            'updated_at'  => Toolbox::fixDate($row['date_mod']),
+            'created_at'  => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

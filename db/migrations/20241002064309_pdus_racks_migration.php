@@ -41,8 +41,8 @@ final class PdusRacksMigration extends AbstractMigration
             'side'        => $row['side'],
             'position'    => $row['position'],
             'bgcolor'     => $row['bgcolor'],
-            'updated_at'  => $row['date_mod'],
-            'created_at'  => $row['date_creation'],
+            'updated_at'  => Toolbox::fixDate($row['date_mod']),
+            'created_at'  => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

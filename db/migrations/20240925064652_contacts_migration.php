@@ -53,8 +53,8 @@ final class ContactsMigration extends AbstractMigration
             'town'            => $row['town'],
             'state'           => $row['state'],
             'country'         => $row['country'],
-            'updated_at'      => $row['date_mod'],
-            'created_at'      => $row['date_creation'],
+            'updated_at'      => Toolbox::fixDate($row['date_mod']),
+            'created_at'      => Toolbox::fixDate($row['date_creation']),
             'deleted_at'      => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

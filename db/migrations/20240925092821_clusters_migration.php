@@ -47,8 +47,8 @@ final class ClustersMigration extends AbstractMigration
             'comment'             => $row['comment'],
             'clustertype_id'      => $row['clustertypes_id'],
             'autoupdatesystem_id' => $row['autoupdatesystems_id'],
-            'updated_at'          => $row['date_mod'],
-            'created_at'          => $row['date_creation'],
+            'updated_at'          => Toolbox::fixDate($row['date_mod']),
+            'created_at'          => Toolbox::fixDate($row['date_creation']),
             'deleted_at'          => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

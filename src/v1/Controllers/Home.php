@@ -77,8 +77,7 @@ final class Home extends Common
     {
       if ($key == 'mytickets')
       {
-        $item2 = new \App\Models\Ticket();
-        $myItem2 = $item2::with('requester')->get();
+        $myItem2 = \App\Models\Ticket::with('requester')->take(5)->get();
 
         foreach ($myItem2 as $it)
         {
@@ -103,8 +102,7 @@ final class Home extends Common
       }
       if ($key == 'groupstickets')
       {
-        $user = new \App\Models\User();
-        $itemUser = $user::with('group')->find($GLOBALS['user_id']);
+        $itemUser = \App\Models\User::with('group')->find($GLOBALS['user_id']);
 
         $groups = [];
         foreach ($itemUser->group as $grp)
@@ -114,8 +112,7 @@ final class Home extends Common
 
         if (count($groups) > 0)
         {
-          $item2 = new \App\Models\Ticket();
-          $myItem2 = $item2::with('requestergroup', 'watchergroup', 'techniciangroup')->get();
+          $myItem2 = \App\Models\Ticket::with('requestergroup', 'watchergroup', 'techniciangroup')->take(5)->get();
           foreach ($myItem2 as $it)
           {
             if ($it->requestergroup != null)
@@ -173,8 +170,8 @@ final class Home extends Common
       if ($key == 'lastknowledgeitems')
       {
         $item2 = new \App\Models\Knowbaseitem();
-        $myItem2 = $item2->orderBy('date', 'desc')->take($nbLast)->get();
-        $myItem3 = $item2->orderBy('date', 'desc')->get()->count();
+        $myItem2 = $item2->orderBy('date', 'desc')->take($nbLast)->take(5)->get();
+        $myItem3 = $item2->orderBy('date', 'desc')->count();
 
         foreach ($myItem2 as $it)
         {
@@ -213,7 +210,7 @@ final class Home extends Common
       {
         $item2 = new \App\Models\Problem();
         $myItem2 = $item2->orderBy('date', 'desc')->take($nbLast)->get();
-        $myItem3 = $item2->orderBy('date', 'desc')->get()->count();
+        $myItem3 = $item2->orderBy('date', 'desc')->count();
 
         foreach ($myItem2 as $it)
         {
@@ -253,7 +250,7 @@ final class Home extends Common
           $nbTodayIncidents = 0;
 
           $item2 = new \App\Models\Ticket();
-          $myItem2 = $item2::with('requester', 'requestergroup')->get();
+          $myItem2 = $item2::with('requester', 'requestergroup')->take(5)->get();
           foreach ($myItem2 as $it)
           {
             if ($it->requestergroup != null)
@@ -307,48 +304,49 @@ final class Home extends Common
           $nbValTotal = $nbValTotal + count($items[$key]['datas']);
         }
       }
-      if ($key == 'linkedincidents')
-      {
-        $myItem2 = \App\Models\Ticket::has('linkedtickets')->get();
-        $ticketFound = [];
+      // if ($key == 'linkedincidents')
+      // {
+      //   $myItem2 = \App\Models\Ticket::has('linkedtickets')->get();
+      //   $ticketFound = [];
 
-        foreach ($myItem2 as $ticket)
-        {
-          if (!in_array($ticket->id, $ticketFound))
-          {
-            $ticketFound[] = $ticket->id;
+      //   foreach ($myItem2 as $ticket)
+      //   {
+      //     if (!in_array($ticket->id, $ticketFound))
+      //     {
+      //       $ticketFound[] = $ticket->id;
 
 
-            $links = [
-              self::LINK => 0,
-              self::DUPLICATE => 0,
-              self::SON => 0,
-              self::PARENT => 0,
-            ];
-            foreach ($ticket->linkedtickets as $linkedticket)
-            {
-              $links[$linkedticket->pivot->link]++;
-              $ticketFound[] = $linkedticket->id;
-            }
+      //       $links = [
+      //         self::LINK => 0,
+      //         self::DUPLICATE => 0,
+      //         self::SON => 0,
+      //         self::PARENT => 0,
+      //       ];
+      //       foreach ($ticket->linkedtickets as $linkedticket)
+      //       {
+      //         $links[$linkedticket->pivot->link]++;
+      //         $ticketFound[] = $linkedticket->id;
+      //       }
 
-            $items[$key]['datas'][$ticket->id] = [
-              'name' => $ticket->name,
-              'status' => self::getStatusArray()[$ticket->status],
-              'priority' => self::getPriorityArray()[$ticket->priority],
-              'date_open' => $ticket->date,
-              'date_last_modif' => $ticket->updated_at,
-              'linkedtickets' => self::showLinkedTickets($links),
-            ];
-          }
-        }
+      //       $items[$key]['datas'][$ticket->id] = [
+      //         'name' => $ticket->name,
+      //         'status' => self::getStatusArray()[$ticket->status],
+      //         'priority' => self::getPriorityArray()[$ticket->priority],
+      //         'date_open' => $ticket->date,
+      //         'date_last_modif' => $ticket->updated_at,
+      //         'linkedtickets' => self::showLinkedTickets($links),
+      //       ];
+      //     }
+      //   }
 
-        $nbValTotal = $nbValTotal + count($items[$key]['datas']);
-      }
+      //   $nbValTotal = $nbValTotal + count($items[$key]['datas']);
+      // }
       if ($key == 'lastescaladedtickets')
       {
         $myItem2 = \App\Models\Ticket::
             with('requester', 'technician', 'techniciangroup')
           ->orderBy('date', 'desc')
+          ->take(5)
           ->get();
 
         $incr = 0;

@@ -38,7 +38,7 @@ final class OlalevelsTicketsMigration extends AbstractMigration
             'id'          => $row['id'],
             'ticket_id'   => $row['tickets_id'],
             'olalevel_id' => $row['olalevels_id'],
-            'date'        => $row['date'],
+            'date'        => Toolbox::fixDate($row['date']),
           ]
         ];
         $item->insert($data)

@@ -62,8 +62,8 @@ final class IpnetworksMigration extends AbstractMigration
             'gateway_2'       => $row['gateway_2'],
             'gateway_3'       => $row['gateway_3'],
             'comment'         => $row['comment'],
-            'updated_at'      => $row['date_mod'],
-            'created_at'      => $row['date_creation'],
+            'updated_at'      => Toolbox::fixDate($row['date_mod']),
+            'created_at'      => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

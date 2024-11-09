@@ -41,8 +41,8 @@ final class NetworkportfiberchannelsMigration extends AbstractMigration
             'netpoint_id'               => $row['netpoints_id'],
             'wwn'                       => $row['wwn'],
             'speed'                     => $row['speed'],
-            'updated_at'                => $row['date_mod'],
-            'created_at'                => $row['date_creation'],
+            'updated_at'                => Toolbox::fixDate($row['date_mod']),
+            'created_at'                => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

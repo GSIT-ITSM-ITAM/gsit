@@ -43,10 +43,10 @@ final class OlasMigration extends AbstractMigration
             'comment'             => $row['comment'],
             'number_time'         => $row['number_time'],
             'calendar_id'         => $row['calendars_id'],
-            'updated_at'          => $row['date_mod'],
+            'updated_at'          => Toolbox::fixDate($row['date_mod']),
             'definition_time'     => $row['definition_time'],
             'end_of_working_day'  => $row['end_of_working_day'],
-            'created_at'          => $row['date_creation'],
+            'created_at'          => Toolbox::fixDate($row['date_creation']),
             'slm_id'              => $row['slms_id'],
           ]
         ];

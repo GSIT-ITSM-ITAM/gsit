@@ -62,8 +62,8 @@ final class RacksMigration extends AbstractMigration
             'max_power'         => $row['max_power'],
             'mesured_power'     => $row['mesured_power'],
             'max_weight'        => $row['max_weight'],
-            'updated_at'        => $row['date_mod'],
-            'created_at'        => $row['date_creation'],
+            'updated_at'        => Toolbox::fixDate($row['date_mod']),
+            'created_at'        => Toolbox::fixDate($row['date_creation']),
             'deleted_at'        => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

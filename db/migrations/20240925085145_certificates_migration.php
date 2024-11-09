@@ -56,13 +56,13 @@ final class CertificatesMigration extends AbstractMigration
             'user_id'             => $row['users_id'],
             'group_id'            => $row['groups_id'],
             'is_autosign'         => $row['is_autosign'],
-            'date_expiration'     => $row['date_expiration'],
+            'date_expiration'     => Toolbox::fixDate($row['date_expiration']),
             'state_id'            => $row['states_id'],
             'command'             => $row['command'],
             'certificate_request' => $row['certificate_request'],
             'certificate_item'    => $row['certificate_item'],
-            'created_at'          => $row['date_creation'],
-            'updated_at'          => $row['date_mod'],
+            'created_at'          => Toolbox::fixDate($row['date_creation']),
+            'updated_at'          => Toolbox::fixDate($row['date_mod']),
             'deleted_at'          => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

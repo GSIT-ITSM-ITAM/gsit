@@ -39,8 +39,8 @@ final class RulearightparametersMigration extends AbstractMigration
             'name'        => $row['name'],
             'value'       => $row['value'],
             'comment'     => $row['comment'],
-            'updated_at'  => $row['date_mod'],
-            'created_at'  => $row['date_creation'],
+            'updated_at'  => Toolbox::fixDate($row['date_mod']),
+            'created_at'  => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

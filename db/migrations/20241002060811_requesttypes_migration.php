@@ -45,8 +45,8 @@ final class RequesttypesMigration extends AbstractMigration
             'is_ticketheader'         => $row['is_ticketheader'],
             'is_itilfollowup'         => $row['is_itilfollowup'],
             'comment'                 => $row['comment'],
-            'updated_at'              => $row['date_mod'],
-            'created_at'              => $row['date_creation'],
+            'updated_at'              => Toolbox::fixDate($row['date_mod']),
+            'created_at'              => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

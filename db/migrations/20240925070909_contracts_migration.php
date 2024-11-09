@@ -41,7 +41,7 @@ final class ContractsMigration extends AbstractMigration
             'name'                => $row['name'],
             'num'                 => $row['num'],
             'contracttype_id'     => $row['contracttypes_id'],
-            'begin_date'          => $row['begin_date'],
+            'begin_date'          => Toolbox::fixDate($row['begin_date']),
             'duration'            => $row['duration'],
             'notice'              => $row['notice'],
             'periodicity'         => $row['periodicity'],
@@ -62,8 +62,8 @@ final class ContractsMigration extends AbstractMigration
             'template_name'       => $row['template_name'],
             'is_template'         => $row['is_template'],
             'state_id'            => $row['states_id'],
-            'updated_at'          => $row['date_mod'],
-            'created_at'          => $row['date_creation'],
+            'updated_at'          => Toolbox::fixDate($row['date_mod']),
+            'created_at'          => Toolbox::fixDate($row['date_creation']),
             'deleted_at'          => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

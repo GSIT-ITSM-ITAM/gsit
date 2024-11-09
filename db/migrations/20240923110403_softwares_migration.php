@@ -48,14 +48,14 @@ final class SoftwaresMigration extends AbstractMigration
             'manufacturer_id'       => $row['manufacturers_id'],
             'is_template'           => $row['is_template'],
             'template_name'         => $row['template_name'],
-            'updated_at'            => $row['date_mod'],
+            'updated_at'            => Toolbox::fixDate($row['date_mod']),
             'user_id'               => $row['users_id'],
             'group_id'              => $row['groups_id'],
             'ticket_tco'            => $row['ticket_tco'],
             'is_helpdesk_visible'   => $row['is_helpdesk_visible'],
             'softwarecategory_id'   => $row['softwarecategories_id'],
             'is_valid'              => $row['is_valid'],
-            'created_at'            => $row['date_creation'],
+            'created_at'            => Toolbox::fixDate($row['date_creation']),
             'deleted_at'            => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

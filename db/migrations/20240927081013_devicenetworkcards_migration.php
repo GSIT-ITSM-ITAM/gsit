@@ -56,8 +56,8 @@ final class DevicenetworkcardsMigration extends AbstractMigration
             'entity_id'                 => ($row['entities_id'] + 1),
             'is_recursive'              => $row['is_recursive'],
             'devicenetworkcardmodel_id' => $row['devicenetworkcardmodels_id'],
-            'updated_at'                => $row['date_mod'],
-            'created_at'                => $row['date_creation'],
+            'updated_at'                => Toolbox::fixDate($row['date_mod']),
+            'created_at'                => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

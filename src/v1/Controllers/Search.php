@@ -142,9 +142,14 @@ final class Search extends Common
         }
         elseif ($field['type'] == 'dropdown')
         {
-          $myData[$field['name']] = [
-            'value' => $field['values'][$item->{$field['name']}],
-          ];
+          if (isset($field['values'][$item->{$field['name']}]))
+          {
+            $myData[$field['name']] = [
+              'value' => $field['values'][$item->{$field['name']}],
+            ];
+          } else {
+            $myData[$field['name']] = [];
+          }
         }
         elseif ($field['type'] == 'description')
         {

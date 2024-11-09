@@ -65,10 +65,10 @@ final class TransfersMigration extends AbstractMigration
             'clean_cartridgeitem' => $row['clean_cartridgeitem'],
             'keep_cartridge'      => $row['keep_cartridge'],
             'keep_consumable'     => $row['keep_consumable'],
-            'updated_at'          => $row['date_mod'],
+            'updated_at'          => Toolbox::fixDate($row['date_mod']),
             'comment'             => $row['comment'],
             'keep_disk'           => $row['keep_disk'],
-            'created_at'          => $row['date_mod'],
+            'created_at'          => Toolbox::fixDate($row['date_mod']),
           ]
         ];
         $item->insert($data)

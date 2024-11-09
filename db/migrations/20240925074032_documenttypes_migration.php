@@ -41,9 +41,9 @@ final class DocumenttypesMigration extends AbstractMigration
             'icon'                => $row['icon'],
             'mime'                => $row['mime'],
             'is_uploadable'       => $row['is_uploadable'],
-            'updated_at'          => $row['date_mod'],
+            'updated_at'          => Toolbox::fixDate($row['date_mod']),
             'comment'             => $row['comment'],
-            'created_at'          => $row['date_creation'],
+            'created_at'          => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

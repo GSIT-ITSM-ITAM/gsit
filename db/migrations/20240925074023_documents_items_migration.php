@@ -30,11 +30,11 @@ final class DocumentsItemsMigration extends AbstractMigration
     if ($this->isMigratingUp())
     {
       $nbRows = $pdo->query('SELECT count(*) FROM glpi_documents_items')->fetchColumn();
-      $nbLoops = ceil($nbRows / 15000);
+      $nbLoops = ceil($nbRows / 5900);
 
       for ($i = 0; $i < $nbLoops; $i++)
       {
-        $stmt = $pdo->query('SELECT * FROM glpi_documents_items ORDER BY id LIMIT 15000 OFFSET ' . ($i * 15000));
+        $stmt = $pdo->query('SELECT * FROM glpi_documents_items ORDER BY id LIMIT 5900 OFFSET ' . ($i * 5900));
 
         $rows = $stmt->fetchAll();
         $data = [];
@@ -47,13 +47,14 @@ final class DocumentsItemsMigration extends AbstractMigration
             'item_type'         => 'App\\Models\\' . $row['itemtype'],
             'entity_id'         => ($row['entities_id'] + 1),
             'is_recursive'      => $row['is_recursive'],
-            'updated_at'        => $row['date_mod'],
+            'updated_at'        => Toolbox::fixDate($row['date_mod']),
             'user_id'           => $row['users_id'],
             'timeline_position' => $row['timeline_position'],
-            'created_at'        => $row['date_creation'],
-            'date'              => $row['date'],
+            'created_at'        => Toolbox::fixDate($row['date_creation']),
+            'date'              => Toolbox::fixDate($row['date']),
           ];
         }
+        print_r($data[196]);
         $item->insert($data)
              ->saveData();
       }

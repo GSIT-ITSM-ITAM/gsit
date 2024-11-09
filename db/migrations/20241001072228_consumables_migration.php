@@ -42,8 +42,8 @@ final class ConsumablesMigration extends AbstractMigration
             'date_out'          => $row['date_out'],
             'item_type'         => 'App\\Models\\' . $row['itemtype'],
             'item_id'           => $row['items_id'],
-            'updated_at'        => $row['date_mod'],
-            'created_at'        => $row['date_creation'],
+            'updated_at'        => Toolbox::fixDate($row['date_mod']),
+            'created_at'        => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

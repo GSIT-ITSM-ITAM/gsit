@@ -55,7 +55,7 @@ final class OperatingsystemMigration extends AbstractMigration
         {
           $builder = $this->getQueryBuilder('update');
           $builder->update('item_operatingsystem')
-                  ->set('installationdate', $row['operatingsystem_installationdate'])
+                  ->set('installationdate', Toolbox::fixDate($row['operatingsystem_installationdate']))
                   ->set('winowner', $row['winowner'])
                   ->set('wincompany', $row['wincompany'])
                   ->set('oscomment', $row['oscomment'])

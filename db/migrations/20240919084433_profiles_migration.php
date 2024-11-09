@@ -42,7 +42,7 @@ final class ProfilesMigration extends AbstractMigration
             'helpdesk_hardware'         => $row['helpdesk_hardware'],
             'helpdesk_item_type'        => $row['helpdesk_item_type'],
             'ticket_status'             => $row['ticket_status'],
-            'updated_at'                => $row['date_mod'],
+            'updated_at'                => Toolbox::fixDate($row['date_mod']),
             'comment'                   => $row['comment'],
             'problem_status'            => $row['problem_status'],
             'create_ticket_on_login'    => $row['create_ticket_on_login'],
@@ -51,7 +51,7 @@ final class ProfilesMigration extends AbstractMigration
             'problemtemplate_id'        => $row['problemtemplates_id'],
             'change_status'             => $row['change_status'],
             'managed_domainrecordtypes' => $row['managed_domainrecordtypes'],
-            'created_at'                => $row['date_creation'],
+            'created_at'                => Toolbox::fixDate($row['date_creation']),
           ]
         ];
 

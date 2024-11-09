@@ -40,11 +40,11 @@ final class HolidaysMigration extends AbstractMigration
             'entity_id'     => ($row['entities_id'] + 1),
             'is_recursive'  => $row['is_recursive'],
             'comment'       => $row['comment'],
-            'begin_date'    => $row['begin_date'],
-            'end_date'      => $row['end_date'],
+            'begin_date'    => Toolbox::fixDate($row['begin_date']),
+            'end_date'      => Toolbox::fixDate($row['end_date']),
             'is_perpetual'  => $row['is_perpetual'],
-            'updated_at'    => $row['date_mod'],
-            'created_at'    => $row['date_creation'],
+            'updated_at'    => Toolbox::fixDate($row['date_mod']),
+            'created_at'    => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

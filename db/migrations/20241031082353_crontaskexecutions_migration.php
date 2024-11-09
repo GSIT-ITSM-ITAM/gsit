@@ -12,9 +12,8 @@ use Phinx\Db\Adapter\MysqlAdapter;
 
 final class CrontaskexecutionsMigration extends AbstractMigration
 {
-  public function change(): void
+  public function up()
   {
-
     $table = $this->table('crontasklogs');
     $table->rename('crontaskexecutions')
           ->update();
@@ -61,5 +60,31 @@ final class CrontaskexecutionsMigration extends AbstractMigration
           // // `elapsed` float NOT NULL,
           // `volume` int(11) NOT NULL,
           // `content` varchar(255) DEFAULT NULL,
+  }
+
+  public function down()
+  {
+    $table = $this->table('crontaskexecutions');
+    $table->rename('crontasklogs')
+          ->update();
+
+    $table = $this->table('crontasklogs');
+    $table->addColumn('crontask_id', 'integer', ['null' => false])
+          ->renameColumn('created_at', 'date')
+          ->removeColumn('updated_at')
+          ->addColumn('elapsed', 'float', ['null' => false])
+          ->addColumn('volume', 'integer', ['null' => false])
+          ->addColumn('content', 'string', ['null' => true])
+          ->removeColumn('execution_duration')
+          ->update();
+
+    $table = $this->table('crontaskexecutionlogs');
+    $table->removeColumn('crontaskexecution_id')
+          ->removeColumn('created_at')
+          ->removeColumn('updated_at')
+          ->removeColumn('ended_at')
+          ->removeColumn('volume')
+          ->removeColumn('content')
+          ->create();
   }
 }

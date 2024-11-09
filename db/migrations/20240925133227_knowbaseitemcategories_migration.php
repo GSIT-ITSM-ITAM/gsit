@@ -45,8 +45,8 @@ final class KnowbaseitemcategoriesMigration extends AbstractMigration
             'level'                   => $row['level'],
             'sons_cache'              => $row['sons_cache'],
             'ancestors_cache'         => $row['ancestors_cache'],
-            'updated_at'              => $row['date_mod'],
-            'created_at'              => $row['date_creation'],
+            'updated_at'              => Toolbox::fixDate($row['date_mod']),
+            'created_at'              => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

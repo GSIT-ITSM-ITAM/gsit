@@ -42,7 +42,7 @@ final class KnowbaseitemsRevisionsMigration extends AbstractMigration
             'answer'          => $row['answer'],
             'language'        => $row['language'],
             'user_id'         => $row['users_id'],
-            'created_at'      => $row['date_creation'],
+            'created_at'      => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

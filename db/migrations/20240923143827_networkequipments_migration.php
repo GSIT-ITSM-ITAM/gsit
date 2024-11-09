@@ -46,7 +46,7 @@ final class NetworkequipmentsMigration extends AbstractMigration
             'contact_num'               => $row['contact_num'],
             'user_id_tech'              => $row['users_id_tech'],
             'group_id_tech'             => $row['groups_id_tech'],
-            'updated_at'                => $row['date_mod'],
+            'updated_at'                => Toolbox::fixDate($row['date_mod']),
             'comment'                   => $row['comment'],
             'location_id'               => $row['locations_id'],
             'network_id'                => $row['networks_id'],
@@ -60,7 +60,7 @@ final class NetworkequipmentsMigration extends AbstractMigration
             'state_id'                  => $row['states_id'],
             'ticket_tco'                => $row['ticket_tco'],
             'is_dynamic'                => $row['is_dynamic'],
-            'created_at'                => $row['date_creation'],
+            'created_at'                => Toolbox::fixDate($row['date_creation']),
             'deleted_at'                => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

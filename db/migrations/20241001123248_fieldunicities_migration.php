@@ -45,8 +45,8 @@ final class FieldunicitiesMigration extends AbstractMigration
             'action_refuse' => $row['action_refuse'],
             'action_notify' => $row['action_notify'],
             'comment'       => $row['comment'],
-            'updated_at'    => $row['date_mod'],
-            'created_at'    => $row['date_creation'],
+            'updated_at'    => Toolbox::fixDate($row['date_mod']),
+            'created_at'    => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

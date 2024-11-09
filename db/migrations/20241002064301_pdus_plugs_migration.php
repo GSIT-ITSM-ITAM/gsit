@@ -39,8 +39,8 @@ final class PdusPlugsMigration extends AbstractMigration
             'plug_id'       => $row['plugs_id'],
             'pdu_id'        => $row['pdus_id'],
             'number_plugs'  => $row['number_plugs'],
-            'updated_at'    => $row['date_mod'],
-            'created_at'    => $row['date_creation'],
+            'updated_at'    => Toolbox::fixDate($row['date_mod']),
+            'created_at'    => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

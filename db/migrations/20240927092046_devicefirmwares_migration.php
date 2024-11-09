@@ -39,14 +39,14 @@ final class DevicefirmwaresMigration extends AbstractMigration
             'name'                    => $row['designation'],
             'comment'                 => $row['comment'],
             'manufacturer_id'         => $row['manufacturers_id'],
-            'date'                    => $row['date'],
+            'date'                    => Toolbox::fixDate($row['date']),
             'version'                 => $row['version'],
             'devicefirmwaretype_id'   => $row['devicefirmwaretypes_id'],
             'entity_id'               => ($row['entities_id'] + 1),
             'is_recursive'            => $row['is_recursive'],
             'devicefirmwaremodel_id'  => $row['devicefirmwaremodels_id'],
-            'updated_at'              => $row['date_mod'],
-            'created_at'              => $row['date_creation'],
+            'updated_at'              => Toolbox::fixDate($row['date_mod']),
+            'created_at'              => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

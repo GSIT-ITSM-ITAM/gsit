@@ -45,8 +45,8 @@ final class ComputerantivirusesMigration extends AbstractMigration
             'is_uptodate'       => $row['is_uptodate'],
             'is_dynamic'        => $row['is_dynamic'],
             'date_expiration'   => $row['date_expiration'],
-            'updated_at'        => $row['date_mod'],
-            'created_at'        => $row['date_creation'],
+            'updated_at'        => Toolbox::fixDate($row['date_mod']),
+            'created_at'        => Toolbox::fixDate($row['date_creation']),
             'deleted_at'        => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

@@ -43,8 +43,8 @@ final class TicketvalidationsMigration extends AbstractMigration
             'comment_submission'  => $row['comment_submission'],
             'comment_validation'  => $row['comment_validation'],
             'status'              => $row['status'],
-            'submission_date'     => $row['submission_date'],
-            'validation_date'     => $row['validation_date'],
+            'submission_date'     => Toolbox::fixDate($row['submission_date']),
+            'validation_date'     => Toolbox::fixDate($row['validation_date']),
             'timeline_position'   => $row['timeline_position'],
           ]
         ];

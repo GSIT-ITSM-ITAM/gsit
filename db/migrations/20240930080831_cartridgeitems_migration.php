@@ -47,8 +47,8 @@ final class CartridgeitemsMigration extends AbstractMigration
             'group_id_tech'         => $row['groups_id_tech'],
             'comment'               => $row['comment'],
             'alarm_threshold'       => $row['alarm_threshold'],
-            'updated_at'            => $row['date_mod'],
-            'created_at'            => $row['date_creation'],
+            'updated_at'            => Toolbox::fixDate($row['date_mod']),
+            'created_at'            => Toolbox::fixDate($row['date_creation']),
             'deleted_at'            => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

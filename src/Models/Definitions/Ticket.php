@@ -284,6 +284,18 @@ class Ticket
         'relationfields' => ['id', 'content', 'user.completename'],
         'usein' => ['search', 'notification'],
       ],
+      [
+        'id'    => 300,
+        'title' => $translator->translatePlural('Problem', 'Problems', 2),
+        'type'  => 'dropdown_remote',
+        'name'  => 'problems',
+        'itemtype' => '\App\Models\Problem',
+        'multiple' => true,
+        'fillable' => false,
+        'display'  => false,
+        'relationfields' => ['id', 'name', 'date', 'content'],
+        'usein' => ['search', 'notification'],
+      ],
     ];
 
     // TODO others like users

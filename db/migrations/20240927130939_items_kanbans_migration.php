@@ -40,8 +40,8 @@ final class ItemsKanbansMigration extends AbstractMigration
             'item_id'     => $row['items_id'],
             'user_id'     => $row['users_id'],
             'state'       => $row['state'],
-            'updated_at'  => $row['date_mod'],
-            'created_at'  => $row['date_creation'],
+            'updated_at'  => Toolbox::fixDate($row['date_mod']),
+            'created_at'  => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

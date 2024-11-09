@@ -40,8 +40,8 @@ final class ProjectstatesMigration extends AbstractMigration
             'comment'     => $row['comment'],
             'color'       => $row['color'],
             'is_finished' => $row['is_finished'],
-            'updated_at'  => $row['date_mod'],
-            'created_at'  => $row['date_creation'],
+            'updated_at'  => Toolbox::fixDate($row['date_mod']),
+            'created_at'  => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

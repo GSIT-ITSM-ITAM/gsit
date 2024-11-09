@@ -45,8 +45,8 @@ final class DevicegenericsMigration extends AbstractMigration
             'location_id'           => $row['locations_id'],
             'state_id'              => $row['states_id'],
             'devicegenericmodel_id' => $row['devicegenericmodels_id'],
-            'updated_at'            => $row['date_mod'],
-            'created_at'            => $row['date_creation'],
+            'updated_at'            => Toolbox::fixDate($row['date_mod']),
+            'created_at'            => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

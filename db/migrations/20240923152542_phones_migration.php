@@ -38,7 +38,7 @@ final class PhonesMigration extends AbstractMigration
             'id'                    => $row['id'],
             'entity_id'             => ($row['entities_id'] + 1),
             'name'                  => $row['name'],
-            'updated_at'            => $row['date_mod'],
+            'updated_at'            => Toolbox::fixDate($row['date_mod']),
             'contact'               => $row['contact'],
             'contact_num'           => $row['contact_num'],
             'user_id_tech'          => $row['users_id_tech'],
@@ -63,7 +63,7 @@ final class PhonesMigration extends AbstractMigration
             'state_id'              => $row['states_id'],
             'ticket_tco'            => $row['ticket_tco'],
             'is_dynamic'            => $row['is_dynamic'],
-            'created_at'            => $row['date_creation'],
+            'created_at'            => Toolbox::fixDate($row['date_creation']),
             'is_recursive'          => $row['is_recursive'],
             'deleted_at'            => self::convertIsDeleted($row['is_deleted']),
           ]

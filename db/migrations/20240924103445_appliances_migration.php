@@ -53,8 +53,8 @@ final class AppliancesMigration extends AbstractMigration
             'serial'                    => $row['serial'],
             'otherserial'               => $row['otherserial'],
             'is_helpdesk_visible'       => $row['is_helpdesk_visible'],
-            'updated_at'                => $row['date_mod'],
-            'created_at'                => $row['date_mod'],
+            'updated_at'                => Toolbox::fixDate($row['date_mod']),
+            'created_at'                => Toolbox::fixDate($row['date_mod']),
             'deleted_at'                => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

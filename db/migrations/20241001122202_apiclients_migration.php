@@ -39,18 +39,19 @@ final class ApiclientsMigration extends AbstractMigration
             'entity_id'         => ($row['entities_id'] + 1),
             'is_recursive'      => $row['is_recursive'],
             'name'              => $row['name'],
-            'updated_at'        => $row['date_mod'],
+            'updated_at'        => Toolbox::fixDate($row['date_mod']),
             'is_active'         => $row['is_active'],
-            'ipv4_range_start'  => $row['ipv4_range_start'],
-            'ipv4_range_end'    => $row['ipv4_range_end'],
+            'ipv4_range_start'  => (int) $row['ipv4_range_start'],
+            'ipv4_range_end'    => (int) $row['ipv4_range_end'],
             'ipv6'              => $row['ipv6'],
             'app_token'         => $row['app_token'],
-            'app_token_date'    => $row['app_token_date'],
+            'app_token_date'    => Toolbox::fixDate($row['app_token_date']),
             'dolog_method'      => $row['dolog_method'],
             'comment'           => $row['comment'],
-            'created_at'        => $row['date_mod'],
+            'created_at'        => Toolbox::fixDate($row['date_mod']),
           ]
         ];
+        print_r($data);
         $item->insert($data)
              ->saveData();
       }

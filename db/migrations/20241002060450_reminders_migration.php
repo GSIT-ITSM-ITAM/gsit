@@ -37,18 +37,18 @@ final class RemindersMigration extends AbstractMigration
           [
             'id'              => $row['id'],
             'uuid'            => $row['uuid'],
-            'date'            => $row['date'],
+            'date'            => Toolbox::fixDate($row['date']),
             'user_id'         => $row['users_id'],
             'name'            => $row['name'],
             'text'            => $row['text'],
             'begin'           => $row['begin'],
             'end'             => $row['end'],
             'is_planned'      => $row['is_planned'],
-            'updated_at'      => $row['date_mod'],
+            'updated_at'      => Toolbox::fixDate($row['date_mod']),
             'state'           => $row['state'],
-            'begin_view_date' => $row['begin_view_date'],
-            'end_view_date'   => $row['end_view_date'],
-            'created_at'      => $row['date_creation'],
+            'begin_view_date' => Toolbox::fixDate($row['begin_view_date']),
+            'end_view_date'   => Toolbox::fixDate($row['end_view_date']),
+            'created_at'      => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

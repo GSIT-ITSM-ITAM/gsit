@@ -13,6 +13,7 @@ final class CrontasklogsMigration extends AbstractMigration
 {
   public function change(): void
   {
+    return;
     $configArray = require('phinx.php');
     $environments = array_keys($configArray['environments']);
     if (in_array('old', $environments))
@@ -43,7 +44,7 @@ final class CrontasklogsMigration extends AbstractMigration
               'id'              => $row['id'],
               'crontask_id'     => $row['crontasks_id'],
               'crontasklog_id'  => $row['crontasklogs_id'],
-              'date'            => $row['date'],
+              'date'            => Toolbox::fixDate($row['date']),
               'state'           => $row['state'],
               'elapsed'         => $row['elapsed'],
               'volume'          => $row['volume'],

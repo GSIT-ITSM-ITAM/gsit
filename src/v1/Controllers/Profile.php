@@ -72,8 +72,9 @@ final class Profile extends Common
     'setup' => [
       '\App\Models\Authsso',
       '\App\Models\Authldap',
-      '\App\Models\Notificationtemplate',
       '\App\Models\Notification',
+      '\App\Models\Notificationtemplate',
+      '\App\Models\Notificationtemplatetranslation',
       '\App\Models\Slm',
       '\App\Models\Fieldunicity',
       '\App\Models\Crontask',

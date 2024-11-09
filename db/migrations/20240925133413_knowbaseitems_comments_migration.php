@@ -41,8 +41,8 @@ final class KnowbaseitemsCommentsMigration extends AbstractMigration
             'language'          => $row['language'],
             'comment'           => $row['comment'],
             'parent_comment_id' => $row['parent_comment_id'],
-            'created_at'        => $row['date_creation'],
-            'updated_at'        => $row['date_mod'],
+            'created_at'        => Toolbox::fixDate($row['date_creation']),
+            'updated_at'        => Toolbox::fixDate($row['date_mod']),
           ]
         ];
         $item->insert($data)

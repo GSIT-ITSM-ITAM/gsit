@@ -30,11 +30,11 @@ final class LogsMigration extends AbstractMigration
     if ($this->isMigratingUp())
     {
       $nbRows = $pdo->query('SELECT count(*) FROM glpi_logs')->fetchColumn();
-      $nbLoops = ceil($nbRows / 30000);
+      $nbLoops = ceil($nbRows / 5900);
 
       for ($i = 0; $i < $nbLoops; $i++)
       {
-        $stmt = $pdo->query('SELECT * FROM glpi_logs ORDER BY id LIMIT 30000 OFFSET ' . ($i * 30000));
+        $stmt = $pdo->query('SELECT * FROM glpi_logs ORDER BY id LIMIT 5900 OFFSET ' . ($i * 5900));
         $rows = $stmt->fetchAll();
         $data = [];
         foreach ($rows as $row)
@@ -52,11 +52,11 @@ final class LogsMigration extends AbstractMigration
             'itemtype_link'     => $row['itemtype_link'],
             'linked_action'     => $row['linked_action'],
             'user_name'         => $row['user_name'],
-            'updated_at'        => $row['date_mod'],
+            'updated_at'        => Toolbox::fixDate($row['date_mod']),
             'id_search_option'  => $row['id_search_option'],
             'old_value'         => $row['old_value'],
             'new_value'         => $row['new_value'],
-            'created_at'        => $row['date_mod'],
+            'created_at'        => Toolbox::fixDate($row['date_mod']),
           ];
         }
         $item->insert($data)

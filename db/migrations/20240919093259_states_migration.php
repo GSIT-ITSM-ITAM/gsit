@@ -62,8 +62,8 @@ final class StatesMigration extends AbstractMigration
             'is_visible_cluster'            => $row['is_visible_cluster'],
             'is_visible_contract'           => $row['is_visible_contract'],
             'is_visible_appliance'          => $row['is_visible_appliance'],
-            'updated_at'                    => $row['date_mod'],
-            'created_at'                    => $row['date_creation'],
+            'updated_at'                    => Toolbox::fixDate($row['date_mod']),
+            'created_at'                    => Toolbox::fixDate($row['date_creation']),
           ]
         ];
 

@@ -50,8 +50,8 @@ final class ItemsDisksMigration extends AbstractMigration
             'encryption_tool'       => $row['encryption_tool'],
             'encryption_algorithm'  => $row['encryption_algorithm'],
             'encryption_type'       => $row['encryption_type'],
-            'updated_at'            => $row['date_mod'],
-            'created_at'            => $row['date_creation'],
+            'updated_at'            => Toolbox::fixDate($row['date_mod']),
+            'created_at'            => Toolbox::fixDate($row['date_creation']),
             'deleted_at'            => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

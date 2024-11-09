@@ -27,19 +27,6 @@ final class FormsAnswersMigration extends AbstractMigration
 
     $configArray = require('phinx.php');
     $environments = array_keys($configArray['environments']);
-    if (in_array('old', $environments))
-    {
-      $table = $this->table('answers');
-      $table->addColumn('created_at', 'timestamp', ['null' => true])
-            ->addColumn('entity_id', 'integer', ['null' => false, 'default' => 1])
-            ->addColumn('form_id', 'integer', ['null' => false, 'default' => 0])
-            ->addColumn('user_id', 'integer', ['null' => false, 'default' => 0])
-            ->addIndex(['entity_id'])
-            ->addIndex(['form_id'])
-            ->addIndex(['user_id'])
-            ->addIndex(['created_at'])
-            ->create();
-    }
     $item = $this->table('answers');
 
     if ($this->isMigratingUp())
@@ -68,7 +55,7 @@ final class FormsAnswersMigration extends AbstractMigration
                 'entity_id'         => $row['entities_id'],
                 'form_id'           => $row['plugin_formcreator_forms_id'],
                 'user_id'           => $row['requester_id'],
-                'created_at'        => $row['request_date'],
+                'created_at'        => Toolbox::fixDate($row['request_date']),
               ]
             ];
 

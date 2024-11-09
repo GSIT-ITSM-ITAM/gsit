@@ -38,8 +38,8 @@ final class NetworkportaggregatesMigration extends AbstractMigration
             'id'                  => $row['id'],
             'networkport_id'      => $row['networkports_id'],
             'networkport_id_list' => $row['networkports_id_list'],
-            'updated_at'          => $row['date_mod'],
-            'created_at'          => $row['date_creation'],
+            'updated_at'          => Toolbox::fixDate($row['date_mod']),
+            'created_at'          => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

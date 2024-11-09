@@ -39,7 +39,7 @@ final class NotimportedemailsMigration extends AbstractMigration
             'from'              => $row['from'],
             'to'                => $row['to'],
             'mailcollector_id'  => $row['mailcollectors_id'],
-            'date'              => $row['date'],
+            'date'              => Toolbox::fixDate($row['date']),
             'subject'           => $row['subject'],
             'messageid'         => $row['messageid'],
             'reason'            => $row['reason'],

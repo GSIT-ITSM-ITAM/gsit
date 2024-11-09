@@ -44,8 +44,8 @@ final class RssfeedsMigration extends AbstractMigration
             'max_items'     => $row['max_items'],
             'have_error'    => $row['have_error'],
             'is_active'     => $row['is_active'],
-            'updated_at'    => $row['date_mod'],
-            'created_at'    => $row['date_creation'],
+            'updated_at'    => Toolbox::fixDate($row['date_mod']),
+            'created_at'    => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

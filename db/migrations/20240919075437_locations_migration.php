@@ -55,8 +55,8 @@ final class LocationsMigration extends AbstractMigration
             'latitude'        => $row['latitude'],
             'longitude'       => $row['longitude'],
             'altitude'        => $row['altitude'],
-            'updated_at'      => $row['date_mod'],
-            'created_at'      => $row['date_creation'],
+            'updated_at'      => Toolbox::fixDate($row['date_mod']),
+            'created_at'      => Toolbox::fixDate($row['date_creation']),
           ]
         ];
 

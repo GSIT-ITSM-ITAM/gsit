@@ -16,6 +16,14 @@ class Notification
         'fillable' => true,
       ],
       [
+        'id'    => 5,
+        'title' => $translator->translatePlural('Type', 'Types', 1),
+        'type'  => 'dropdown',
+        'name'  => 'item_type',
+        'values' => self::getTypeArray(),
+        'fillable' => true,
+      ],
+      [
         'id'    => 6,
         'title' => $translator->translate('Active'),
         'type'  => 'boolean',
@@ -27,15 +35,6 @@ class Notification
         'title' => $translator->translate('Allow response'),
         'type'  => 'boolean',
         'name'  => 'allow_response',
-        'fillable' => true,
-      ],
-      [
-        'id'    => 5,
-        'title' => $translator->translatePlural('Type', 'Types', 1),
-        'type'  => 'dropdown',
-        'name'  => 'itemtype',
-        'dbname'  => 'itemtype',
-        'values' => self::getTypeArray(),
         'fillable' => true,
       ],
       [
@@ -92,38 +91,73 @@ class Notification
   {
     global $translator;
 
-    $types = [];
-    $types['CartridgeItem'] = $translator->translatePlural('Cartridge model', 'Cartridge models', 1);
-    $types['Change'] = $translator->translatePlural('Change', 'Changes', 1);
-    $types['ConsumableItem'] = $translator->translatePlural('Consumable model', 'Consumable models', 1);
-    $types['Contract'] = $translator->translatePlural('Contract', 'Contracts', 1);
-    $types['CronTask'] = $translator->translatePlural('Automatic action', 'Automatic actions', 1);
-    $types['DBConnection'] = $translator->translatePlural('SQL replica', 'SQL replicas', 1);
-    $types['FieldUnicity'] = $translator->translate('Fields unicity');
-    $types['Infocom'] = $translator->translate('Financial and administrative information');
-    $types['MailCollector'] = $translator->translatePlural('Receiver', 'Receivers', 1);
-    $types['ObjectLock'] = $translator->translatePlural('Object Lock', 'Object Locks', 1);
-    $types['PlanningRecall'] = $translator->translatePlural('Planning reminder', 'Planning reminders', 1);
-    $types['Problem'] = $translator->translatePlural('Problem', 'Problems', 1);
-    $types['Project'] = $translator->translatePlural('Project', 'Projects', 1);
-    $types['ProjectTask'] = $translator->translatePlural('Project task', 'Project tasks', 1);
-    $types['Reservation'] = $translator->translatePlural('Reservation', 'Reservations', 1);
-    $types['SoftwareLicense'] = $translator->translatePlural('License', 'Licenses', 1);
-    $types['App\Models\Ticket'] = $translator->translatePlural('Ticket', 'Tickets', 1);
-    $types['User'] = $translator->translatePlural('User', 'Users', 1);
-    $types['SavedSearch_Alert'] = $translator->translatePlural('Saved search alert', 'Saved searches alerts', 1);
-    $types['Certificate'] = $translator->translatePlural('Certificate', 'Certificates', 1);
-    $types['Domain'] = $translator->translatePlural('Domain', 'Domains', 1);
+    $types = [
+      'CartridgeItem' => [
+        'title' => $translator->translatePlural('Cartridge model', 'Cartridge models', 1),
+      ],
+      'Change' => [
+        'title' => $translator->translatePlural('Change', 'Changes', 1),
+      ],
+      'ConsumableItem' => [
+        'title' => $translator->translatePlural('Consumable model', 'Consumable models', 1),
+      ],
+      'Contract' => [
+        'title' => $translator->translatePlural('Contract', 'Contracts', 1),
+      ],
+      'CronTask' => [
+        'title' => $translator->translatePlural('Automatic action', 'Automatic actions', 1),
+      ],
+      'DBConnection' => [
+        'title' => $translator->translatePlural('SQL replica', 'SQL replicas', 1),
+      ],
+      'FieldUnicity' => [
+        'title' => $translator->translate('Fields unicity'),
+      ],
+      'Infocom' => [
+        'title' => $translator->translate('Financial and administrative information'),
+      ],
+      'MailCollector' => [
+        'title' => $translator->translatePlural('Receiver', 'Receivers', 1),
+      ],
+      'ObjectLock' => [
+        'title' => $translator->translatePlural('Object Lock', 'Object Locks', 1),
+      ],
+      'PlanningRecall' => [
+        'title' => $translator->translatePlural('Planning reminder', 'Planning reminders', 1),
+      ],
+      'Problem' => [
+        'title' => $translator->translatePlural('Problem', 'Problems', 1),
+      ],
+      'Project' => [
+        'title' => $translator->translatePlural('Project', 'Projects', 1),
+      ],
+      'ProjectTask' => [
+        'title' => $translator->translatePlural('Project task', 'Project tasks', 1),
+      ],
+      'Reservation' => [
+        'title' => $translator->translatePlural('Reservation', 'Reservations', 1),
+      ],
+      'SoftwareLicense' => [
+        'title' => $translator->translatePlural('License', 'Licenses', 1),
+      ],
+      'App\Models\Ticket' => [
+        'title' => $translator->translatePlural('Ticket', 'Tickets', 1),
+      ],
+      'User' => [
+        'title' => $translator->translatePlural('User', 'Users', 1),
+      ],
+      'SavedSearch_Alert' => [
+        'title' => $translator->translatePlural('Saved search alert', 'Saved searches alerts', 1),
+      ],
+      'Certificate' => [
+        'title' => $translator->translatePlural('Certificate', 'Certificates', 1),
+      ],
+      'Domain' => [
+        'title' => $translator->translatePlural('Domain', 'Domains', 1),
+      ],
+    ];
 
-    asort($types);
-
-    $newTypes = [];
-    foreach (array_keys($types) as $key)
-    {
-      $newTypes[$key]['title'] = $types[$key];
-    }
-
-    return $newTypes;
+    return $types;
   }
 
 
@@ -265,8 +299,8 @@ class Notification
     return [
       [
         'title' => $translator->translatePlural('Notification', 'Notifications', 1),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'home',
+        'link' => $rootUrl,
       ],
       [
         'title' => $translator->translatePlural('Template translation', 'Template translations', 2),

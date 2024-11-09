@@ -2567,27 +2567,29 @@ final class Route
         });
       });
 
-      $view->group('/notifications', function (RouteCollectorProxy $notifications)
+      $view->group('/notificationtemplates', function (RouteCollectorProxy $notificationtemplates)
       {
-        $notifications->group('/notificationtemplates', function (RouteCollectorProxy $notificationtemplates)
+        $notificationtemplates->map(['GET'], '', \App\v1\Controllers\Notificationtemplate::class . ':getAll');
+        $notificationtemplates->map(['POST'], '', \App\v1\Controllers\Notificationtemplate::class . ':postItem');
+        $notificationtemplates->group("/{id:[0-9]+}", function (RouteCollectorProxy $notificationtemplateId)
         {
-          $notificationtemplates->map(['GET'], '', \App\v1\Controllers\Notificationtemplate::class . ':getAll');
-          $notificationtemplates->map(['POST'], '', \App\v1\Controllers\Notificationtemplate::class . ':postItem');
-          $notificationtemplates->group("/{id:[0-9]+}", function (RouteCollectorProxy $notificationtemplateId)
+          $notificationtemplateId->map(['GET'], '', \App\v1\Controllers\Notificationtemplate::class . ':showItem');
+          $notificationtemplateId->map(['POST'], '', \App\v1\Controllers\Notificationtemplate::class . ':updateItem');
+          $notificationtemplateId->group('/', function (RouteCollectorProxy $sub)
           {
-            $notificationtemplateId->map(['GET'], '', \App\v1\Controllers\Notificationtemplate::class . ':showItem');
-            $notificationtemplateId->map(['POST'], '', \App\v1\Controllers\Notificationtemplate::class . ':updateItem');
+            $sub->map(['GET'], 'templatetranslation', \App\v1\Controllers\Notificationtemplate::class . ':showSubTemplatetranslations');
+            $sub->map(['GET'], 'templatetranslation/{translationid:[0-9]+}', \App\v1\Controllers\Notificationtemplate::class . ':showSubTemplatetranslation');
           });
         });
-        $notifications->group('/notifications', function (RouteCollectorProxy $notifications)
+      });
+      $view->group('/notifications', function (RouteCollectorProxy $notifications)
+      {
+        $notifications->map(['GET'], '', \App\v1\Controllers\Notification::class . ':getAll');
+        $notifications->map(['POST'], '', \App\v1\Controllers\Notification::class . ':postItem');
+        $notifications->group("/{id:[0-9]+}", function (RouteCollectorProxy $notificationId)
         {
-          $notifications->map(['GET'], '', \App\v1\Controllers\Notification::class . ':getAll');
-          $notifications->map(['POST'], '', \App\v1\Controllers\Notification::class . ':postItem');
-          $notifications->group("/{id:[0-9]+}", function (RouteCollectorProxy $notificationId)
-          {
-            $notificationId->map(['GET'], '', \App\v1\Controllers\Notification::class . ':showItem');
-            $notificationId->map(['POST'], '', \App\v1\Controllers\Notification::class . ':updateItem');
-          });
+          $notificationId->map(['GET'], '', \App\v1\Controllers\Notification::class . ':showItem');
+          $notificationId->map(['POST'], '', \App\v1\Controllers\Notification::class . ':updateItem');
         });
       });
 

@@ -64,7 +64,7 @@ final class AuthldapsMigration extends AbstractMigration
             'language_field'            => $row['language_field'],
             'entity_field'              => $row['entity_field'],
             'entity_condition'          => $row['entity_condition'],
-            'updated_at'                => $row['date_mod'],
+            'updated_at'                => Toolbox::fixDate($row['date_mod']),
             'comment'                   => $row['comment'],
             'is_default'                => $row['is_default'],
             'is_active'                 => $row['is_active'],
@@ -79,7 +79,7 @@ final class AuthldapsMigration extends AbstractMigration
             'ldap_maxlimit'             => $row['ldap_maxlimit'],
             'can_support_pagesize'      => $row['can_support_pagesize'],
             'picture_field'             => $row['picture_field'],
-            'created_at'                => $row['date_creation'],
+            'created_at'                => Toolbox::fixDate($row['date_creation']),
             'inventory_domain'          => $row['inventory_domain'],
           ]
         ];

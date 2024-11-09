@@ -43,8 +43,8 @@ final class DevicesimcardsMigration extends AbstractMigration
             'manufacturer_id'       => $row['manufacturers_id'],
             'voltage'               => $row['voltage'],
             'devicesimcardtype_id'  => $row['devicesimcardtypes_id'],
-            'updated_at'            => $row['date_mod'],
-            'created_at'            => $row['date_creation'],
+            'updated_at'            => Toolbox::fixDate($row['date_mod']),
+            'created_at'            => Toolbox::fixDate($row['date_creation']),
             'allow_voip'            => $row['allow_voip'],
           ]
         ];

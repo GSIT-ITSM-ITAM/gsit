@@ -41,8 +41,8 @@ final class VlansMigration extends AbstractMigration
             'name'          => $row['name'],
             'comment'       => $row['comment'],
             'tag'           => $row['tag'],
-            'updated_at'    => $row['date_mod'],
-            'created_at'    => $row['date_creation'],
+            'updated_at'    => Toolbox::fixDate($row['date_mod']),
+            'created_at'    => Toolbox::fixDate($row['date_creation']),
 
           ]
         ];

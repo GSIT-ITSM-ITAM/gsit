@@ -39,7 +39,7 @@ final class AlertsMigration extends AbstractMigration
             'item_type' => 'App\\Models\\' . $row['itemtype'],
             'item_id'   => $row['items_id'],
             'type'      => $row['type'],
-            'date'      => $row['date'],
+            'date'      => Toolbox::fixDate($row['date']),
           ]
         ];
         $item->insert($data)

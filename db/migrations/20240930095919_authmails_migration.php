@@ -39,7 +39,7 @@ final class AuthmailsMigration extends AbstractMigration
             'name'            => $row['name'],
             'connect_string'  => $row['connect_string'],
             'host'            => $row['host'],
-            'updated_at'      => $row['date_mod'],
+            'updated_at'      => Toolbox::fixDate($row['date_mod']),
             'comment'         => $row['comment'],
             'is_active'       => $row['is_active'],
           ]

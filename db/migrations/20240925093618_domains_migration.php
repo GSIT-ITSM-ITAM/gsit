@@ -40,13 +40,13 @@ final class DomainsMigration extends AbstractMigration
             'entity_id'       => ($row['entities_id'] + 1),
             'is_recursive'    => $row['is_recursive'],
             'domaintype_id'   => $row['domaintypes_id'],
-            'date_expiration' => $row['date_expiration'],
+            'date_expiration' => Toolbox::fixDate($row['date_expiration']),
             'user_id_tech'    => $row['users_id_tech'],
             'group_id_tech'   => $row['groups_id_tech'],
             'others'          => $row['others'],
             'comment'         => $row['comment'],
-            'updated_at'      => $row['date_mod'],
-            'created_at'      => $row['date_creation'],
+            'updated_at'      => Toolbox::fixDate($row['date_mod']),
+            'created_at'      => Toolbox::fixDate($row['date_creation']),
             'deleted_at'      => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

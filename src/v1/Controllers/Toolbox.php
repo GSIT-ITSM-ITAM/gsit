@@ -67,4 +67,19 @@ final class Toolbox
     ]);
     return $converter->convert($text);
   }
+
+  /**
+   * used in migration
+   */
+  public static function fixDate($myDate)
+  {
+    if (
+        $myDate == '0000-00-00 00:00:00' ||
+        $myDate == '0000-00-00'
+    )
+    {
+      return null;
+    }
+    return $myDate;
+  }
 }

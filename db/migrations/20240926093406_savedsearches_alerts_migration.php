@@ -41,8 +41,8 @@ final class SavedsearchesAlertsMigration extends AbstractMigration
             'is_active'       => $row['is_active'],
             'operator'        => $row['operator'],
             'value'           => $row['value'],
-            'updated_at'      => $row['date_mod'],
-            'created_at'      => $row['date_creation'],
+            'updated_at'      => Toolbox::fixDate($row['date_mod']),
+            'created_at'      => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

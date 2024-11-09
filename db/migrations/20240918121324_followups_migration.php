@@ -30,11 +30,11 @@ final class FollowupsMigration extends AbstractMigration
     if ($this->isMigratingUp())
     {
       $nbRows = $pdo->query('SELECT count(*) FROM glpi_itilfollowups')->fetchColumn();
-      $nbLoops = ceil($nbRows / 5000);
+      $nbLoops = ceil($nbRows / 4000);
 
       for ($i = 0; $i < $nbLoops; $i++)
       {
-        $stmt = $pdo->query('SELECT * FROM glpi_itilfollowups ORDER BY id LIMIT 5000 OFFSET ' . ($i * 5000));
+        $stmt = $pdo->query('SELECT * FROM glpi_itilfollowups ORDER BY id LIMIT 4000 OFFSET ' . ($i * 4000));
 
         $rows = $stmt->fetchAll();
         $data = [];
@@ -43,14 +43,14 @@ final class FollowupsMigration extends AbstractMigration
           $data[] = [
             'item_type'         => 'App\\Models\\' . $row['itemtype'],
             'item_id'           => $row['items_id'],
-            'date'              => $row['date'],
+            'date'              => Toolbox::fixDate($row['date']),
             'user_id'           => $row['users_id'],
             'user_id_editor'    => $row['users_id_editor'],
             'content'           => Toolbox::convertHtmlToMarkdown($row['content']),
             'is_private'        => $row['is_private'],
             'requesttype_id'    => $row['requesttypes_id'],
-            'updated_at'        => $row['date_mod'],
-            'created_at'        => $row['date_creation'],
+            'updated_at'        => Toolbox::fixDate($row['date_mod']),
+            'created_at'        => Toolbox::fixDate($row['date_creation']),
             'timeline_position' => $row['timeline_position'],
             'sourceitem_id'     => $row['sourceitems_id'],
             'sourceof_item_id'  => $row['sourceof_items_id'],
@@ -62,11 +62,11 @@ final class FollowupsMigration extends AbstractMigration
 
       // get ticket tasks and move them into followups
       $nbRows = $pdo->query('SELECT count(*) FROM glpi_tickettasks')->fetchColumn();
-      $nbLoops = ceil($nbRows / 5000);
+      $nbLoops = ceil($nbRows / 4000);
 
       for ($i = 0; $i < $nbLoops; $i++)
       {
-        $stmt = $pdo->query('SELECT * FROM glpi_tickettasks ORDER BY id LIMIT 5000 OFFSET ' . ($i * 5000));
+        $stmt = $pdo->query('SELECT * FROM glpi_tickettasks ORDER BY id LIMIT 4000 OFFSET ' . ($i * 4000));
 
         $rows = $stmt->fetchAll();
         $data = [];
@@ -116,11 +116,11 @@ final class FollowupsMigration extends AbstractMigration
 
       // get change tasks and move them into followups
       $nbRows = $pdo->query('SELECT count(*) FROM glpi_changetasks')->fetchColumn();
-      $nbLoops = ceil($nbRows / 5000);
+      $nbLoops = ceil($nbRows / 4000);
 
       for ($i = 0; $i < $nbLoops; $i++)
       {
-        $stmt = $pdo->query('SELECT * FROM glpi_changetasks ORDER BY id LIMIT 5000 OFFSET ' . ($i * 5000));
+        $stmt = $pdo->query('SELECT * FROM glpi_changetasks ORDER BY id LIMIT 4000 OFFSET ' . ($i * 4000));
 
         $rows = $stmt->fetchAll();
         $data = [];
@@ -168,11 +168,11 @@ final class FollowupsMigration extends AbstractMigration
 
       // get problem tasks and move them into followups
       $nbRows = $pdo->query('SELECT count(*) FROM glpi_problemtasks')->fetchColumn();
-      $nbLoops = ceil($nbRows / 5000);
+      $nbLoops = ceil($nbRows / 4000);
 
       for ($i = 0; $i < $nbLoops; $i++)
       {
-        $stmt = $pdo->query('SELECT * FROM glpi_problemtasks ORDER BY id LIMIT 5000 OFFSET ' . ($i * 5000));
+        $stmt = $pdo->query('SELECT * FROM glpi_problemtasks ORDER BY id LIMIT 4000 OFFSET ' . ($i * 4000));
 
         $rows = $stmt->fetchAll();
         $data = [];

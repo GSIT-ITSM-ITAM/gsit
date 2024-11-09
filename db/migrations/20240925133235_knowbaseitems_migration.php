@@ -42,11 +42,11 @@ final class KnowbaseitemsMigration extends AbstractMigration
             'is_faq'                  => $row['is_faq'],
             'user_id'                 => $row['users_id'],
             'view'                    => $row['view'],
-            'date'                    => $row['date'],
-            'updated_at'              => $row['date_mod'],
-            'begin_date'              => $row['begin_date'],
-            'end_date'                => $row['end_date'],
-            'created_at'              => $row['date_mod'],
+            'date'                    => Toolbox::fixDate($row['date']),
+            'updated_at'              => Toolbox::fixDate($row['date_mod']),
+            'begin_date'              => Toolbox::fixDate($row['begin_date']),
+            'end_date'                => Toolbox::fixDate($row['end_date']),
+            'created_at'              => Toolbox::fixDate($row['date_mod']),
           ]
         ];
         $item->insert($data)

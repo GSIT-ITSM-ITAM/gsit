@@ -50,8 +50,8 @@ final class SuppliersMigration extends AbstractMigration
             'comment'         => $row['comment'],
             'fax'             => $row['fax'],
             'email'           => $row['email'],
-            'updated_at'      => $row['date_mod'],
-            'created_at'      => $row['date_creation'],
+            'updated_at'      => Toolbox::fixDate($row['date_mod']),
+            'created_at'      => Toolbox::fixDate($row['date_creation']),
             'is_active'       => $row['is_active'],
             'deleted_at'      => self::convertIsDeleted($row['is_deleted']),
           ]

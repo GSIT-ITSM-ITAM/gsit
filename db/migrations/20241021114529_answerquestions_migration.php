@@ -8,6 +8,7 @@ use Phinx\Migration\AbstractMigration;
 use Phinx\Migration\Manager\Environment;
 use Phinx\Config\Config;
 use App\v1\Controllers\Toolbox;
+use Phinx\Db\Adapter\MysqlAdapter;
 
 final class AnswerquestionsMigration extends AbstractMigration
 {
@@ -16,9 +17,9 @@ final class AnswerquestionsMigration extends AbstractMigration
     $table = $this->table('answerquestions');
     $table->addColumn('answer_id', 'integer', ['null' => false, 'default' => 0])
           ->addColumn('question_id', 'integer', ['null' => false, 'default' => 0])
-          ->addColumn('answer', 'text', ['null' => true, 'default' => null])
+          ->addColumn('answer', 'text', ['null' => true, 'default' => null, 'limit' => MysqlAdapter::TEXT_LONG])
           ->addIndex(['answer_id', 'question_id'], ['unique' => true])
-          ->create();
+          ->save();
 
     $configArray = require('phinx.php');
     $environments = array_keys($configArray['environments']);

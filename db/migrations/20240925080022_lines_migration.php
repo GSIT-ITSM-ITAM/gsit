@@ -47,8 +47,8 @@ final class LinesMigration extends AbstractMigration
             'location_id'     => $row['locations_id'],
             'state_id'        => $row['states_id'],
             'linetype_id'     => $row['linetypes_id'],
-            'created_at'      => $row['date_creation'],
-            'updated_at'      => $row['date_mod'],
+            'created_at'      => Toolbox::fixDate($row['date_creation']),
+            'updated_at'      => Toolbox::fixDate($row['date_mod']),
             'comment'         => $row['comment'],
             'deleted_at'      => self::convertIsDeleted($row['is_deleted']),
           ]

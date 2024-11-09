@@ -42,10 +42,10 @@ final class ProjecttasktemplatesMigration extends AbstractMigration
             'description'         => $row['description'],
             'project_id'          => $row['projects_id'],
             'projecttask_id'      => $row['projecttasks_id'],
-            'plan_start_date'     => $row['plan_start_date'],
-            'plan_end_date'       => $row['plan_end_date'],
-            'real_start_date'     => $row['real_start_date'],
-            'real_end_date'       => $row['real_end_date'],
+            'plan_start_date'     => Toolbox::fixDate($row['plan_start_date']),
+            'plan_end_date'       => Toolbox::fixDate($row['plan_end_date']),
+            'real_start_date'     => Toolbox::fixDate($row['real_start_date']),
+            'real_end_date'       => Toolbox::fixDate($row['real_end_date']),
             'planned_duration'    => $row['planned_duration'],
             'effective_duration'  => $row['effective_duration'],
             'projectstate_id'     => $row['projectstates_id'],
@@ -54,8 +54,8 @@ final class ProjecttasktemplatesMigration extends AbstractMigration
             'percent_done'        => $row['percent_done'],
             'is_milestone'        => $row['is_milestone'],
             'comment'             => $row['comments'],
-            'updated_at'          => $row['date_mod'],
-            'created_at'          => $row['date_creation'],
+            'updated_at'          => Toolbox::fixDate($row['date_mod']),
+            'created_at'          => Toolbox::fixDate($row['date_creation']),
           ]
         ];
         $item->insert($data)

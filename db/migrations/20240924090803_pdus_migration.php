@@ -51,8 +51,8 @@ final class PdusMigration extends AbstractMigration
             'comment'           => $row['comment'],
             'manufacturer_id'   => $row['manufacturers_id'],
             'pdutype_id'        => $row['pdutypes_id'],
-            'updated_at'        => $row['date_mod'],
-            'created_at'        => $row['date_creation'],
+            'updated_at'        => Toolbox::fixDate($row['date_mod']),
+            'created_at'        => Toolbox::fixDate($row['date_creation']),
             'deleted_at'        => self::convertIsDeleted($row['is_deleted']),
           ]
         ];

@@ -47,8 +47,8 @@ final class ComputermodelsMigration extends AbstractMigration
             'is_half_rack'      => $row['is_half_rack'],
             'picture_front'     => $row['picture_front'],
             'picture_rear'      => $row['picture_rear'],
-            'updated_at'        => $row['date_mod'],
-            'created_at'        => $row['date_creation'],
+            'updated_at'        => Toolbox::fixDate($row['date_mod']),
+            'created_at'        => Toolbox::fixDate($row['date_creation']),
           ]
         ];
 

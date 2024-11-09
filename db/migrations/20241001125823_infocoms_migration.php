@@ -61,8 +61,8 @@ final class InfocomsMigration extends AbstractMigration
             'delivery_date'         => $row['delivery_date'],
             'inventory_date'        => $row['inventory_date'],
             'warranty_date'         => $row['warranty_date'],
-            'updated_at'            => $row['date_mod'],
-            'created_at'            => $row['date_creation'],
+            'updated_at'            => Toolbox::fixDate($row['date_mod']),
+            'created_at'            => Toolbox::fixDate($row['date_creation']),
             'decommission_date'     => $row['decommission_date'],
             'businesscriticity_id'  => $row['businesscriticities_id'],
           ]

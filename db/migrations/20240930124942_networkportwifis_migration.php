@@ -42,8 +42,8 @@ final class NetworkportwifisMigration extends AbstractMigration
             'networkportwifi_id'        => $row['networkportwifis_id'],
             'version'                   => $row['version'],
             'mode'                      => $row['mode'],
-            'updated_at'                => $row['date_mod'],
-            'created_at'                => $row['date_creation'],
+            'updated_at'                => Toolbox::fixDate($row['date_mod']),
+            'created_at'                => Toolbox::fixDate($row['date_creation']),
 
           ]
         ];
