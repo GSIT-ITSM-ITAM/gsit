@@ -45,6 +45,10 @@ final class OperatingsystemsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('operatingsystems_id_seq', (SELECT MAX(id) FROM operatingsystems)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

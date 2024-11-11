@@ -67,6 +67,10 @@ final class PeripheralsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('peripherals_id_seq', (SELECT MAX(id) FROM peripherals)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

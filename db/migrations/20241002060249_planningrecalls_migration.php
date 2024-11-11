@@ -46,6 +46,10 @@ final class PlanningrecallsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('planningrecalls_id_seq', (SELECT MAX(id) FROM planningrecalls)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

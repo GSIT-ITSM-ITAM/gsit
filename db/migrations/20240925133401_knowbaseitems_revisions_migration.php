@@ -48,6 +48,10 @@ final class KnowbaseitemsRevisionsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('knowbaseitem_revision_id_seq', (SELECT MAX(id) FROM knowbaseitem_revision)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

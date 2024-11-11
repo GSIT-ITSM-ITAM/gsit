@@ -70,6 +70,10 @@ final class StatesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('states_id_seq', (SELECT MAX(id) FROM states)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

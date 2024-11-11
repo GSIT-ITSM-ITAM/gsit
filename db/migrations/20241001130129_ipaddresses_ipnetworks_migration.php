@@ -43,6 +43,10 @@ final class IpaddressesIpnetworksMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('ipaddress_ipnetwork_id_seq', (SELECT MAX(id) FROM ipaddress_ipnetwork)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

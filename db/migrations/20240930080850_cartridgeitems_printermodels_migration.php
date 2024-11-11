@@ -43,6 +43,11 @@ final class CartridgeitemsPrintermodelsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('cartridgeitem_printermodel_id_seq', (SELECT MAX(id) FROM " .
+          "cartridgeitem_printermodel)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

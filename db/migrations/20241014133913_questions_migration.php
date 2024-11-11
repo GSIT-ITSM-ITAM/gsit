@@ -61,27 +61,29 @@ final class QuestionsMigration extends AbstractMigration
           'SELECT * FROM glpi_plugin_formcreator_questions ORDER BY id LIMIT 5000 OFFSET ' . ($i * 5000)
         );
         $rows = $stmt->fetchAll();
+        $data = [];
         foreach ($rows as $row)
         {
-          $data = [
-            [
-              'id'                => $row['id'],
-              'name'              => $row['name'],
-              'fieldtype'         => $row['fieldtype'],
-              'is_required'       => $row['required'],
-              'show_empty'        => $row['show_empty'],
-              'default_values'    => $row['default_values'],
-              'values'            => $row['values'],
-              'comment'           => $row['description'],
-              'row'               => $row['row'],
-              'col'               => $row['col'],
-              'width'             => $row['width'],
-            ]
+          $data[] = [
+            'id'                => $row['id'],
+            'name'              => $row['name'],
+            'fieldtype'         => $row['fieldtype'],
+            'is_required'       => $row['required'],
+            'show_empty'        => $row['show_empty'],
+            'default_values'    => $row['default_values'],
+            'values'            => $row['values'],
+            'comment'           => $row['description'],
+            'row'               => $row['row'],
+            'col'               => $row['col'],
+            'width'             => $row['width'],
           ];
-
-          $item->insert($data)
-                ->saveData();
         }
+        $item->insert($data)
+             ->saveData();
+      }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('questions_id_seq', (SELECT MAX(id) FROM questions)+1)");
       }
     } else {
       // rollback

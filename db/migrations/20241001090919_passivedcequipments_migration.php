@@ -59,6 +59,10 @@ final class PassivedcequipmentsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('passivedcequipments_id_seq', (SELECT MAX(id) FROM passivedcequipments)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

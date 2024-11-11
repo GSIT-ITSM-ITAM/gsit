@@ -52,6 +52,10 @@ final class ItemsDevicegenericsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('item_devicegeneric_id_seq', (SELECT MAX(id) FROM item_devicegeneric)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

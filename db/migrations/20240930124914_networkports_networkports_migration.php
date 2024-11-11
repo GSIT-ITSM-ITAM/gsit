@@ -43,6 +43,11 @@ final class NetworkportsNetworkportsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('networkport_networkport_id_seq', (SELECT MAX(id) FROM " .
+          "networkport_networkport)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

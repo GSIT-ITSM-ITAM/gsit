@@ -44,6 +44,11 @@ final class TickettemplatepredefinedfieldsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('tickettemplatepredefinedfields_id_seq', (SELECT MAX(id) FROM " .
+          "tickettemplatepredefinedfields)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

@@ -62,6 +62,10 @@ final class AnswerquestionsMigration extends AbstractMigration
                ->saveData();
         }
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('answerquestions_id_seq', (SELECT MAX(id) FROM answerquestions)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

@@ -49,6 +49,10 @@ final class LinksMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('links_id_seq', (SELECT MAX(id) FROM links)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

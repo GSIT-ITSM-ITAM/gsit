@@ -25,7 +25,7 @@ final class UsersMigration extends AbstractMigration
     } else {
       return;
     }
-    $followups = $this->table('users');
+    $users = $this->table('users');
 
     if ($this->isMigratingUp())
     {
@@ -102,7 +102,7 @@ final class UsersMigration extends AbstractMigration
             'pdffont'                         => $row['pdffont'],
             'picture'                         => $row['picture'],
             'begin_date'                      => Toolbox::fixDate($row['begin_date']),
-            'end_date'                        => Toolbox::fixDate($row['endated_date']),
+            'end_date'                        => Toolbox::fixDate($row['end_date']),
             'keep_devices_when_purging_item'  => $row['keep_devices_when_purging_item'],
             'privatebookmarkorder'            => $row['privatebookmarkorder'],
             'backcreated'                     => $row['backcreated'],
@@ -127,12 +127,16 @@ final class UsersMigration extends AbstractMigration
           ]
         ];
 
-        $followups->insert($data)
-                  ->saveData();
+        $users->insert($data)
+              ->saveData();
+      }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('users_id_seq', (SELECT MAX(id) FROM users)+1)");
       }
     } else {
       // rollback
-      $followups->truncate();
+      $users->truncate();
     }
   }
 

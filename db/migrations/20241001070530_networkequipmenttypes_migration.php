@@ -45,6 +45,10 @@ final class NetworkequipmenttypesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('networkequipmenttypes_id_seq', (SELECT MAX(id) FROM networkequipmenttypes)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

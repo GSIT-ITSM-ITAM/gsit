@@ -45,6 +45,10 @@ final class PhonetypesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('phonetypes_id_seq', (SELECT MAX(id) FROM phonetypes)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

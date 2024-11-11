@@ -45,6 +45,10 @@ final class DevicefirmwaretypesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('devicefirmwaretypes_id_seq', (SELECT MAX(id) FROM devicefirmwaretypes)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

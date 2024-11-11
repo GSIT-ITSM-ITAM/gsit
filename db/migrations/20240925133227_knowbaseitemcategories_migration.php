@@ -52,6 +52,11 @@ final class KnowbaseitemcategoriesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('knowbaseitemcategories_id_seq', (SELECT MAX(id) FROM " .
+          "knowbaseitemcategories)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

@@ -44,6 +44,11 @@ final class ChangetemplatepredefinedfieldssMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('changetemplatepredefinedfields_id_seq', (SELECT MAX(id) FROM " .
+          "changetemplatepredefinedfields)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

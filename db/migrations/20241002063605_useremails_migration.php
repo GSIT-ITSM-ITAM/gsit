@@ -45,6 +45,10 @@ final class UseremailsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('useremails_id_seq', (SELECT MAX(id) FROM useremails)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

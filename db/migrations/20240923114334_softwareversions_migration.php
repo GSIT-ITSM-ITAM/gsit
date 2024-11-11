@@ -50,6 +50,10 @@ final class SoftwareversionsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('softwareversions_id_seq', (SELECT MAX(id) FROM softwareversions)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

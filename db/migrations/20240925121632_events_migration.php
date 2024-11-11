@@ -22,6 +22,12 @@ final class EventsMigration extends AbstractMigration
       $config = Config::fromPhp('phinx.php');
       $environment = new Environment('old', $config->getEnvironment('old'));
       $pdo = $environment->getAdapter()->getConnection();
+
+      $chunkSize = 100000;
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $chunkSize = 9200;
+      }
     } else {
       return;
     }
@@ -30,11 +36,12 @@ final class EventsMigration extends AbstractMigration
     if ($this->isMigratingUp())
     {
       $nbRows = $pdo->query('SELECT count(*) FROM glpi_events')->fetchColumn();
-      $nbLoops = ceil($nbRows / 9200);
+      $nbLoops = ceil($nbRows / $chunkSize);
 
       for ($i = 0; $i < $nbLoops; $i++)
       {
-        $stmt = $pdo->query('SELECT * FROM glpi_events ORDER BY id LIMIT 9200 OFFSET ' . ($i * 9200));
+        $stmt = $pdo->query('SELECT * FROM glpi_events ORDER BY id LIMIT ' . $chunkSize . ' OFFSET ' .
+          ($i * $chunkSize));
 
         $rows = $stmt->fetchAll();
         $data = [];
@@ -52,6 +59,10 @@ final class EventsMigration extends AbstractMigration
         }
         $item->insert($data)
              ->saveData();
+      }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('events_id_seq', (SELECT MAX(id) FROM events)+1)");
       }
     } else {
       // rollback

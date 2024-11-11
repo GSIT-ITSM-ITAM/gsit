@@ -51,6 +51,10 @@ final class NetworknamesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('networknames_id_seq', (SELECT MAX(id) FROM networknames)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

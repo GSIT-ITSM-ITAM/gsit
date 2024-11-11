@@ -44,6 +44,10 @@ final class DevicesoundcardmodelsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('devicesoundcardmodels_id_seq', (SELECT MAX(id) FROM devicesoundcardmodels)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

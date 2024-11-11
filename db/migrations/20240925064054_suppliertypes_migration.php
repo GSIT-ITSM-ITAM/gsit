@@ -45,6 +45,10 @@ final class SuppliertypesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('suppliertypes_id_seq', (SELECT MAX(id) FROM suppliertypes)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

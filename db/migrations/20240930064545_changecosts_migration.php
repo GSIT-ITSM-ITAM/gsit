@@ -53,6 +53,10 @@ final class ChangecostsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('changecosts_id_seq', (SELECT MAX(id) FROM changecosts)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

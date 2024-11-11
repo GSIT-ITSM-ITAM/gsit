@@ -45,6 +45,10 @@ final class SlalevelactionsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('slalevelactions_id_seq', (SELECT MAX(id) FROM slalevelactions)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

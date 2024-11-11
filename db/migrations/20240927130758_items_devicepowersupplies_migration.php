@@ -52,6 +52,11 @@ final class ItemsDevicepowersuppliesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('item_devicepowersupply_id_seq', (SELECT MAX(id) FROM " .
+          "item_devicepowersupply)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

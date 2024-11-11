@@ -49,6 +49,10 @@ final class ItemsRacksMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('item_rack_id_seq', (SELECT MAX(id) FROM item_rack)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

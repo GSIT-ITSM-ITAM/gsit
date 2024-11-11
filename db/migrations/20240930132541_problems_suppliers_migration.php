@@ -46,6 +46,10 @@ final class ProblemsSuppliersMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('problem_supplier_id_seq', (SELECT MAX(id) FROM problem_supplier)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

@@ -63,6 +63,10 @@ final class GroupsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('groups_id_seq', (SELECT MAX(id) FROM groups)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

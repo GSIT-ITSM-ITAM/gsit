@@ -48,6 +48,10 @@ final class FqdnsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('fqdns_id_seq', (SELECT MAX(id) FROM fqdns)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

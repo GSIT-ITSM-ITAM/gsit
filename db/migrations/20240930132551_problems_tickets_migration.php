@@ -43,6 +43,10 @@ final class ProblemsTicketsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('problem_ticket_id_seq', (SELECT MAX(id) FROM problem_ticket)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

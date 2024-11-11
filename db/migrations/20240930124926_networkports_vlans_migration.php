@@ -44,6 +44,10 @@ final class NetworkportsVlansMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('networkport_vlan_id_seq', (SELECT MAX(id) FROM networkport_vlan)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

@@ -46,6 +46,10 @@ final class AppliancetypesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('appliancetypes_id_seq', (SELECT MAX(id) FROM appliancetypes)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

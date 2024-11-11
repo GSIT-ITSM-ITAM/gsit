@@ -58,6 +58,10 @@ final class ItemsDisksMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('itemdisks_id_seq', (SELECT MAX(id) FROM itemdisks)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

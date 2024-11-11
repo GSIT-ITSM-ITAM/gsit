@@ -46,6 +46,11 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('notificationtemplatetranslations_id_seq', (SELECT MAX(id) FROM " .
+          "notificationtemplatetranslations)+1)");
+      }
     } else {
       // rollback
       $item->truncate();
@@ -526,7 +531,8 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     // '##activitymessage.type##'        => 'followup',
     // '##activitymessage.isprivate##'   => Dropdown::getYesNo($followup['is_private']),
     // '##activitymessage.author##'      => Html::clean(getUserName($followup['users_id'])),
-    // '##activitymessage.requesttype##' => Dropdown::getDropdownName('glpi_requesttypes', $followup['requesttypes_id']),
+    // '##activitymessage.requesttype##' => Dropdown::getDropdownName('glpi_requesttypes',
+    //                                      $followup['requesttypes_id']),
     // '##activitymessage.date##'        => Html::convDateTime($followup['date']),
     $text = str_replace('{{ activitymessage.date }}', '{{ followup.date }}', $text);
     // '##activitymessage.description##' => Html::clean($followup['content']),

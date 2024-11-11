@@ -44,6 +44,11 @@ final class NotificationsNotificationtemplatesMigration extends AbstractMigratio
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('notification_notificationtemplate_id_seq', (SELECT MAX(id) FROM " .
+          "notification_notificationtemplate)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

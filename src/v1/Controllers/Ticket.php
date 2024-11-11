@@ -26,6 +26,9 @@ final class Ticket extends Common
 
   public function showNewItem(Request $request, Response $response, $args): Response
   {
+    $session = new \SlimSession\Helper();
+    $session->ticketCreationDate = gmdate('Y-m-d H:i:s');
+
     $item = new \App\Models\Ticket();
     return $this->commonShowITILNewItem($request, $response, $args, $item);
   }

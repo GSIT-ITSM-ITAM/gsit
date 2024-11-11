@@ -59,6 +59,10 @@ final class PdusMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('pdus_id_seq', (SELECT MAX(id) FROM pdus)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

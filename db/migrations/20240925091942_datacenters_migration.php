@@ -48,6 +48,10 @@ final class DatacentersMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('datacenters_id_seq', (SELECT MAX(id) FROM datacenters)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

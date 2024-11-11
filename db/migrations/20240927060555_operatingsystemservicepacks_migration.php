@@ -45,6 +45,11 @@ final class OperatingsystemservicepacksMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('operatingsystemservicepacks_id_seq', (SELECT MAX(id) FROM " .
+          "operatingsystemservicepacks)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

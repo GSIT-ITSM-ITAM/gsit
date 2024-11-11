@@ -46,6 +46,10 @@ final class ChangesUsersMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('change_user_id_seq', (SELECT MAX(id) FROM change_user)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

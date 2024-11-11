@@ -63,6 +63,10 @@ final class LocationsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('locations_id_seq', (SELECT MAX(id) FROM locations)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

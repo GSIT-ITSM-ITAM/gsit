@@ -40,9 +40,18 @@ editorcontent = new toastui.Editor({
         <!-- Tabs: followup, solutions -->
         {% if header.id > 0 %}
           <div class="ui secondary menu tabsystem">
-            <a class="{{ header.color }} item active" data-tab="feeds">{{ translation.feeds }}</a>
-            <a class="yellow item" data-tab="followup">{{ translation.followup }}</a>
-            <a class="blue item" data-tab="solution">{{ translation.solution }}</a>
+            <a class="{{ header.color }} item active" data-tab="feeds">
+              <i class="comment dots outline icon"></i>
+              {{ translation.feeds }}
+            </a>
+            <a class="yellow item" data-tab="followup">
+              <i class="plus square outline icon"></i>
+              {{ translation.followup }}
+            </a>
+            <a class="blue item" data-tab="solution">
+              <i class="plus square outline icon"></i>
+              {{ translation.solution }}
+            </a>
           </div>
         <div class="ui {{ header.color }} tab segment" data-tab="feeds">
           <!-- Feeds -->

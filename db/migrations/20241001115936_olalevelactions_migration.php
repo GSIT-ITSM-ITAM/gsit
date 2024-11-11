@@ -45,6 +45,10 @@ final class OlalevelactionsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('olalevelactions_id_seq', (SELECT MAX(id) FROM olalevelactions)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

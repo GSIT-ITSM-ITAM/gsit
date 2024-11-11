@@ -54,6 +54,10 @@ final class DomainrecordsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('domainrecords_id_seq', (SELECT MAX(id) FROM domainrecords)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

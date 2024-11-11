@@ -51,6 +51,10 @@ final class ImpactcontextsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('impactcontexts_id_seq', (SELECT MAX(id) FROM impactcontexts)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

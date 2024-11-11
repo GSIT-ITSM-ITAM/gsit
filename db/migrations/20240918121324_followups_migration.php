@@ -22,6 +22,12 @@ final class FollowupsMigration extends AbstractMigration
       $config = Config::fromPhp('phinx.php');
       $environment = new Environment('old', $config->getEnvironment('old'));
       $pdo = $environment->getAdapter()->getConnection();
+
+      $chunkSize = 5000;
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $chunkSize = 4500;
+      }
     } else {
       return;
     }
@@ -30,11 +36,12 @@ final class FollowupsMigration extends AbstractMigration
     if ($this->isMigratingUp())
     {
       $nbRows = $pdo->query('SELECT count(*) FROM glpi_itilfollowups')->fetchColumn();
-      $nbLoops = ceil($nbRows / 4000);
+      $nbLoops = ceil($nbRows / $chunkSize);
 
       for ($i = 0; $i < $nbLoops; $i++)
       {
-        $stmt = $pdo->query('SELECT * FROM glpi_itilfollowups ORDER BY id LIMIT 4000 OFFSET ' . ($i * 4000));
+        $stmt = $pdo->query('SELECT * FROM glpi_itilfollowups ORDER BY id LIMIT ' . $chunkSize . ' OFFSET ' .
+          ($i * $chunkSize));
 
         $rows = $stmt->fetchAll();
         $data = [];
@@ -62,11 +69,12 @@ final class FollowupsMigration extends AbstractMigration
 
       // get ticket tasks and move them into followups
       $nbRows = $pdo->query('SELECT count(*) FROM glpi_tickettasks')->fetchColumn();
-      $nbLoops = ceil($nbRows / 4000);
+      $nbLoops = ceil($nbRows / $chunkSize);
 
       for ($i = 0; $i < $nbLoops; $i++)
       {
-        $stmt = $pdo->query('SELECT * FROM glpi_tickettasks ORDER BY id LIMIT 4000 OFFSET ' . ($i * 4000));
+        $stmt = $pdo->query('SELECT * FROM glpi_tickettasks ORDER BY id LIMIT ' . $chunkSize . ' OFFSET ' .
+          ($i * $chunkSize));
 
         $rows = $stmt->fetchAll();
         $data = [];
@@ -116,11 +124,12 @@ final class FollowupsMigration extends AbstractMigration
 
       // get change tasks and move them into followups
       $nbRows = $pdo->query('SELECT count(*) FROM glpi_changetasks')->fetchColumn();
-      $nbLoops = ceil($nbRows / 4000);
+      $nbLoops = ceil($nbRows / $chunkSize);
 
       for ($i = 0; $i < $nbLoops; $i++)
       {
-        $stmt = $pdo->query('SELECT * FROM glpi_changetasks ORDER BY id LIMIT 4000 OFFSET ' . ($i * 4000));
+        $stmt = $pdo->query('SELECT * FROM glpi_changetasks ORDER BY id LIMIT ' . $chunkSize . ' OFFSET ' .
+          ($i * $chunkSize));
 
         $rows = $stmt->fetchAll();
         $data = [];
@@ -216,6 +225,10 @@ final class FollowupsMigration extends AbstractMigration
         }
         $followups->insert($data)
                   ->saveData();
+      }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('followups_id_seq', (SELECT MAX(id) FROM followups)+1)");
       }
     } else {
       // rollback

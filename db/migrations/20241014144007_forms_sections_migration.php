@@ -45,18 +45,20 @@ final class FormsSectionsMigration extends AbstractMigration
           'SELECT * FROM glpi_plugin_formcreator_sections ORDER BY id LIMIT 5000 OFFSET ' . ($i * 5000)
         );
         $rows = $stmt->fetchAll();
+        $data = [];
         foreach ($rows as $row)
         {
-          $data = [
-            [
-              'form_id'       => $row['plugin_formcreator_forms_id'],
-              'section_id'    => $row['id'],
-            ]
+          $data[] = [
+            'form_id'       => $row['plugin_formcreator_forms_id'],
+            'section_id'    => $row['id'],
           ];
-
-          $item->insert($data)
-                    ->saveData();
         }
+        $item->insert($data)
+             ->saveData();
+      }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('form_section_id_seq', (SELECT MAX(id) FROM form_section)+1)");
       }
     } else {
       // rollback

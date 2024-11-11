@@ -43,6 +43,10 @@ final class ContractsSuppliersMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('contract_supplier_id_seq', (SELECT MAX(id) FROM contract_supplier)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

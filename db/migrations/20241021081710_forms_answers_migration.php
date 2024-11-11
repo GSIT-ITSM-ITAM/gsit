@@ -48,22 +48,24 @@ final class FormsAnswersMigration extends AbstractMigration
           $stmt = $pdo->query('SELECT * FROM glpi_plugin_formcreator_formanswers ORDER BY id LIMIT 5000 OFFSET ' .
                   ($i * 5000));
           $rows = $stmt->fetchAll();
+          $data = [];
           foreach ($rows as $row)
           {
-            $data = [
-              [
-                'entity_id'         => $row['entities_id'],
-                'form_id'           => $row['plugin_formcreator_forms_id'],
-                'user_id'           => $row['requester_id'],
-                'created_at'        => Toolbox::fixDate($row['request_date']),
-              ]
+            $data[] = [
+              'entity_id'         => $row['entities_id'],
+              'form_id'           => $row['plugin_formcreator_forms_id'],
+              'user_id'           => $row['requester_id'],
+              'created_at'        => Toolbox::fixDate($row['request_date']),
             ];
-
-            $item->insert($data)
-                ->saveData();
           }
+          $item->insert($data)
+               ->saveData();
         }
-      } else {
+        if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+        {
+          $this->execute("SELECT setval('answers_id_seq', (SELECT MAX(id) FROM answers)+1)");
+        }
+        } else {
         return;
       }
     } else {

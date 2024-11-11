@@ -55,6 +55,10 @@ final class ApiclientsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('apiclients_id_seq', (SELECT MAX(id) FROM apiclients)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

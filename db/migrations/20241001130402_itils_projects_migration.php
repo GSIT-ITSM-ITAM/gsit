@@ -44,6 +44,10 @@ final class ItilsProjectsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('itil_project_id_seq', (SELECT MAX(id) FROM itil_project)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

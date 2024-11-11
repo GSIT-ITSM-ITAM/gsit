@@ -54,6 +54,10 @@ final class ItemsDevicememoriesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('item_devicememory_id_seq', (SELECT MAX(id) FROM item_devicememory)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

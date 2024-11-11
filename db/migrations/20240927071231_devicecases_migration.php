@@ -50,6 +50,10 @@ final class DevicecasesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('devicecases_id_seq', (SELECT MAX(id) FROM devicecases)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

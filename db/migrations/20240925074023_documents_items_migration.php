@@ -22,6 +22,12 @@ final class DocumentsItemsMigration extends AbstractMigration
       $config = Config::fromPhp('phinx.php');
       $environment = new Environment('old', $config->getEnvironment('old'));
       $pdo = $environment->getAdapter()->getConnection();
+
+      $chunkSize = 15000;
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $chunkSize = 5900;
+      }
     } else {
       return;
     }
@@ -30,11 +36,12 @@ final class DocumentsItemsMigration extends AbstractMigration
     if ($this->isMigratingUp())
     {
       $nbRows = $pdo->query('SELECT count(*) FROM glpi_documents_items')->fetchColumn();
-      $nbLoops = ceil($nbRows / 5900);
+      $nbLoops = ceil($nbRows / $chunkSize);
 
       for ($i = 0; $i < $nbLoops; $i++)
       {
-        $stmt = $pdo->query('SELECT * FROM glpi_documents_items ORDER BY id LIMIT 5900 OFFSET ' . ($i * 5900));
+        $stmt = $pdo->query('SELECT * FROM glpi_documents_items ORDER BY id LIMIT ' . $chunkSize . ' OFFSET ' .
+          ($i * $chunkSize));
 
         $rows = $stmt->fetchAll();
         $data = [];
@@ -57,6 +64,10 @@ final class DocumentsItemsMigration extends AbstractMigration
         print_r($data[196]);
         $item->insert($data)
              ->saveData();
+      }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('document_item_id_seq', (SELECT MAX(id) FROM document_item)+1)");
       }
     } else {
       // rollback

@@ -78,7 +78,6 @@ class Common
       $viewData->addInformation('bottom', $info['key'], $info['value'], $info['link']);
     }
 
-
     if ($session->exists('message'))
     {
       $viewData->addMessage($session->message);
@@ -461,7 +460,6 @@ class Common
     } else {
       \App\v1\Controllers\Notification::prepareNotification($item, 'update');
     }
-    exit;
     return $item->id;
   }
 

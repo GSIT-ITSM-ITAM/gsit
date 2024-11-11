@@ -51,19 +51,21 @@ final class SectionsMigration extends AbstractMigration
           'SELECT * FROM glpi_plugin_formcreator_sections ORDER BY id LIMIT 5000 OFFSET ' . ($i * 5000)
         );
         $rows = $stmt->fetchAll();
+        $data = [];
         foreach ($rows as $row)
         {
-          $data = [
-            [
-              'id'         => $row['id'],
-              'name'       => $row['name'],
-              'order'      => $row['order'],
-            ]
+          $data[] = [
+            'id'         => $row['id'],
+            'name'       => $row['name'],
+            'order'      => $row['order'],
           ];
-
-          $item->insert($data)
-               ->saveData();
         }
+        $item->insert($data)
+             ->saveData();
+      }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('sections_id_seq', (SELECT MAX(id) FROM sections)+1)");
       }
     } else {
       // rollback

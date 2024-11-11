@@ -45,6 +45,10 @@ final class SsovariablesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('ssovariables_id_seq', (SELECT MAX(id) FROM ssovariables)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

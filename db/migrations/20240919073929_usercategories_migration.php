@@ -25,7 +25,7 @@ final class UsercategoriesMigration extends AbstractMigration
     } else {
       return;
     }
-    $followups = $this->table('usercategories');
+    $usercategories = $this->table('usercategories');
 
     if ($this->isMigratingUp())
     {
@@ -43,12 +43,16 @@ final class UsercategoriesMigration extends AbstractMigration
           ]
         ];
 
-        $followups->insert($data)
-                  ->saveData();
+        $usercategories->insert($data)
+                       ->saveData();
+      }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('usercategories_id_seq', (SELECT MAX(id) FROM usercategories)+1)");
       }
     } else {
       // rollback
-      $followups->truncate();
+      $usercategories->truncate();
     }
   }
 }

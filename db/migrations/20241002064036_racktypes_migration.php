@@ -47,6 +47,10 @@ final class RacktypesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('racktypes_id_seq', (SELECT MAX(id) FROM racktypes)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

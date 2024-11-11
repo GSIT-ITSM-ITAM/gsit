@@ -45,6 +45,10 @@ final class ConsumableitemtypesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('consumableitemtypes_id_seq', (SELECT MAX(id) FROM consumableitemtypes)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

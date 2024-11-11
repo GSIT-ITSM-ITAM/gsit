@@ -54,6 +54,10 @@ final class RemindersMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('reminders_id_seq', (SELECT MAX(id) FROM reminders)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

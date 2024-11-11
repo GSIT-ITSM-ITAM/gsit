@@ -46,6 +46,10 @@ final class MonitortypesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('monitortypes_id_seq', (SELECT MAX(id) FROM monitortypes)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

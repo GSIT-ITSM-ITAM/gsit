@@ -52,6 +52,10 @@ final class DevicesensorsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('devicesensors_id_seq', (SELECT MAX(id) FROM devicesensors)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

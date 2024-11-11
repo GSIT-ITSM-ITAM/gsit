@@ -45,6 +45,10 @@ final class AlertsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('alerts_id_seq', (SELECT MAX(id) FROM alerts)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

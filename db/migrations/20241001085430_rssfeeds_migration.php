@@ -51,6 +51,10 @@ final class RssfeedsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('rssfeeds_id_seq', (SELECT MAX(id) FROM rssfeeds)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

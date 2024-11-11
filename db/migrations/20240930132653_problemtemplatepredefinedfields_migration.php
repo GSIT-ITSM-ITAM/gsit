@@ -44,6 +44,11 @@ final class ProblemtemplatepredefinedfieldsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('problemtemplatepredefinedfields_id_seq', (SELECT MAX(id) FROM " .
+          "problemtemplatepredefinedfields)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

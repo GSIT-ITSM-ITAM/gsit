@@ -59,28 +59,30 @@ final class FormsMigration extends AbstractMigration
       {
         $stmt = $pdo->query('SELECT * FROM glpi_plugin_formcreator_forms ORDER BY id LIMIT 5000 OFFSET ' . ($i * 5000));
         $rows = $stmt->fetchAll();
+        $data = [];
         foreach ($rows as $row)
         {
-          $data = [
-            [
-              'id'                => $row['id'],
-              'name'              => $row['name'],
-              'entity_id'         => ($row['entities_id'] + 1),
-              'is_recursive'      => $row['is_recursive'],
-              'icon'              => $row['icon'],
-              'icon_color'        => $row['icon_color'],
-              'comment'           => $row['description'],
-              'content'           => $row['content'],
-              'category_id'       => $row['plugin_formcreator_categories_id'],
-              'is_active'         => $row['is_active'],
-              'is_homepage'       => $row['helpdesk_home'],
-              'deleted_at'        => self::convertIsDeleted($row['is_deleted']),
-            ]
+          $data[] = [
+            'id'                => $row['id'],
+            'name'              => $row['name'],
+            'entity_id'         => ($row['entities_id'] + 1),
+            'is_recursive'      => $row['is_recursive'],
+            'icon'              => $row['icon'],
+            'icon_color'        => $row['icon_color'],
+            'comment'           => $row['description'],
+            'content'           => $row['content'],
+            'category_id'       => $row['plugin_formcreator_categories_id'],
+            'is_active'         => $row['is_active'],
+            'is_homepage'       => $row['helpdesk_home'],
+            'deleted_at'        => self::convertIsDeleted($row['is_deleted']),
           ];
-
-          $item->insert($data)
-               ->saveData();
         }
+        $item->insert($data)
+             ->saveData();
+      }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('forms_id_seq', (SELECT MAX(id) FROM forms)+1)");
       }
     } else {
       // rollback

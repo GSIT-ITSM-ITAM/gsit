@@ -73,6 +73,10 @@ final class SoftwarelicensesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('softwarelicenses_id_seq', (SELECT MAX(id) FROM softwarelicenses)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

@@ -52,6 +52,10 @@ final class DevicebatteriesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('devicebatteries_id_seq', (SELECT MAX(id) FROM devicebatteries)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

@@ -44,6 +44,10 @@ final class OlalevelsTicketsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('olalevel_ticket_id_seq', (SELECT MAX(id) FROM olalevel_ticket)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

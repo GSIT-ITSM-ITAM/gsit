@@ -44,6 +44,10 @@ final class ChangesItemsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('change_item_id_seq', (SELECT MAX(id) FROM change_item)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

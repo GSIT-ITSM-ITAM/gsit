@@ -43,6 +43,10 @@ final class NetworkinterfacesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('networkinterfaces_id_seq', (SELECT MAX(id) FROM networkinterfaces)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

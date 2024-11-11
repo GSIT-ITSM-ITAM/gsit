@@ -47,6 +47,10 @@ final class AuthmailsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('authmails_id_seq', (SELECT MAX(id) FROM authmails)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

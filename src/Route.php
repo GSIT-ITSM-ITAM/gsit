@@ -2577,8 +2577,16 @@ final class Route
           $notificationtemplateId->map(['POST'], '', \App\v1\Controllers\Notificationtemplate::class . ':updateItem');
           $notificationtemplateId->group('/', function (RouteCollectorProxy $sub)
           {
-            $sub->map(['GET'], 'templatetranslation', \App\v1\Controllers\Notificationtemplate::class . ':showSubTemplatetranslations');
-            $sub->map(['GET'], 'templatetranslation/{translationid:[0-9]+}', \App\v1\Controllers\Notificationtemplate::class . ':showSubTemplatetranslation');
+            $sub->map(
+              ['GET'],
+              'templatetranslation',
+              \App\v1\Controllers\Notificationtemplate::class . ':showSubTemplatetranslations'
+            );
+            $sub->map(
+              ['GET'],
+              'templatetranslation/{translationid:[0-9]+}',
+              \App\v1\Controllers\Notificationtemplate::class . ':showSubTemplatetranslation'
+            );
           });
         });
       });

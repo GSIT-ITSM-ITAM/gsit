@@ -96,7 +96,15 @@ final class Notification extends Common
     $langData = $this->generateLangdataForNotification($item);
     $data['lang'] = $langData;
 
-    $text = $template->render($data);
+    try {
+      $text = $template->render($data);
+    }
+    catch (\Throwable $th)
+    {
+      $session = new \SlimSession\Helper();
+      $session->message = "Error with notification: " . $th->getMessage();
+      return '';
+    }
     return $text;
   }
 

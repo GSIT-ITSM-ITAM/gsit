@@ -52,6 +52,10 @@ final class RequesttypesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('requesttypes_id_seq', (SELECT MAX(id) FROM requesttypes)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

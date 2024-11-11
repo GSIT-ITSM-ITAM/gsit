@@ -45,6 +45,10 @@ final class VirtualmachinesystemsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('virtualmachinesystems_id_seq', (SELECT MAX(id) FROM virtualmachinesystems)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

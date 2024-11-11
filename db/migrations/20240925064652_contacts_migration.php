@@ -61,6 +61,10 @@ final class ContactsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('contacts_id_seq', (SELECT MAX(id) FROM contacts)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

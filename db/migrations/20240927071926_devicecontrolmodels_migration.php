@@ -44,6 +44,10 @@ final class DevicecontrolmodelsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('devicecontrolmodels_id_seq', (SELECT MAX(id) FROM devicecontrolmodels)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

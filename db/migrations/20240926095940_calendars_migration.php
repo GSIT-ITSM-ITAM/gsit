@@ -48,6 +48,10 @@ final class CalendarsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('calendars_id_seq', (SELECT MAX(id) FROM calendars)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

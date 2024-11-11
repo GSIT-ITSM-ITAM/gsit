@@ -43,6 +43,11 @@ final class TickettemplatehiddenfieldsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('tickettemplatehiddenfields_id_seq', (SELECT MAX(id) FROM " .
+          "tickettemplatehiddenfields)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

@@ -44,6 +44,10 @@ final class SlalevelsTicketsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('slalevel_ticket_id_seq', (SELECT MAX(id) FROM slalevel_ticket)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

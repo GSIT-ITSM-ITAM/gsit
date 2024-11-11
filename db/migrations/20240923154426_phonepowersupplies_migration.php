@@ -45,6 +45,10 @@ final class PhonepowersuppliesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('phonepowersupplies_id_seq', (SELECT MAX(id) FROM phonepowersupplies)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

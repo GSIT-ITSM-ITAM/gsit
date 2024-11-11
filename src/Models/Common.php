@@ -214,7 +214,10 @@ class Common extends Model
     {
       foreach ($definitions as &$def)
       {
-        $def['display'] = true;
+        if (!isset($def['display']))
+        {
+          $def['display'] = true;
+        }
         if (!$profileright->update)
         {
           $def['readonly'] = 'readonly';
@@ -263,6 +266,11 @@ class Common extends Model
     {
       // Special case for entity, must not displayed in forms
       if ($field['name'] == 'entity' && get_class($myItem) !== 'App\Models\Entity')
+      {
+        unset($def[$idx]);
+        continue;
+      }
+      if (isset($field['display']) && $field['display'] == false)
       {
         unset($def[$idx]);
         continue;

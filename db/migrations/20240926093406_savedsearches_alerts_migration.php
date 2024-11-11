@@ -48,6 +48,10 @@ final class SavedsearchesAlertsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('savedsearch_alert_id_seq', (SELECT MAX(id) FROM savedsearch_alert)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

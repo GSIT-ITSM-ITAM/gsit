@@ -54,6 +54,11 @@ final class ItemsDevicenetworkcardsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('item_devicenetworkcard_id_seq', (SELECT MAX(id) FROM " .
+          "item_devicenetworkcard)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

@@ -45,6 +45,10 @@ final class GroupsRemindersMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('group_reminder_id_seq', (SELECT MAX(id) FROM group_reminder)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

@@ -50,6 +50,10 @@ final class DevicemotherboardsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('devicemotherboards_id_seq', (SELECT MAX(id) FROM devicemotherboards)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

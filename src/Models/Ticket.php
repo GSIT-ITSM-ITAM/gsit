@@ -67,6 +67,7 @@ class Ticket extends Common
     'knowbaseitems:id,name',
     'entity:id,name,completename,address,country,email,fax,phonenumber,postcode,state,town,website',
     'followups:id,content',
+    'solutions',
   ];
 
   // For default values
@@ -101,6 +102,12 @@ class Ticket extends Common
     {
       $model->user_id_recipient = $GLOBALS['user_id'];
       $model->user_id_lastupdater = $GLOBALS['user_id'];
+
+      $session = new \SlimSession\Helper();
+      if ($session->exists('ticketCreationDate'))
+      {
+        $model->created_at = $session->ticketCreationDate;
+      }
     });
 
     static::updating(function ($model)
@@ -200,6 +207,11 @@ class Ticket extends Common
   public function followups()
   {
     return $this->morphMany('\App\Models\Followup', 'item');
+  }
+
+  public function solutions()
+  {
+    return $this->morphMany('\App\Models\Solution', 'item');
   }
 
   public function getFeeds($id)

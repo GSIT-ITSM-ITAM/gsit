@@ -49,6 +49,10 @@ final class SolutiontemplatesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('solutiontemplates_id_seq', (SELECT MAX(id) FROM solutiontemplates)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

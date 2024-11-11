@@ -50,6 +50,10 @@ final class DevicepcisMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('devicepcis_id_seq', (SELECT MAX(id) FROM devicepcis)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

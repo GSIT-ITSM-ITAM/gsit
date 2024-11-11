@@ -46,6 +46,10 @@ final class BlacklistedmailcontentsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('blacklistedmailcontents_id_seq', (SELECT MAX(id) FROM blacklistedmailcontents)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

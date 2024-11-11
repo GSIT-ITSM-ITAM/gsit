@@ -51,6 +51,10 @@ final class DevicesimcardsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('devicesimcards_id_seq', (SELECT MAX(id) FROM devicesimcards)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

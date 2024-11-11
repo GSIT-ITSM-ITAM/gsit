@@ -60,6 +60,10 @@ final class EnclosuresMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('enclosures_id_seq', (SELECT MAX(id) FROM enclosures)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

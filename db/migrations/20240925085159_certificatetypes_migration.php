@@ -47,6 +47,10 @@ final class CertificatetypesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('certificatetypes_id_seq', (SELECT MAX(id) FROM certificatetypes)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

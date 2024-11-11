@@ -49,6 +49,10 @@ final class VlansMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('vlans_id_seq', (SELECT MAX(id) FROM vlans)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

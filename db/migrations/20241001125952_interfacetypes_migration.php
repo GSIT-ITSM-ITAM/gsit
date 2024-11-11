@@ -45,6 +45,10 @@ final class InterfacetypesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('interfacetypes_id_seq', (SELECT MAX(id) FROM interfacetypes)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

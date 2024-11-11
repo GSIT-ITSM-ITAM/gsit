@@ -48,6 +48,10 @@ final class KnowbaseitemsCommentsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('knowbaseitem_comment_id_seq', (SELECT MAX(id) FROM knowbaseitem_comment)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

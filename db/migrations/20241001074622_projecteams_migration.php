@@ -44,6 +44,10 @@ final class ProjecteamsMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('projectteams_id_seq', (SELECT MAX(id) FROM projectteams)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

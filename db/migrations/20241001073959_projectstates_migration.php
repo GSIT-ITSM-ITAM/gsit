@@ -47,6 +47,10 @@ final class ProjectstatesMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('projectstates_id_seq', (SELECT MAX(id) FROM projectstates)+1)");
+      }
     } else {
       // rollback
       $item->truncate();

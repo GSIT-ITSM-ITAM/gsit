@@ -56,6 +56,10 @@ final class CrontasksMigration extends AbstractMigration
         $item->insert($data)
              ->saveData();
       }
+      if ($configArray['environments'][$configArray['environments']['default_environment']]['adapter'] == 'pgsql')
+      {
+        $this->execute("SELECT setval('crontasks_id_seq', (SELECT MAX(id) FROM crontasks)+1)");
+      }
     } else {
       // rollback
       $item->truncate();
