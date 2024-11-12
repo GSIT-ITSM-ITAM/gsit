@@ -72,9 +72,9 @@
       {% for m in message %}
         $.toast({
           title: 'Action',
-          message: '{{ m }}',
+          message: '{{ m.message }}',
           showProgress: 'top',
-          classProgress: 'green',
+          classProgress: '{% if m.type == 'error' %}red{% else %}green{% endif %}',
           progressUp: true,
         });
       {% endfor %}

@@ -44,14 +44,18 @@ editorcontent = new toastui.Editor({
               <i class="comment dots outline icon"></i>
               {{ translation.feeds }}
             </a>
-            <a class="yellow item" data-tab="followup">
-              <i class="plus square outline icon"></i>
-              {{ translation.followup }}
-            </a>
-            <a class="blue item" data-tab="solution">
-              <i class="plus square outline icon"></i>
-              {{ translation.solution }}
-            </a>
+            {% if data.canAddFollowup %}
+              <a class="yellow item" data-tab="followup">
+                <i class="plus square outline icon"></i>
+                {{ translation.followup }}
+              </a>
+            {% endif %}
+            {% if data.canAddSolution %}
+              <a class="blue item" data-tab="solution">
+                <i class="plus square outline icon"></i>
+                {{ translation.solution }}
+              </a>
+            {% endif %}
           </div>
         <div class="ui {{ header.color }} tab segment" data-tab="feeds">
           <!-- Feeds -->
@@ -61,6 +65,14 @@ editorcontent = new toastui.Editor({
                 <div class="label">
                   {% if feed.type == 'event' %}
                     <i class="circular colored inverted exchange alternate brown icon"></i>
+                  {% elseif feed.type == 'solution' %}
+                    {% if feed.status == 2 %}
+                      <i class="circular colored inverted vote yea alternate grey icon"></i>
+                    {% elseif feed.status == 3 %}
+                      <i class="circular colored inverted vote yea alternate green icon"></i>
+                    {% elseif feed.status == 4 %}
+                      <i class="circular colored inverted vote yea alternate red icon"></i>
+                    {% endif %}
                   {% elseif feed.usertype == 'tech' %}
                     <i class="circular colored inverted headset olive icon"></i>
                   {% else %}
@@ -82,6 +94,43 @@ editorcontent = new toastui.Editor({
                       {{ feed.content | raw }}
                     </div>
                   {% endif %}
+                  {% if feed.type == 'solution' %}
+                  <div class="meta">
+                    {% if feed.status == 2 %}
+                      <span class="ui purple icon label">
+                        <i class="hourglass outline icon"></i>
+                        <div class="detail">{{ feed.statusname }}</div>
+                      </span>
+                    {% elseif feed.status == 3 %}
+                      <span class="ui green icon label">
+                        <i class="thumbs up icon"></i>
+                        <div class="detail">{{ feed.statusname }}</div>
+                      </span>
+                    {% elseif feed.status == 4 %}
+                      <span class="ui red icon label">
+                        <i class="thumbs down icon"></i>
+                        <div class="detail">{{ feed.statusname }}</div>
+                      </span>
+                    {% endif %}
+                  </div>
+                  <br>
+                  {% if feed.status == 2 and feed.canValidate %}
+                    <div class="meta">
+                      <a href="{{ current_url() }}/solutions/{{ feed.id }}/accept">
+                        <span class="ui green text">
+                          <i class="thumbs up green icon"></i>Accept
+                        </span>
+                      </a>
+                    </div>
+                    <div class="meta">
+                      <a href="{{ current_url() }}/solutions/{{ feed.id }}/refuse">
+                        <span class="ui red text">
+                          <i class="thumbs down red icon"></i> Refuse
+                        </span>
+                      </a>
+                    </div>
+                  {% endif %}
+                {% endif %}
                   {% if not feed.time is null %}
                     <div class="meta">
                       <a class="like">
@@ -94,14 +143,15 @@ editorcontent = new toastui.Editor({
             {% endfor %}
           </div>
         </div>
-        <div class="ui active tab yellow segment" data-tab="followup">
-          {% if header.id > 0 %}
-          <form method="post" action="{{ current_url() }}/followups" class="ui form">
-          {# {% endif %} #}
-            <div class="ui grid">
-              <div class="eleven wide column">
-                <div id="editorfollowup"></div>
-                <textarea rows="3" name="followup" style="display: none"></textarea>
+        {% if data.canAddFollowup %}
+          <div class="ui active tab yellow segment" data-tab="followup">
+            {% if header.id > 0 %}
+            <form method="post" action="{{ current_url() }}/followups" class="ui form">
+            {# {% endif %} #}
+              <div class="ui grid">
+                <div class="eleven wide column">
+                  <div id="editorfollowup"></div>
+                  <textarea rows="3" name="followup" style="display: none"></textarea>
 <script type="text/javascript">
 editorfollowup = new toastui.Editor({
   el: document.querySelector('#editorfollowup'),
@@ -117,90 +167,138 @@ editorfollowup = new toastui.Editor({
   },
 });
 </script>
-              </div>
-              <div class="five wide column">
-                <div class="field">
-                  <label>{{ translation.template }}</label>
-                  <select name="template">
-                  </select>
                 </div>
+                <div class="five wide column">
+                  <div class="field">
+                    <label>{{ translation.template }}</label>
+                    <select name="template">
+                    </select>
+                  </div>
 
-                <div class="field">
-                  <label>{{ translation.private }}</label>
-                  <div class="ui fitted mini toggle checkbox">
-                    <input type="checkbox" name="private"> <label></label>
+                  <div class="field">
+                    <label>{{ translation.private }}</label>
+                    <div class="ui fitted mini toggle checkbox">
+                      <input type="checkbox" name="private"> <label></label>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label>{{ translation.sourcefollow }}</label>
+                    <select name="source">
+                    </select>
                   </div>
                 </div>
-
-                <div class="field">
-                  <label>{{ translation.sourcefollow }}</label>
-                  <select name="source">
-                  </select>
-                </div>
               </div>
-            </div>
-            <div class="ui grid">
-              <div class="five wide column">
-                <div class="field">
-                  <label>{{ translation.category }}</label>
-                  <select name="category">
-                  </select>
+              <div class="ui grid">
+                <div class="five wide column">
+                  <div class="field">
+                    <label>{{ translation.category }}</label>
+                    <select name="category">
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>{{ translation.status }}</label>
+                    <select name="status">
+                    </select>
+                  </div>
                 </div>
-                <div class="field">
-                  <label>{{ translation.status }}</label>
-                  <select name="status">
-                  </select>
-                </div>
-              </div>
-              <div class="five wide column">
-                <div class="field" style="width: 100px;margin-left: auto;margin-right: auto;">
-                  <label>{{ translation.duration }}</label>
-                  <div class="ui right labeled input">
-                    <input type="number" name="time"  min="0">
-                    <div class="ui grey inverted label">
-                      <div class="ui labeled dropdown button">
-                        <input type="hidden" name="timetype">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">{{ translation.seconds }}</div>
-                        <div class="menu">
-                          <div class="item" data-value="seconds">{{ translation.seconds }}</div>
-                          <div class="item" data-value="minutes">{{ translation.minutes }}</div>
-                          <div class="item" data-value="hours">{{ translation.hours }}</div>
+                <div class="five wide column">
+                  <div class="field" style="width: 100px;margin-left: auto;margin-right: auto;">
+                    <label>{{ translation.duration }}</label>
+                    <div class="ui right labeled input">
+                      <input type="number" name="time"  min="0">
+                      <div class="ui grey inverted label">
+                        <div class="ui labeled dropdown button">
+                          <input type="hidden" name="timetype">
+                          <i class="dropdown icon"></i>
+                          <div class="default text">{{ translation.seconds }}</div>
+                          <div class="menu">
+                            <div class="item" data-value="seconds">{{ translation.seconds }}</div>
+                            <div class="item" data-value="minutes">{{ translation.minutes }}</div>
+                            <div class="item" data-value="hours">{{ translation.hours }}</div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="six wide column">
-                <div class="field">
-                  <label>{{ translation.user }}</label>
-                  <select name="user">
-                  </select>
+                <div class="six wide column">
+                  <div class="field">
+                    <label>{{ translation.user }}</label>
+                    <select name="user">
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>{{ translation.group }}</label>
+                    <select name="group">
+                    </select>
+                  </div>
                 </div>
-                <div class="field">
-                  <label>{{ translation.group }}</label>
-                  <select name="group">
-                  </select>
-                </div>
               </div>
-            </div>
-            <div style="text-align: center;">
-              <input type="hidden" name="item_id" value="{{ header.id }}"/>
-              <input type="hidden" name="item_type" value="App\Models\Ticket"/>
-              <input type="hidden" name="redirect" value="{{ get_uri() }}"/>
-              <button class="ui primary button" type="submit">{{ translation.addfollowup }}</button>
-            </div>
-          {# {% if header.id > 0 %} #}
-          </form>
-          {% endif %}
-        </div>
-        <div class="ui tab segment" data-tab="solution">
-          TODO
-        </div>
+              <div style="text-align: center;">
+                <input type="hidden" name="item_id" value="{{ header.id }}"/>
+                <input type="hidden" name="item_type" value="App\Models\Ticket"/>
+                <input type="hidden" name="redirect" value="{{ get_uri() }}"/>
+                <button class="ui primary button" type="submit">{{ translation.addfollowup }}</button>
+              </div>
+            {# {% if header.id > 0 %} #}
+            </form>
+            {% endif %}
+          </div>
         {% endif %}
-
-
+        {% if data.canAddSolution %}
+          <div class="ui tab segment" data-tab="solution">
+            {% if header.id > 0 %}
+              <form method="post" action="{{ current_url() }}/solutions" class="ui form">
+                <div class="ui grid">
+                  <div class="eleven wide column">
+                    <div id="editorsolution"></div>
+                    <textarea rows="3" name="solution" style="display: none"></textarea>
+<script type="text/javascript">
+editorsolution = new toastui.Editor({
+  el: document.querySelector('#editorsolution'),
+  initialEditType: 'markdown',
+  previewStyle: 'vertical',
+  initialEditType: 'wysiwyg',
+  height: '200px',
+  minHeight: '200px',
+  events: {
+    blur: () => {
+      document.querySelector(`textarea[name='solution']`).value = editorsolution.getMarkdown();
+    },
+  },
+});
+</script>
+                  </div>
+                  <div class="five wide column">
+                    <div class="field">
+                      <label>{{ translation.template }}</label>
+                      <select name="template">
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label>Type de solution</label>
+                      <select name="type">
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label>Enregistrer et ajouter à la base de connaissances</label>
+                      <select name="type">
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div style="text-align: center;">
+                  <input type="hidden" name="item_id" value="{{ header.id }}"/>
+                  <input type="hidden" name="item_type" value="App\Models\Ticket"/>
+                  <input type="hidden" name="redirect" value="{{ get_uri() }}"/>
+                  <button class="ui primary button" type="submit">Add solution</button>
+                </div>
+              </form>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
       </div>
       <div class="four wide column" style="padding-top: 0px;">
         {% if header.id > 0 %}

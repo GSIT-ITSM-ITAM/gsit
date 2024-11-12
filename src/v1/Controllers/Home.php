@@ -345,7 +345,7 @@ final class Home extends Common
       {
         $myItem2 = \App\Models\Ticket::
             with('requester', 'technician', 'techniciangroup')
-          ->orderBy('date', 'desc')
+          ->orderBy('created_at', 'desc')
           ->take(5)
           ->get();
 

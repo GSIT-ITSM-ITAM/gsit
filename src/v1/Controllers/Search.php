@@ -9,9 +9,18 @@ final class Search extends Common
   public function getData($item, $uri, $page = 1, $filters = [])
   {
     $itemtype = get_class($item);
-    $prefs = \App\Models\Displaypreference::getForTypeUser($itemtype, 4);
+    $prefs = \App\Models\Displaypreference::getForTypeUser($itemtype, $GLOBALS['user_id']);
     $itemDef = $item->getDefinitions();
     $where = $this->manageFilters($itemDef, $filters);
+
+    $profileright = \App\Models\Profileright::
+        where('profile_id', $GLOBALS['profile_id'])
+      ->where('model', $itemtype)
+      ->first();
+    if (is_null($profileright))
+    {
+      return;
+    }
 
     $hasEntity = $item->isEntity();
 
@@ -67,12 +76,17 @@ final class Search extends Common
       });
     }
 
-    $cnt = $item->count();
-
     if ($itemtype == "App\Models\Ticket")
     {
+      if ($profileright->readmyitems && !$profileright->read)
+      {
+        $item = $item->where('user_id_recipient', $GLOBALS['user_id']);
+      }
       $item = $item->orderBy('id', 'desc');
     }
+
+    $cnt = $item->count();
+
     $items = $item->offset($start)->take($limit)->get();
     $itemDbData = $this->prepareValues($newItemDef, $items, $uri);
 

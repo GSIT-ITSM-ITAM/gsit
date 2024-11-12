@@ -236,6 +236,7 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     $text = str_replace('{{ lang.ticket.category }}', '{{ lang.category.name }}', $text);
     // lang.ticket.changes
     // lang.ticket.closedate
+    $text = str_replace('{{ lang.ticket.closedate }}', '{{ lang.ticket.closed_at }}', $text);
     // lang.ticket.content
     $text = str_replace('{{ lang.ticket.content }}', '{{ lang.content }}', $text);
     // lang.ticket.costfixed
@@ -243,7 +244,7 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     // lang.ticket.costs
     // lang.ticket.costtime
     // lang.ticket.creationdate
-    $text = str_replace('{{ lang.ticket.creationdate}}', '{{ lang.date }}', $text);
+    $text = str_replace('{{ lang.ticket.creationdate}}', '{{ lang.created_at }}', $text);
     // lang.ticket.days
     // lang.ticket.description
     $text = str_replace('{{ lang.ticket.description }}', '{{ lang.content }}', $text);
@@ -331,6 +332,7 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     // lang.ticket.solution.description
     // lang.ticket.solution.type
     // lang.ticket.solvedate
+    $text = str_replace('{{ lang.ticket.solvedate }}', '{{ lang.ticket.solved_at }}', $text);
     // lang.ticket.status
     // lang.ticket.suppliers
     // lang.ticket.tasks
@@ -384,6 +386,7 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     // task.categorycomment
     // task.categoryid
     // task.date
+    $text = str_replace('{{ ticket.date }}', '{{ ticket.created_at }}', $text);
     // task.description
     // task.end
     // task.group
@@ -400,13 +403,14 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     // ticket.category
     $text = str_replace('{{ ticket.category }}', '{{ category.name }}', $text);
     // ticket.closedate
+    $text = str_replace('{{ ticket.closedate }}', '{{ ticket.closed_at }}', $text);
     // ticket.content
     $text = str_replace('{{ ticket.content }}', '{{ content }}', $text);
     // ticket.costfixed
     // ticket.costmaterial
     // ticket.costtime
     // ticket.creationdate
-    $text = str_replace('{{ ticket.creationdate}}', '{{ date }}', $text);
+    $text = str_replace('{{ ticket.creationdate}}', '{{ created_at }}', $text);
     // ticket.description
     $text = str_replace('{{ ticket.description }}', '{{ content }}', $text);
     // ticket.duedate
@@ -498,6 +502,7 @@ final class NotificationtemplatetranslationsMigration extends AbstractMigration
     // ticket.solution.description
     // ticket.solution.type
     // ticket.solvedate
+    $text = str_replace('{{ ticket.solvedate }}', '{{ ticket.solved_at }}', $text);
     // ticket.status
     $text = str_replace('{{ ticket.status }}', '{{ status }}', $text);
     // ticket.storestatus

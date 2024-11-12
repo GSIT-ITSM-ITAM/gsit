@@ -201,10 +201,8 @@ final class Ticket extends Common
       $myItem->techniciangroup()->attach($groupId, ['type' => 2]);
     }
 
-
     // add message to session
-    $session = new \SlimSession\Helper();
-    $session->message = "The ticket has been updated correctly";
+    \App\v1\Controllers\Toolbox::addSessionMessage("The ticket has been updated successfully");
 
     $uri = $request->getUri();
     header('Location: ' . (string) $uri);
@@ -315,12 +313,10 @@ final class Ticket extends Common
       $myItem->problems()->attach((int)$data->problem);
 
       // add message to session
-      $session = new \SlimSession\Helper();
-      $session->message = "The ticket has been attached to problem correctly";
+      \App\v1\Controllers\Toolbox::addSessionMessage("The ticket has been attached to problem successfully");
     } else {
       // add message to session
-      $session = new \SlimSession\Helper();
-      $session->message = "Error";
+      \App\v1\Controllers\Toolbox::addSessionMessage('Error to attache ticket to problem', 'error');
     }
 
     $uri = $request->getUri();
@@ -608,8 +604,7 @@ final class Ticket extends Common
     // update each models (ticket, users, groups...)
 
     // add message to session
-    $session = new \SlimSession\Helper();
-    $session->message = $translator->translate('Operation successful');
+    \App\v1\Controllers\Toolbox::addSessionMessage('Operation successful');
 
     return $myItem->id;
   }

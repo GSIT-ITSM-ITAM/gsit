@@ -319,6 +319,7 @@ final class Profile extends Common
     $viewData->addData('definition', $item->getDefinitions());
     $viewData->addData('rights', $this->getRightsCategory($myItem->id, $category));
     $viewData->addData('custom', $this->getRightsCategoryCustom($myItem->id, $category));
+    $viewData->addData('category', $category);
 
     return $view->render($response, 'subitem/profilecustom.html.twig', (array)$viewData);
   }
@@ -363,6 +364,13 @@ final class Profile extends Common
     } else {
       // Update general rights
       $rightLists = ['read', 'create', 'update', 'softdelete', 'delete', 'custom'];
+      if ($category == 'assistance')
+      {
+        $rightLists[] = 'readmyitems';
+        $rightLists[] = 'readmygroupitems';
+        $rightLists[] = 'readprivateitems';
+        $rightLists[] = 'canassign';
+      }
       foreach ($this->rigthCategories[$category] as $model)
       {
         $dataRights = [];
@@ -383,8 +391,7 @@ final class Profile extends Common
           $dataRights,
         );
         // add message to session
-        $session = new \SlimSession\Helper();
-        $session->message = "The rights have been updated successfully";
+        \App\v1\Controllers\Toolbox::addSessionMessage('The rights have been updated successfully');
       }
     }
     $uri = $request->getUri();
@@ -406,18 +413,49 @@ final class Profile extends Common
         $profileright = new \App\Models\Profileright();
       }
       $item = new $model();
-      $data[] = [
-        'model' => $model,
-        'title' => $item->getTitle(2),
-        'rights' => [
-          'read'        => $profileright->read,
-          'create'      => $profileright->create,
-          'update'      => $profileright->update,
-          'softdelete'  => $profileright->softdelete,
-          'delete'      => $profileright->delete,
-          'custom'      => $profileright->custom,
-        ],
-      ];
+      if ($category == 'assistance')
+      {
+        $customData = [
+          'model' => $model,
+          'title' => $item->getTitle(2),
+          'rights' => [
+            'read'              => $profileright->read,
+            'readmyitems'       => 'disabled',
+            'readmygroupitems'  => 'disabled',
+            'readprivateitems'  => 'disabled',
+            'canassign'         => 'disabled',
+            'create'            => $profileright->create,
+            'update'            => $profileright->update,
+            'softdelete'        => $profileright->softdelete,
+            'delete'            => $profileright->delete,
+            'custom'            => $profileright->custom,
+          ],
+        ];
+        if ($model == '\App\Models\Ticket')
+        {
+          $customData['rights']['readmyitems'] = $profileright->readmyitems;
+          $customData['rights']['readmygroupitems'] = $profileright->readmygroupitems;
+          $customData['rights']['canassign'] = $profileright->canassign;
+        }
+        if ($model == '\App\Models\Followup')
+        {
+          $customData['rights']['readprivateitems'] = $profileright->readprivateitems;
+        }
+        $data[] = $customData;
+      } else {
+        $data[] = [
+          'model' => $model,
+          'title' => $item->getTitle(2),
+          'rights' => [
+            'read'        => $profileright->read,
+            'create'      => $profileright->create,
+            'update'      => $profileright->update,
+            'softdelete'  => $profileright->softdelete,
+            'delete'      => $profileright->delete,
+            'custom'      => $profileright->custom,
+          ],
+        ];
+      }
     }
     return $data;
   }

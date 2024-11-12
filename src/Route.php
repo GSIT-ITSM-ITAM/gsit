@@ -356,6 +356,17 @@ final class Route
           {
             $sub->map(['GET'], 'criteria', \App\v1\Controllers\Rules\Ticket::class . ':showCriteria');
             $sub->map(['POST'], 'followups', \App\v1\Controllers\Followup::class . ':postItem');
+            $sub->map(['POST'], 'solutions', \App\v1\Controllers\Solution::class . ':postItem');
+            $sub->map(
+              ['GET'],
+              'solutions/{solutionid:[0-9]+}/accept',
+              \App\v1\Controllers\Solution::class . ':postAccept'
+            );
+            $sub->map(
+              ['GET'],
+              'solutions/{solutionid:[0-9]+}/refuse',
+              \App\v1\Controllers\Solution::class . ':postRefuse'
+            );
             $sub->map(['GET'], 'stats', \App\v1\Controllers\Ticket::class . ':showStats');
             $sub->map(['GET'], 'problem', \App\v1\Controllers\Ticket::class . ':showProblem');
             $sub->map(['POST'], 'problem', \App\v1\Controllers\Ticket::class . ':postProblem');

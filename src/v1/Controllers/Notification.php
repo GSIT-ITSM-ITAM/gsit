@@ -101,8 +101,7 @@ final class Notification extends Common
     }
     catch (\Throwable $th)
     {
-      $session = new \SlimSession\Helper();
-      $session->message = "Error with notification: " . $th->getMessage();
+      \App\v1\Controllers\Toolbox::addSessionMessage('Error with notification: ' . $th->getMessage(), 'error');
       return '';
     }
     return $text;

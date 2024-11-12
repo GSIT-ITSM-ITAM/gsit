@@ -82,4 +82,28 @@ final class Toolbox
     }
     return $myDate;
   }
+
+  /**
+   * Add message to the session
+   * @param message string
+   * @param type string=success|error
+   */
+  public static function addSessionMessage($message, $type = 'success')
+  {
+    // add message to session
+    $session = new \SlimSession\Helper();
+    if (!$session->exists('message'))
+    {
+      $session->message = [];
+    }
+    $session->merge(
+      'message',
+      [
+        [
+          'message' => $message,
+          'type'    => $type,
+        ]
+      ]
+    );
+  }
 }

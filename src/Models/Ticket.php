@@ -219,6 +219,7 @@ class Ticket extends Common
     global $translator;
     $feeds = [];
 
+    $ticket = \App\Models\Ticket::find($id);
     $statesDef = $this->definition::getStatusArray();
 
     // Get followups
@@ -246,8 +247,56 @@ class Ticket extends Common
         "time"     => null,
       ];
     }
-    // Get important events in logs :
 
+    // Get solutions
+    $solutions = \App\Models\Solution::where('item_type', 'App\Models\Ticket')->where('item_id', $id)->get();
+    foreach ($solutions as $solution)
+    {
+      $usertype = 'tech';
+      $username = '';
+      if (!is_null($solution->user))
+      {
+        $username = $solution->user->completename;
+      }
+
+      $canValidate = false;
+      if ($solution->status == 2)
+      {
+        // waiting mode
+        if ($ticket->user_id_recipient == $GLOBALS['user_id'])
+        {
+          $canValidate = true;
+        }
+        foreach ($ticket->requester as $user)
+        {
+          if ($user->id == $GLOBALS['user_id'])
+          {
+            $canValidate = true;
+          }
+        }
+      }
+      $usernameValidator = '';
+      if ($solution->status >= 3)
+      {
+        $usernameValidator = ' by ' . $solution->user_name_approval;
+      }
+
+      $feeds[] = [
+        "id"       => $solution->id,
+        "user"     => $username,
+        "usertype" => $usertype,
+        "type"     => "solution",
+        "date"     => $solution->created_at,
+        "summary"  => $translator->translate('added a solution'),
+        "content"  => \App\v1\Controllers\Toolbox::convertMarkdownToHtml($solution['content']),
+        "time"     => null,
+        "status"   => $solution->status,
+        "statusname"   => $solution->statusname . $usernameValidator,
+        "canValidate" => $canValidate,
+      ];
+    }
+
+    // Get important events in logs :
     $logs = \App\Models\Log::
       where('item_type', 'App\Models\Ticket')
       ->where('item_id', $id)
@@ -341,5 +390,14 @@ class Ticket extends Common
     )->withPivot(
       'knowbaseitem_id',
     );
+  }
+
+  public function canOnlyReadItem()
+  {
+    if ($this->status == 6)
+    {
+      return true;
+    }
+    return false;
   }
 }

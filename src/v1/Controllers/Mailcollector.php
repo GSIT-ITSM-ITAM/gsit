@@ -275,8 +275,7 @@ final class Mailcollector extends Common
       $mailcollector->save();
 
       // add message to session
-      $session = new \SlimSession\Helper();
-      $session->message = "Authentication done with success";
+      \App\v1\Controllers\Toolbox::addSessionMessage('Authentication done with success');
 
       $uri = $request->getUri();
 

@@ -11,8 +11,16 @@
         <form method="post" class="ui form" id="myform">
           <table class="ui fixed table">
             <thead>
-              <tr><th class="five wide">Name</th>
-              <th>Read</th>
+              <tr><th class="three wide">Name</th>
+              {% if data.category == 'assistance' %}
+                <th>Read all</th>
+                <th>Read my items</th>
+                <th>Read my group(s) items</th>
+                <th>Read private items</th>
+                <th>Can assign</th>
+              {% else %}
+                <th>Read</th>
+              {% endif %}
               <th>Create</th>
               <th>Update</th>
               <th>Soft delete</th>
@@ -26,8 +34,10 @@
                   {% for name,value in right.rights %}
                     <td>
                       <div class="ui invisible checkbox">
-                        <input type="checkbox" id="{{ right.model }}-{{ name }}" name="{{ right.model }}-{{ name }}" {% if value %}checked="checked"{% endif %}>
-                        <label for="{{ right.model }}-{{ name }}" class="image"><i class="ui blue check icon"></i></label>
+                        {% if value in [0, 1, null] %}
+                          <input type="checkbox" id="{{ right.model }}-{{ name }}" name="{{ right.model }}-{{ name }}" {% if value %}checked="checked"{% endif %}>
+                          <label for="{{ right.model }}-{{ name }}" class="image"><i class="ui blue check icon"></i></label>
+                        {% endif %}
                       </div>
                     </td>
                   {% endfor %}

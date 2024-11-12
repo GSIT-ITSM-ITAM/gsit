@@ -52,7 +52,6 @@ class Common
   {
     global $translator;
     $view = Twig::fromRequest($request);
-    $session = new \SlimSession\Helper();
 
     $myItem = $item->find($args['id']);
 
@@ -76,12 +75,6 @@ class Common
     foreach ($informations as $info)
     {
       $viewData->addInformation('bottom', $info['key'], $info['value'], $info['link']);
-    }
-
-    if ($session->exists('message'))
-    {
-      $viewData->addMessage($session->message);
-      $session->delete('message');
     }
 
     return $view->render($response, 'genericForm.html.twig', (array)$viewData);
@@ -140,8 +133,7 @@ class Common
     // post update
 
     // add message to session
-    $session = new \SlimSession\Helper();
-    $session->message = "The item has been updated correctly";
+    \App\v1\Controllers\Toolbox::addSessionMessage('The item has been updated successfully');
 
     $uri = $request->getUri();
     header('Location: ' . (string) $uri);
@@ -152,8 +144,6 @@ class Common
   {
     global $translator;
     $view = Twig::fromRequest($request);
-
-    $session = new \SlimSession\Helper();
 
     // Load the item
     // $item->loadId($args['id']);
@@ -172,6 +162,16 @@ class Common
     } else {
       $viewData->addData('content', \App\v1\Controllers\Toolbox::convertMarkdownToHtml($myItem->content));
     }
+
+    $canAddFollowup = true;
+    $canAddSolution = true;
+    if ($myItem->canOnlyReadItem())
+    {
+      $canAddFollowup = false;
+      $canAddSolution = false;
+    }
+    $viewData->addData('canAddFollowup', $canAddFollowup);
+    $viewData->addData('canAddSolution', $canAddSolution);
 
     $viewData->addTranslation('description', $translator->translate('Description'));
     $viewData->addTranslation('feeds', $translator->translate('Feeds'));
@@ -194,12 +194,6 @@ class Common
     $viewData->addTranslation('yes', $translator->translate('Yes'));
     $viewData->addTranslation('no', $translator->translate('No'));
 
-    if ($session->exists('message'))
-    {
-      $viewData->addMessage($session->message);
-      $session->delete('message');
-    }
-
     return $view->render($response, 'ITILForm.html.twig', (array)$viewData);
   }
 
@@ -210,8 +204,6 @@ class Common
 
     $item = new $this->model();
 
-    $session = new \SlimSession\Helper();
-
     // form data
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($item, $request);
 
@@ -220,12 +212,6 @@ class Common
 
     $viewData->addTranslation('selectvalue', $translator->translate('Select a value...'));
 
-    if ($session->exists('message'))
-    {
-      $viewData->addMessage($session->message);
-      $session->delete('message');
-    }
-
     return $view->render($response, 'genericForm.html.twig', (array)$viewData);
   }
 
@@ -233,8 +219,6 @@ class Common
   {
     global $translator;
     $view = Twig::fromRequest($request);
-
-    $session = new \SlimSession\Helper();
 
     // form data
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($item, $request);
@@ -264,12 +248,6 @@ class Common
     $viewData->addTranslation('yes', $translator->translate('Yes'));
     $viewData->addTranslation('no', $translator->translate('No'));
 
-    if ($session->exists('message'))
-    {
-      $viewData->addMessage($session->message);
-      // $session->delete('message');
-    }
-
     return $view->render($response, 'ITILForm.html.twig', (array)$viewData);
   }
 
@@ -278,8 +256,6 @@ class Common
     $item = new $this->model();
     $definitions = $item->getDefinitions();
     $view = Twig::fromRequest($request);
-
-    $session = new \SlimSession\Helper();
 
     // Load the item
     $myItem = $item->find($args['id']);
@@ -313,12 +289,6 @@ class Common
     // $viewData->addData('content', \App\v1\Controllers\Toolbox::convertMarkdownToHtml($myItem->content));
     $viewData->addData('history', $logs);
     $viewData->addData('titles', $fieldsTitle);
-
-    if ($session->exists('message'))
-    {
-      $viewData['message'] = $session->message;
-      $session->delete('message');
-    }
 
     return $view->render($response, 'subitem/history.html.twig', (array)$viewData);
   }
@@ -451,6 +421,12 @@ class Common
           // $item->$key()->attach($groupId, $pivot);
         }
       }
+    }
+    if (is_null($id))
+    {
+      \App\v1\Controllers\Toolbox::addSessionMessage('The item has been created successfully');
+    } else {
+      \App\v1\Controllers\Toolbox::addSessionMessage('The item has been updated successfully');
     }
 
     // notification

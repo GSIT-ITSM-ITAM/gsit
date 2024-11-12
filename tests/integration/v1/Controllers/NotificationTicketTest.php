@@ -64,10 +64,10 @@ final class NotificationTicketTest extends TestCase
     'urgency',
     'impact',
     'priority',
-    'date',
-    'closedate',
+    'created_at',
+    'closed_at',
     'time_to_resolve',
-    'solvedate',
+    'solved_at',
     'updated_at',
     'usersidlastupdater.id',
     'usersidlastupdater.completename',
@@ -119,10 +119,10 @@ final class NotificationTicketTest extends TestCase
     'lang.urgency',
     'lang.impact',
     'lang.priority',
-    'lang.date',
-    'lang.closedate',
+    'lang.created_at',
+    'lang.closed_at',
     'lang.time_to_resolve',
-    'lang.solvedate',
+    'lang.solved_at',
     'lang.updated_at',
     'lang.usersidlastupdater.id',
     'lang.usersidlastupdater.completename',
@@ -174,10 +174,10 @@ final class NotificationTicketTest extends TestCase
   urgency::{{ lang.urgency }}::||{{ urgency }}||
   impact::{{ lang.impact }}::||{{ impact }}||
   priority::{{ lang.priority }}::||{{ priority }}||
-  date::{{ lang.date }}::||{{ date }}||
-  closedate::{{ lang.closedate }}::||{{ closedate }}||
+  created_at::{{ lang.created_at }}::||{{ created_at }}||
+  closed_at::{{ lang.closed_at }}::||{{ closed_at }}||
   time_to_resolve::{{ lang.time_to_resolve }}::||{{ time_to_resolve }}||
-  solvedate::{{ lang.solvedate }}::||{{ solvedate }}||
+  solved_at::{{ lang.solved_at }}::||{{ solved_at }}||
   updated_at::{{ lang.updated_at }}::||{{ updated_at }}||
   usersidlastupdater.id::{{ lang.usersidlastupdater.id }}::||{{ usersidlastupdater.id }}||
   usersidlastupdater.completename::{{ lang.usersidlastupdater.completename }}::||{{ usersidlastupdater.completename }}||
@@ -309,10 +309,10 @@ final class NotificationTicketTest extends TestCase
     $followup->save();
 
     $ticket->refresh();
-    $ticket->date = '2024/11/04 10:05:50';
-    $ticket->closedate = '2024/11/04 10:05:50';
+    $ticket->created_at = '2024/11/04 10:05:50';
+    $ticket->closed_at = '2024/11/04 10:05:50';
     $ticket->time_to_resolve = '2024/11/04 10:05:50';
-    $ticket->solvedate = '2024/11/04 10:05:50';
+    $ticket->solved_at = '2024/11/04 10:05:50';
     $ticket->save();
   }
 

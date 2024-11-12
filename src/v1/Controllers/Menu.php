@@ -1369,7 +1369,7 @@ final class Menu
       $dbRights = \App\Models\Profileright::where('profile_id', $profile->id)->get();
       foreach ($dbRights as $dbRight)
       {
-        if ($dbRight->read)
+        if ($dbRight->read || $dbRight->readmyitems || $dbRight->readmygroupitems)
         {
           $this->setRightForModel($dbRight->model);
         }

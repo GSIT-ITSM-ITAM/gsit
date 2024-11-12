@@ -30,6 +30,24 @@ class Followup extends Common
     'user',
   ];
 
+  protected static function booted(): void
+  {
+    parent::booted();
+
+    static::created(function ($model)
+    {
+      if ($model->item_type == 'App\Models\Ticket')
+      {
+        $ticket = \App\Models\Ticket::find($model->item_id);
+        if ($ticket->status == 1)
+        {
+          $ticket->status = 2;
+          $ticket->save();
+        }
+      }
+    });
+  }
+
   public function user(): BelongsTo
   {
     return $this->belongsTo('\App\Models\User');

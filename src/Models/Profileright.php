@@ -20,6 +20,10 @@ class Profileright extends Common
     'softdelete'  => false,
     'delete'      => false,
     'custom'      => false,
+    'readmyitems' => false,
+    'readmygroupitems' => false,
+    'readprivateitems' => false,
+    'canassign'   => false,
   ];
 
   protected $fillable = [
@@ -32,5 +36,9 @@ class Profileright extends Common
     'softdelete',
     'delete',
     'custom',
+    'readmyitems',
+    'readmygroupitems',
+    'readprivateitems',
+    'canassign',
   ];
 }

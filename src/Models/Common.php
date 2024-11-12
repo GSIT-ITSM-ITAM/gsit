@@ -23,7 +23,7 @@ class Common extends Model
     // Set fillable variable
     if (!is_null($this->definition) && empty($this->fillable))
     {
-      $definitions = $this->getDefinitions();
+      $definitions = $this->getDefinitions(true);
       foreach ($definitions as $definition)
       {
         if (isset($definition['fillable']) && $definition['fillable'])
@@ -116,16 +116,16 @@ class Common extends Model
     if (get_class($this) == 'App\Models\Category')
     {
       $treepath = true;
-      $item->orderBy('treepath');
+      $item = $item->orderBy('treepath');
     }
 
     $item->orderBy('name');
     if (!is_null($filter) && !empty($filter))
     {
-      $item->where('name', 'LIKE', '%' . $filter . '%');
+      $item = $item->where('name', 'LIKE', '%' . $filter . '%');
       if (is_numeric($filter))
       {
-        $item->orWhere('id', 'LIKE', '%' . $filter . '%');
+        $item = $item->orWhere('id', 'LIKE', '%' . $filter . '%');
       }
     }
 
@@ -177,9 +177,10 @@ class Common extends Model
     {
       return $definitions;
     }
+    $canOnlyReadItem = $this->canOnlyReadItem();
 
     $profileright = \App\Models\Profileright::
-        where('profile_id', 4)
+        where('profile_id', $GLOBALS['profile_id'])
       ->where('model', get_class($this))
       ->first();
     if (is_null($profileright))
@@ -202,7 +203,7 @@ class Common extends Model
         if (isset($ids[$def["id"]]))
         {
           $def['display'] = $ids[$def["id"]]['read'];
-          if (!$ids[$def["id"]]['write'])
+          if (!$ids[$def["id"]]['write'] || $canOnlyReadItem)
           {
             $def['readonly'] = 'readonly';
           }
@@ -210,7 +211,7 @@ class Common extends Model
       }
       return $definitions;
     }
-    if ($profileright->read)
+    if ($profileright->read || $profileright->readmyitems || $profileright->readmygroupitems)
     {
       foreach ($definitions as &$def)
       {
@@ -218,7 +219,7 @@ class Common extends Model
         {
           $def['display'] = true;
         }
-        if (!$profileright->update)
+        if (!$profileright->update || $canOnlyReadItem)
         {
           $def['readonly'] = 'readonly';
         }
@@ -253,7 +254,7 @@ class Common extends Model
    */
   public function getFormData($myItem, $otherDefs = false)
   {
-    $def = $this->getDefinitions();
+    $def = $myItem->getDefinitions();
     if ($otherDefs !== false)
     {
       $def = $otherDefs;
@@ -436,6 +437,11 @@ class Common extends Model
     {
       return true;
     }
+    return false;
+  }
+
+  public function canOnlyReadItem()
+  {
     return false;
   }
 }

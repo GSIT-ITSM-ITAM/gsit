@@ -35,6 +35,13 @@ class Viewdata
 
     $this->addTranslation('savebutton', $translator->translate('Save'));
     $this->addTranslation('newbutton', $translator->translate('New'));
+
+    $session = new \SlimSession\Helper();
+    if ($session->exists('message'))
+    {
+      $this->message = $session->message;
+      $session->delete('message');
+    }
   }
 
   public function addData($key, $value)
@@ -47,8 +54,8 @@ class Viewdata
     $this->relatedPages = $data;
   }
 
-  public function addMessage($message)
-  {
-    $this->message[] = $message;
-  }
+  // public function addMessage($message)
+  // {
+  //   $this->message[] = $message;
+  // }
 }

@@ -25,8 +25,7 @@ final class Followup extends Common
     $item->save();
 
     // add message to session
-    $session = new \SlimSession\Helper();
-    $session->message = "The followup has been added correctly";
+    \App\v1\Controllers\Toolbox::addSessionMessage('The followup has been added successfully');
 
     header('Location: ' . $data->redirect);
     exit();
