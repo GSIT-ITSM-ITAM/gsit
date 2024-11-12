@@ -40,7 +40,7 @@ final class ItilsolutionsMigration extends AbstractMigration
             'item_id'             => $row['items_id'],
             'solutiontype_id'     => $row['solutiontypes_id'],
             'solutiontype_name'   => $row['solutiontype_name'],
-            'content'             => $row['content'],
+            'content'             => Toolbox::convertHtmlToMarkdown($row['content']),
             'created_at'          => Toolbox::fixDate($row['date_creation']),
             'updated_at'          => Toolbox::fixDate($row['date_mod']),
             'date_approval'       => Toolbox::fixDate($row['date_approval']),

@@ -54,7 +54,7 @@ final class LogsMigration extends AbstractMigration
 
           $data[] = [
             'id'                => $row['id'],
-            'item_type'         => 'App\\v1\\Models\\' . $row['itemtype'],
+            'item_type'         => 'App\\Models\\' . $row['itemtype'],
             'item_id'           => $item_id,
             'itemtype_link'     => $row['itemtype_link'],
             'linked_action'     => $row['linked_action'],
