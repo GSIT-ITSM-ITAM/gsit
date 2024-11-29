@@ -6,11 +6,13 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\PhpRenderer;
 use Slim\Routing\RouteContext;
+use Slim\Views\Twig;
 
 final class Devicemotherboard extends Common
 {
   protected $model = '\App\Models\Devicemotherboard';
-  protected $rootUrl2 = '/devicemotherboards/';
+  protected $rootUrl2 = '/devices/devicemotherboards/';
+  protected $choose = 'devicemotherboards';
 
   public function getAll(Request $request, Response $response, $args): Response
   {

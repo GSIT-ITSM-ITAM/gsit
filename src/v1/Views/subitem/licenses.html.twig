@@ -1,0 +1,61 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.name }}</th>
+      <th>{{ translation.serial }}</th>
+      <th>{{ translation.number }}</th>
+      <th>{{ translation.affected_items }}</th>
+      <th>{{ translation.type }}</th>
+      <th>{{ translation.version_buy }}</th>
+      <th>{{ translation.version_use }}</th>
+      <th>{{ translation.expiration }}</th>
+      <th>{{ translation.status }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for license in data.licenses %}
+      <tr>
+        <td>
+          {% if license.url != '' %}
+              <a href="{{ license.url }}">{{ license.name }}</a>
+          {% else %}
+              {{ license.name }}
+          {% endif %}
+        </td>
+        <td>{{ license.serial }}</td>
+        <td>{{ license.number }}</td>
+        <td>{{ license.affected_items }}</td>
+        <td>
+          {% if license.type_url != '' %}
+              <a href="{{ license.type_url }}">{{ license.type }}</a>
+          {% else %}
+              {{ license.type }}
+          {% endif %}
+        </td>
+        <td>{{ license.version_buy }}</td>
+        <td>{{ license.version_use }}</td>
+        <td {% if license.alert_expiration %}style="background-color: #f27960;"{% endif %}>{{ license.date_expiration }}</td>
+        <td>
+          {% if license.status_url != '' %}
+              <a href="{{ license.status_url }}">{{ license.status }}</a>
+          {% else %}
+              {{ license.status }}
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    {% if data.licenses|length > 0 %}
+    <tr>
+      <td colspan="2" style="text-align: right;">{{ translation.total }}</td>
+      <td>{{ data.total_number }}</td>
+      <td>{{ data.total_affected_items }}</td>
+      <td colspan="5"></td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

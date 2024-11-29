@@ -11,7 +11,7 @@ final class Ticket extends Common
 {
   protected $model = '\App\Models\Ticket';
   protected $rootUrl2 = '/tickets/';
-  protected $costchoose = 'ticket';
+  protected $choose = 'tickets';
 
   public function getAll(Request $request, Response $response, $args): Response
   {
@@ -78,7 +78,9 @@ final class Ticket extends Common
             //   if (empty($values))
             //   {
             //     $values = [];
-            //   } else {
+            //   }
+            //   else
+            //   {
             //     $values = explode(',', $values);
             //   }
             // }
@@ -112,12 +114,12 @@ final class Ticket extends Common
 
     // test rules, need write with old prepareInputtoupdate
     $input = [
-      'name' => $myItem->name,
-      'urgency' => $myItem->urgency,
-      'priority' => $myItem->priority,
-      '_users_id_requester' => [],
-      '_users_id_assign' => [],
-      '_groups_id_assign' => [],
+      'name'                  => $myItem->name,
+      'urgency'               => $myItem->urgency,
+      'priority'              => $myItem->priority,
+      '_users_id_requester'   => [],
+      '_users_id_assign'      => [],
+      '_groups_id_assign'     => [],
     ];
 
     // manage requesters
@@ -211,61 +213,6 @@ final class Ticket extends Common
     // return $this->commonUpdateItem($request, $response, $args, $item);
   }
 
-  public function showStats(Request $request, Response $response, $args)
-  {
-    global $translator;
-    $item = new \App\Models\Ticket();
-    $view = Twig::fromRequest($request);
-
-    $myItem = $item::find($args['id']);
-
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/stats');
-
-    $feeds = [];
-
-    $feeds[] = [
-      'date'  => $myItem->date,
-      'text'  => $translator->translate('Opening date'),
-      'icon'  => 'pencil alternate',
-      'color' => 'blue'
-    ];
-
-    $feeds[] = [
-      'date'  => $myItem->time_to_resolve,
-      'text'  => $translator->translate('Time to resolve'),
-      'icon'  => 'hourglass half',
-      'color' => 'blue'
-    ];
-    if ($myItem->status >= 5)
-    {
-      $feeds[] = [
-        'date'  => $myItem->solvedate,
-        'text'  => $translator->translate('Resolution date'),
-        'icon'  => 'check circle',
-        'color' => 'blue'
-      ];
-    }
-    if ($myItem->status == 6)
-    {
-      $feeds[] = [
-        'date'  => $myItem->closedate,
-        'text'  => $translator->translate('Closing date'),
-        'icon'  => 'flag checkered',
-        'color' => 'blue'
-      ];
-    }
-
-
-    $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
-    $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
-
-    $viewData->addData('feeds', $feeds);
-
-
-    return $view->render($response, 'subitem/stats.html.twig', (array) $viewData);
-  }
-
   public function showProblem(Request $request, Response $response, $args)
   {
     global $translator;
@@ -274,14 +221,19 @@ final class Ticket extends Common
 
     $myItem = $item::with(['problems'])->find($args['id']);
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/problem');
+    $rootUrl = $this->genereRootUrl($request, '/problem');
 
     // $problems = $myItem->problem()->get()->toArray();
     $problems = [];
+    foreach ($myItem->problems as $problem)
+    {
+      // $problems[] = $problem->toArray();
 
-    foreach ($myItem->problems as $problem) {
-      $problems[] = $problem->toArray();
+      $problems[] = [
+        'id'          => $problem->id,
+        'name'        => $problem->name,
+        'updated_at'  => $problem->updated_at,
+      ];
     }
 
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
@@ -315,7 +267,9 @@ final class Ticket extends Common
 
       // add message to session
       \App\v1\Controllers\Toolbox::addSessionMessage("The ticket has been attached to problem successfully");
-    } else {
+    }
+    else
+    {
       // add message to session
       \App\v1\Controllers\Toolbox::addSessionMessage('Error to attache ticket to problem', 'error');
     }
@@ -356,11 +310,12 @@ final class Ticket extends Common
    */
   public function prepareDataSave($data, $id = null)
   {
-
     if (is_null($id))
     {
       $myItem = new \App\Models\Ticket();
-    } else {
+    }
+    else
+    {
       $myItem = \App\Models\Ticket::find($id);
     }
     $definitions = $myItem->getDefinitions();
@@ -372,6 +327,7 @@ final class Ticket extends Common
       {
         $data->impact = 3;
       }
+
       $data->priority = self::computePriority($data->urgency, $data->impact);
     }
 
@@ -415,9 +371,12 @@ final class Ticket extends Common
           {
             $input[$def['name']][] = $requester;
           }
-        } else {
+        }
+        else
+        {
           $input[$def['name']] = [];
         }
+
         $input[$def['name']] = array_filter($input[$def['name']]);
       }
     }
@@ -451,7 +410,9 @@ final class Ticket extends Common
     if (isset($input['techniciangroup']))
     {
       $input['_groups_id_assign'] = $input['techniciangroup'];
-    } else {
+    }
+    else
+    {
       $input['techniciangroup'] = [];
     }
     // _suppliers_id_assign
@@ -597,10 +558,10 @@ final class Ticket extends Common
 
 
 
-// print_r($updateData);
-// echo "<br>";
-// print_r($input);
-// exit;
+      // print_r($updateData);
+      // echo "<br>";
+      // print_r($input);
+      // exit;
 
     // update each models (ticket, users, groups...)
 
@@ -608,5 +569,206 @@ final class Ticket extends Common
     \App\v1\Controllers\Toolbox::addSessionMessage('Operation successful');
 
     return $myItem->id;
+  }
+
+  public function showSubItems(Request $request, Response $response, $args): Response
+  {
+    global $translator;
+
+    $item = new $this->model();
+    $definitions = $item->getDefinitions();
+    $view = Twig::fromRequest($request);
+
+    $myItem = $item->find($args['id']);
+
+    $rootUrl = $this->genereRootUrl($request, '/items');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
+
+    $myItems = [];
+    foreach ($myItem->items as $current_item)
+    {
+      $item3 = new $current_item->item_type();
+      $myItem3 = $item3->find($current_item->item_id);
+      if ($myItem3 !== null)
+      {
+        $type_fr = $item3->getTitle();
+        $type = $item3->getTable();
+
+        $current_id = $myItem3->id;
+
+        $name = $myItem3->name;
+        if ($name == '')
+        {
+          $name = '(' . $current_id . ')';
+        }
+
+        $url = $this->genereRootUrl2Link($rootUrl2, '/' . $type . '/', $current_id);
+
+        $entity = '';
+        $entity_url = '';
+        if ($myItem3->entity !== null)
+        {
+          $entity = $myItem3->entity->completename;
+          $entity_url = $this->genereRootUrl2Link($rootUrl2, '/entities/', $myItem3->entity->id);
+        }
+
+        $serial_number = $myItem3->serial;
+
+        $inventaire_number = $myItem3->otherserial;
+
+        $myItems[] = [
+          'type'                 => $type_fr,
+          'name'                 => $name,
+          'url'                  => $url,
+          'entity'               => $entity,
+          'entity_url'           => $entity_url,
+          'serial_number'        => $serial_number,
+          'inventaire_number'    => $inventaire_number,
+        ];
+      }
+    }
+
+    // tri ordre alpha
+    uasort($myItems, function ($a, $b)
+    {
+      return strtolower($a['name']) > strtolower($b['name']);
+    });
+    uasort($myItems, function ($a, $b)
+    {
+      return strtolower($a['type']) > strtolower($b['type']);
+    });
+
+    $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
+    $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
+
+    $viewData->addData('fields', $item->getFormData($myItem));
+    $viewData->addData('items', $myItems);
+    $viewData->addData('show', $this->choose);
+
+    $viewData->addTranslation('type', $translator->translatePlural('Type', 'Types', 1));
+    $viewData->addTranslation('entity', $translator->translatePlural('Entity', 'Entities', 1));
+    $viewData->addTranslation('name', $translator->translate('Name'));
+    $viewData->addTranslation('serial_number', $translator->translate('Serial number'));
+    $viewData->addTranslation('inventaire_number', $translator->translate('Inventory number'));
+
+    return $view->render($response, 'subitem/items.html.twig', (array)$viewData);
+  }
+
+  public function showSubProjecttasks(Request $request, Response $response, $args): Response
+  {
+    global $translator;
+
+    $item = new $this->model();
+    $definitions = $item->getDefinitions();
+    $view = Twig::fromRequest($request);
+
+    $myItem = $item->find($args['id']);
+
+    $item2 = new \App\Models\Project();
+    $myItem2 = $item2->get();
+
+    $rootUrl = $this->genereRootUrl($request, '/projecttasks');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
+
+    $myProjecttasks = [];
+    $tabProjecttasksId = [];
+    foreach ($myItem->projecttasks as $projecttask)
+    {
+      $projecttask_id = $projecttask->projecttask_id;
+      $tabProjecttasksId[] = $projecttask_id;
+    }
+
+    foreach ($myItem2 as $current_item)
+    {
+      if ($current_item->tasks !== null)
+      {
+        foreach ($current_item->tasks as $task)
+        {
+          if (in_array($task->id, $tabProjecttasksId))
+          {
+            $name = $task->name;
+
+            $url = $this->genereRootUrl2Link($rootUrl2, '/dropdowns/projecttasks/', $task->id);
+
+            $type = '';
+            $type_url = '';
+            if ($task->type !== null)
+            {
+              $type = $task->type->name;
+              $type_url = $this->genereRootUrl2Link($rootUrl2, '/dropdowns/projecttasktypes/', $task->type->id);
+            }
+
+            $status = '';
+            $status_color = '';
+            if ($task->state !== null)
+            {
+              $status = $task->state->name;
+              $status_color = $task->state->color;
+            }
+
+            $percent_done = $task->percent_done;
+            $percent_done = $this->getValueWithUnit($percent_done, '%', 0);
+
+            $planned_start_date = $task->plan_start_date;
+
+            $planned_end_date = $task->plan_end_date;
+
+            $planned_duration = $this->timestampToString($task->planned_duration, false);
+
+            $effective_duration = $this->timestampToString($task->effective_duration, false);
+
+            $father = '';
+            $father_url = '';
+            if ($task->parent !== null)
+            {
+              $father = $task->parent->name;
+              $father_url = $this->genereRootUrl2Link($rootUrl2, '/dropdowns/projecttasks/', $task->parent->id);
+            }
+
+            $project = $current_item->name;
+            $project_url = $this->genereRootUrl2Link($rootUrl2, '/projects/', $current_item->id);
+
+            $myProjecttasks[] = [
+              'name'                  => $name,
+              'url'                   => $url,
+              'type'                  => $type,
+              'type_url'              => $type_url,
+              'status'                => $status,
+              'status_color'          => $status_color,
+              'percent_done'          => $percent_done,
+              'planned_start_date'    => $planned_start_date,
+              'planned_end_date'      => $planned_end_date,
+              'planned_duration'      => $planned_duration,
+              'effective_duration'    => $effective_duration,
+              'father'                => $father,
+              'father_url'            => $father_url,
+              'project'               => $project,
+              'project_url'           => $project_url,
+            ];
+          }
+        }
+      }
+    }
+
+    $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
+    $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
+
+    $viewData->addData('fields', $item->getFormData($myItem));
+    $viewData->addData('projecttasks', $myProjecttasks);
+    $viewData->addData('show', $this->choose);
+
+    $viewData->addTranslation('name', $translator->translate('Name'));
+    $viewData->addTranslation('type', $translator->translatePlural('Type', 'Types', 1));
+    $viewData->addTranslation('status', $translator->translate('Status'));
+    $viewData->addTranslation('percent_done', $translator->translate('Percent done'));
+    $viewData->addTranslation('planned_start_date', $translator->translate('Planned start date'));
+    $viewData->addTranslation('planned_end_date', $translator->translate('Planned end date'));
+    $viewData->addTranslation('planned_duration', $translator->translate('Planned duration'));
+    $viewData->addTranslation('effective_duration', $translator->translate('Effective duration'));
+    $viewData->addTranslation('father', $translator->translate('Father'));
+    $viewData->addTranslation('projects', $translator->translatePlural('Type', 'Types', 2));
+    $viewData->addTranslation('projecttasks', $translator->translatePlural('Project task', 'Project tasks', 2));
+
+    return $view->render($response, 'subitem/projecttasks.html.twig', (array)$viewData);
   }
 }

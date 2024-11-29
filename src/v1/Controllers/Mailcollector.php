@@ -38,22 +38,25 @@ final class Mailcollector extends Common
     $cm = new ClientManager($options = []);
     $client = $cm->account('account_identifier');
     $client = $cm->make([
-      'host'          => 'outlook.office365.com',
-      'port'          => 993,
-      'encryption'    => 'ssl',
-      'validate_cert' => true,
-      'username'      => 'd.durieux@dcsit-group.com',
+      'host'            => 'outlook.office365.com',
+      'port'            => 993,
+      'encryption'      => 'ssl',
+      'validate_cert'   => true,
+      'username'        => 'd.durieux@dcsit-group.com',
       // 'password'      => 'password',
-      'password'       => $collector->oauth_token,
-      'authentication' => "oauth",
-      'protocol'      => 'imap'
+      'password'        => $collector->oauth_token,
+      'authentication'  => "oauth",
+      'protocol'        => 'imap'
     ]);
 
     //Connect to the IMAP Server
     $retry = false;
-    try {
+    try
+    {
       $client->connect();
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e)
+    {
       $retry = true;
     }
 
@@ -64,15 +67,15 @@ final class Mailcollector extends Common
       $collector->refresh();
 
       $client = $cm->make([
-        'host'          => 'outlook.office365.com',
-        'port'          => 993,
-        'encryption'    => 'ssl',
-        'validate_cert' => true,
-        'username'      => 'd.durieux@dcsit-group.com',
+        'host'            => 'outlook.office365.com',
+        'port'            => 993,
+        'encryption'      => 'ssl',
+        'validate_cert'   => true,
+        'username'        => 'd.durieux@dcsit-group.com',
         // 'password'      => 'password',
-        'password'       => $collector->oauth_token,
-        'authentication' => "oauth",
-        'protocol'      => 'imap'
+        'password'        => $collector->oauth_token,
+        'authentication'  => "oauth",
+        'protocol'        => 'imap'
       ]);
       $client->connect();
     }
@@ -102,7 +105,9 @@ final class Mailcollector extends Common
       // if($message->move('INBOX.read') == true)
       // {
       //   echo 'Message has ben moved';
-      // } else {
+      // }
+      // else
+      // {
       //   echo 'Message could not be moved';
       // }
 
@@ -128,7 +133,8 @@ final class Mailcollector extends Common
       $values = $prio->toArray();
       foreach ($values as $priority)
       {
-        switch ($priority) {
+        switch ($priority)
+        {
           case '1':
             $urgency = 5;
               break;
@@ -149,10 +155,10 @@ final class Mailcollector extends Common
 
 
       $data = (object) [
-        'name'    => $message->getSubject(),
-        'content' => \App\v1\Controllers\Toolbox::convertHtmlToMarkdown($message->getHTMLBody()),
-        'requester' => implode(',', $requesters),
-        'urgency' => $urgency,
+        'name'        => $message->getSubject(),
+        'content'     => \App\v1\Controllers\Toolbox::convertHtmlToMarkdown($message->getHTMLBody()),
+        'requester'   => implode(',', $requesters),
+        'urgency'     => $urgency,
       ];
 
       $t = new \App\v1\Controllers\Ticket();

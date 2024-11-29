@@ -10,6 +10,7 @@ class Answer extends \App\Models\Common
   protected $definition = '\App\Models\Definitions\Forms\Answer';
   protected $titles = ['Answer', 'Answers'];
   protected $icon = 'cubes';
+  protected $hasEntityField = false;
 
   public function form(): BelongsTo
   {

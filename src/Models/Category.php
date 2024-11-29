@@ -43,14 +43,14 @@ class Category extends Common
 
   protected $with = [
     'category:id,name',
-    'users:id,name',
-    'groups:id,name',
+    'users:id,name,firstname,lastname',
+    'groups:id,name,completename',
     'knowbaseitemcategories:id,name',
     'tickettemplatesDemand:id,name',
     'tickettemplatesIncident:id,name',
     'changetemplates:id,name',
     'problemtemplates:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   public function getCompletenameAttribute()

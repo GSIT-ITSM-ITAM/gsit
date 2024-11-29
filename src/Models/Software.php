@@ -28,6 +28,7 @@ class Software extends Common
     // 'group',
     // 'location',
     'entity',
+    'infocom',
   ];
 
   protected $visible = [
@@ -50,6 +51,8 @@ class Software extends Common
     'tickets',
     'problems',
     'changes',
+    'infocom',
+    'reservations',
   ];
 
   protected $with = [
@@ -57,12 +60,12 @@ class Software extends Common
     // 'manufacturer:id,name',
     // // 'nbinstallation.devices',
     'versions:id,name',
-    // 'groupstech:id,name',
-    // 'userstech:id,name',
-    // 'user:id,name',
-    // 'group:id,name',
+    // 'groupstech:id,name,completename',
+    // 'userstech:id,name,firstname,lastname',
+    // 'user:id,name,firstname,lastname',
+    // 'group:id,name,completename',
     // 'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'domains:id,name',
     'appliances:id,name',
     'notes:id',
@@ -72,6 +75,8 @@ class Software extends Common
     'tickets:id,name',
     'problems:id,name',
     'changes:id,name',
+    'infocom',
+    'reservations',
   ];
 
   protected $fillable = [
@@ -221,6 +226,22 @@ class Software extends Common
       'change_item'
     )->withPivot(
       'change_id',
+    );
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
+    );
+  }
+
+  public function reservations(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Reservationitem',
+      'item',
     );
   }
 }

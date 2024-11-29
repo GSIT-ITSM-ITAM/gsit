@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Pdu extends Common
 {
@@ -25,6 +26,8 @@ class Pdu extends Common
     'userstech',
     'location',
     'entity',
+    'plugs',
+    'infocom',
   ];
 
   protected $visible = [
@@ -41,6 +44,8 @@ class Pdu extends Common
     'tickets',
     'problems',
     'changes',
+    'plugs',
+    'infocom',
   ];
 
   protected $with = [
@@ -48,15 +53,17 @@ class Pdu extends Common
     'model:id,name',
     'state:id,name',
     'manufacturer:id,name',
-    'groupstech:id,name',
-    'userstech:id,name',
+    'groupstech:id,name,completename',
+    'userstech:id,name,firstname,lastname',
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'documents:id,name',
     'contracts:id,name',
     'tickets:id,name',
     'problems:id,name',
     'changes:id,name',
+    'plugs',
+    'infocom',
   ];
 
 
@@ -153,6 +160,19 @@ class Pdu extends Common
       'change_item'
     )->withPivot(
       'change_id',
+    );
+  }
+
+  public function plugs(): BelongsToMany
+  {
+    return $this->belongsToMany('\App\Models\Plug', 'pdu_plug', 'pdu_id', 'plug_id')->withPivot('number_plugs');
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
     );
   }
 }

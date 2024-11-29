@@ -26,12 +26,12 @@ class Knowbaseitemcategory extends Common
 
   protected $with = [
     'category:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   public function category(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Knowbaseitemcategory');
+    return $this->belongsTo('\App\Models\Knowbaseitemcategory', 'knowbaseitemcategory_id');
   }
 
   public function entity(): BelongsTo

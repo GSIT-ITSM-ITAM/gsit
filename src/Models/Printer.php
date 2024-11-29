@@ -29,6 +29,7 @@ class Printer extends Common
     'userstech',
     'location',
     'entity',
+    'infocom',
   ];
 
   protected $visible = [
@@ -75,6 +76,8 @@ class Printer extends Common
     'devicedrives',
     'connections',
     'cartridges',
+    'infocom',
+    'reservations',
   ];
 
   protected $with = [
@@ -82,13 +85,13 @@ class Printer extends Common
     'model:id,name',
     'state:id,name',
     'manufacturer:id,name',
-    'user:id,name',
-    'group:id,name',
+    'user:id,name,firstname,lastname',
+    'group:id,name,completename',
     'network:id,name',
-    'groupstech:id,name',
-    'userstech:id,name',
+    'groupstech:id,name,completename',
+    'userstech:id,name,firstname,lastname',
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'certificates:id,name',
     'domains:id,name',
     'appliances:id,name',
@@ -121,6 +124,8 @@ class Printer extends Common
     'devicedrives:id,name',
     'connections:id,name',
     'cartridges:id',
+    'infocom',
+    'reservations',
   ];
 
 
@@ -329,6 +334,9 @@ class Printer extends Common
       'serial',
       'busID',
       'location_id',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -341,6 +349,10 @@ class Printer extends Common
     )->withPivot(
       'devicefirmware_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -356,6 +368,11 @@ class Printer extends Common
       'nbcores',
       'nbthreads',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -370,6 +387,10 @@ class Printer extends Common
       'capacity',
       'serial',
       'location_id',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -384,6 +405,9 @@ class Printer extends Common
       'manufacturing_date',
       'serial',
       'location_id',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -396,6 +420,11 @@ class Printer extends Common
     )->withPivot(
       'devicesoundcard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -408,6 +437,11 @@ class Printer extends Common
     )->withPivot(
       'devicecontrol_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -420,6 +454,10 @@ class Printer extends Common
     )->withPivot(
       'devicepowersupply_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -432,6 +470,10 @@ class Printer extends Common
     )->withPivot(
       'devicesensor_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -444,6 +486,11 @@ class Printer extends Common
     )->withPivot(
       'devicepci_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -456,6 +503,10 @@ class Printer extends Common
     )->withPivot(
       'devicegeneric_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -468,6 +519,12 @@ class Printer extends Common
     )->withPivot(
       'devicenetworkcard_id',
       'location_id',
+      'mac',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -480,6 +537,14 @@ class Printer extends Common
     )->withPivot(
       'devicesimcard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'msin',
+      'user_id',
+      'group_id',
+      'line_id',
+      'id',
     );
   }
 
@@ -492,6 +557,10 @@ class Printer extends Common
     )->withPivot(
       'devicemotherboard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -504,6 +573,10 @@ class Printer extends Common
     )->withPivot(
       'devicecase_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -516,6 +589,12 @@ class Printer extends Common
     )->withPivot(
       'devicegraphiccard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'memory',
+      'id',
     );
   }
 
@@ -528,6 +607,11 @@ class Printer extends Common
     )->withPivot(
       'devicedrive_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -546,5 +630,21 @@ class Printer extends Common
   public function cartridges(): HasMany
   {
     return $this->hasMany('App\Models\Cartridge', 'printer_id');
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
+    );
+  }
+
+  public function reservations(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Reservationitem',
+      'item',
+    );
   }
 }

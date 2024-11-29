@@ -22,9 +22,21 @@
               {{ contract.name }}
           {% endif %}
         </td>
-        <td>{{ contract.entity }}</td>
+        <td>
+          {% if contract.entity_url != '' %}
+              <a href="{{ contract.entity_url }}">{{ contract.entity }}</a>
+          {% else %}
+              {{ contract.entity }}
+          {% endif %}
+        </td>
         <td>{{ contract.number }}</td>
-        <td>{{ contract.type }}</td>
+        <td>
+          {% if contract.contracttype_url != '' %}
+              <a href="{{ contract.contracttype_url }}">{{ contract.type }}</a>
+          {% else %}
+              {{ contract.type }}
+          {% endif %}
+        </td>
         <td>
           {% for supplier in contract.suppliers %}
             <p>{{ supplier.name }}</p>

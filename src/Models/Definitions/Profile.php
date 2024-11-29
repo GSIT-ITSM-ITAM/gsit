@@ -706,7 +706,9 @@ class Profile
       if (Session::isMultiEntitiesMode())
       {
       $newtab['condition']     = ['entities_id' => 0, 'is_recursive' => 1];
-      } else {
+      }
+      else
+      {
       $newtab['condition']     = ['entities_id' => 0];
       }
       $tab[] = $newtab;
@@ -986,7 +988,7 @@ class Profile
       [
         'title' => $translator->translatePlural('User', 'Users', 2),
         'icon' => 'users',
-        'link' => '',
+        'link' => $rootUrl . '/users',
       ],
       [
         'title' => $translator->translate('Historical'),

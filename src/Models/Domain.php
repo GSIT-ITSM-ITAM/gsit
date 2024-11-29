@@ -22,6 +22,7 @@ class Domain extends Common
     'groupstech',
     'entity',
     'certificates',
+    'infocom',
   ];
 
   protected $visible = [
@@ -36,13 +37,14 @@ class Domain extends Common
     'tickets',
     'problems',
     'changes',
+    'infocom',
   ];
 
   protected $with = [
     'type:id,name',
-    'userstech:id,name',
-    'groupstech:id,name',
-    'entity:id,name',
+    'userstech:id,name,firstname,lastname',
+    'groupstech:id,name,completename',
+    'entity:id,name,completename',
     'certificates:id,name',
     'documents:id,name',
     'contracts:id,name',
@@ -50,6 +52,7 @@ class Domain extends Common
     'tickets:id,name',
     'problems:id,name',
     'changes:id,name',
+    'infocom',
   ];
 
   public function type(): BelongsTo
@@ -69,7 +72,7 @@ class Domain extends Common
 
   public function entity(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Entity');
+    return $this->belongsTo('\App\Models\Entity', 'entity_id');
   }
 
   public function certificates(): MorphToMany
@@ -141,6 +144,14 @@ class Domain extends Common
       'change_item'
     )->withPivot(
       'change_id',
+    );
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
     );
   }
 }

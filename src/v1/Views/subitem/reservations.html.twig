@@ -1,0 +1,116 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<h2>{{ translation.current_reservations }}</h2>
+{% if data.reservations|length > 0 %}
+  <table class="ui blue table">
+    <thead>
+      <tr>
+        <th>{{ translation.start_date }}</th>
+        <th>{{ translation.end_date }}</th>
+        {% if data.show == 'users' %}
+        <th>{{ translation.item }}</th>
+        <th>{{ translation.entity }}</th>
+        {% endif %}
+        <th>{{ translation.by }}</th>
+        <th>{{ translation.comment }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for key,reservation in data.reservations %}
+        <tr>
+          <td>{{ reservation.begin }}</td>
+          <td>{{ reservation.end }}</td>
+          {% if data.show == 'users' %}
+          <td>
+            {% if reservation.item_url != '' %}
+                <a href="{{ reservation.item_url }}">{{ reservation.item_name }}</a>
+            {% else %}
+                {{ reservation.item_name }}
+            {% endif %}
+          </td>
+          <td>
+            {% if reservation.entity_url != '' %}
+                <a href="{{ reservation.entity_url }}">{{ reservation.entity }}</a>
+            {% else %}
+                {{ reservation.entity }}
+            {% endif %}
+          </td>
+          {% endif %}
+          {% if data.show == 'users' %}
+          <td>{{ reservation.user }}</td>
+          {% else %}
+          <td>
+            {% if reservation.user_url != '' %}
+                <a href="{{ reservation.user_url }}">{{ reservation.user }}</a>
+            {% else %}
+                {{ reservation.user }}
+            {% endif %}
+          </td>
+          {% endif %}
+          <td>{{ reservation.comment }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <div><p>{{ translation.no_reservations }}</p></div>
+{% endif %}
+
+<h2>{{ translation.past_reservations }}</h2>
+{% if data.reservations_old|length > 0 %}
+  <table class="ui blue table">
+    <thead>
+      <tr>
+        <th>{{ translation.start_date }}</th>
+        <th>{{ translation.end_date }}</th>
+        {% if data.show == 'users' %}
+        <th>{{ translation.item }}</th>
+        <th>{{ translation.entity }}</th>
+        {% endif %}
+        <th>{{ translation.by }}</th>
+        <th>{{ translation.comment }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for key,reservation_old in data.reservations_old %}
+        <tr>
+          <td>{{ reservation_old.begin }}</td>
+          <td>{{ reservation_old.end }}</td>
+          {% if data.show == 'users' %}
+          <td>
+            {% if reservation_old.item_url != '' %}
+                <a href="{{ reservation_old.item_url }}">{{ reservation_old.item_name }}</a>
+            {% else %}
+                {{ reservation_old.item_name }}
+            {% endif %}
+          </td>
+          <td>
+            {% if reservation_old.entity_url != '' %}
+                <a href="{{ reservation_old.entity_url }}">{{ reservation_old.entity }}</a>
+            {% else %}
+                {{ reservation_old.entity }}
+            {% endif %}
+          </td>
+          {% endif %}
+          {% if data.show == 'users' %}
+          <td>{{ reservation_old.user }}</td>
+          {% else %}
+          <td>
+            {% if reservation_old.user_url != '' %}
+                <a href="{{ reservation_old.user_url }}">{{ reservation_old.user }}</a>
+            {% else %}
+                {{ reservation_old.user }}
+            {% endif %}
+          </td>
+          {% endif %}
+          <td>{{ reservation_old.comment }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <div><p>{{ translation.no_reservations }}</p></div>
+{% endif %}
+
+{{ include('footer.html.twig') }}

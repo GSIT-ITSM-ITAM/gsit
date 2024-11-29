@@ -27,6 +27,7 @@ class Certificate extends Common
     'manufacturer',
     'entity',
     'notes',
+    'infocom',
   ];
 
   protected $visible = [
@@ -46,18 +47,19 @@ class Certificate extends Common
     'tickets',
     'problems',
     'changes',
+    'infocom',
   ];
 
   protected $with = [
     'location:id,name',
     'type:id,name',
     'state:id,name',
-    'user:id,name',
-    'group:id,name',
-    'userstech:id,name',
-    'groupstech:id,name',
+    'user:id,name,firstname,lastname',
+    'group:id,name,completename',
+    'userstech:id,name,firstname,lastname',
+    'groupstech:id,name,completename',
     'manufacturer:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'notes:id',
     'knowbaseitems:id,name',
     'documents:id,name',
@@ -65,6 +67,7 @@ class Certificate extends Common
     'tickets:id,name',
     'problems:id,name',
     'changes:id,name',
+    'infocom',
   ];
 
   public function location(): BelongsTo
@@ -184,6 +187,14 @@ class Certificate extends Common
       'change_item'
     )->withPivot(
       'change_id',
+    );
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
     );
   }
 }

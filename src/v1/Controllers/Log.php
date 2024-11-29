@@ -30,7 +30,9 @@ final class Log extends Common
     {
       $log->item_type = get_class($model);
       $log->item_id = $model->id;
-    } else {
+    }
+    else
+    {
       $log->item_type = $model;
       $log->item_id = 0;
     }
@@ -38,14 +40,18 @@ final class Log extends Common
     if (is_object($old_value))
     {
       $log->old_value = json_encode(['id' => $old_value->item->id, 'name' => $old_value->item->name]);
-    } else {
+    }
+    else
+    {
       $log->old_value = $old_value;
     }
 
     if (is_object($new_value))
     {
       $log->new_value = json_encode(['id' => $new_value->item->id, 'name' => $new_value->item->name]);
-    } else {
+    }
+    else
+    {
       $log->new_value = $new_value;
     }
     $log->id_search_option = $idSearchOption;

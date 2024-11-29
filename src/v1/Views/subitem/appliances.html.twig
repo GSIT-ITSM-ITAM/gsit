@@ -10,7 +10,13 @@
   <tbody>
     {% for appliance in data.appliances|sort((a, b) => a.appliance.name|lower <=> b.appliance.name|lower) %}
       <tr>
-        <td><a>{{ appliance.name }}</a></td>
+        <td>
+          {% if appliance.url != '' %}
+              <a href="{{ appliance.url }}">{{ appliance.name }}</a>
+          {% else %}
+              {{ appliance.name }}
+          {% endif %}
+        </td>
       </tr>
     {% endfor %}
   </tbody>

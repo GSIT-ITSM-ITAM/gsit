@@ -33,7 +33,7 @@ class Cartridge extends Common
 
   protected $with = [
     'cartridgeitems:id,name,cartridgeitemtype_id',
-    'printer:id,name',
+    'printer',
   ];
 
 

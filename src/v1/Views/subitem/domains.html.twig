@@ -9,34 +9,78 @@
         </div>
         <div class="content">
           <div class="ui relaxed list">
+            {% if data.show == 'domainrelations' %}
+            <div class="item">
+              <div class="content">
+                <a class="header">{{ translation.name }}</a>
+                <div class="description">
+                  {% if domain.url != '' %}
+                      <a href="{{ domain.url }}">{{ domain.name }}</a>
+                  {% else %}
+                      {{ domain.name }}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            {% endif %}
             <div class="item">
               <div class="content">
                 <a class="header">{{ translation.entity }}</a>
-                <div class="description">{{ domain.entity }}</div>
+                <div class="description">
+                  {% if domain.entity_url != '' %}
+                      <a href="{{ domain.entity_url }}">{{ domain.entity }}</a>
+                  {% else %}
+                      {{ domain.entity }}
+                  {% endif %}
+                </div>
               </div>
             </div>
             <div class="item">
               <div class="content">
                 <a class="header">{{ translation.group }}</a>
-                <div class="description">{{ domain.group }}</div>
+                <div class="description">
+                  {% if domain.group_url != '' %}
+                      <a href="{{ domain.group_url }}">{{ domain.group }}</a>
+                  {% else %}
+                      {{ domain.group }}
+                  {% endif %}
+                </div>
               </div>
             </div>
             <div class="item">
               <div class="content">
                 <a class="header">{{ translation.user }}</a>
-                <div class="description">{{ domain.user }}</div>
+                <div class="description">
+                  {% if domain.user_url != '' %}
+                      <a href="{{ domain.user_url }}">{{ domain.user }}</a>
+                  {% else %}
+                      {{ domain.user }}
+                  {% endif %}
+                </div>
               </div>
             </div>
             <div class="item">
               <div class="content">
                 <a class="header">{{ translation.type }}</a>
-                <div class="description">{{ domain.type }}</div>
+                <div class="description">
+                  {% if domain.type_url != '' %}
+                      <a href="{{ domain.type_url }}">{{ domain.type }}</a>
+                  {% else %}
+                      {{ domain.type }}
+                  {% endif %}
+                </div>
               </div>
             </div>
             <div class="item">
               <div class="content">
                 <a class="header">{{ translation.relation }}</a>
-                <div class="description">{{ domain.relation }}</div>
+                <div class="description">
+                  {% if domain.relation_url != '' %}
+                      <a href="{{ domain.relation_url }}">{{ domain.relation }}</a>
+                  {% else %}
+                      {{ domain.relation }}
+                  {% endif %}
+                </div>
               </div>
             </div>
             <div class="item">

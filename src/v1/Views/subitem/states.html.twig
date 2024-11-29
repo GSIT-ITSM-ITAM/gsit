@@ -35,7 +35,13 @@
               {{ state.name }}
           {% endif %}
         </td>
-        <td>{{ state.entity }}</td>
+        <td>
+          {% if state.entity_url != '' %}
+              <a href="{{ state.entity_url }}">{{ state.entity }}</a>
+          {% else %}
+              {{ state.entity }}
+          {% endif %}
+        </td>
         {% if state.is_visible_computer %}
           <td class="positive">
           <i class="check circle outline icon"></i>

@@ -10,6 +10,7 @@ use Slim\Routing\RouteContext;
 final class Form extends \App\v1\Controllers\Common
 {
   protected $model = '\App\Models\Forms\Form';
+  protected $rootUrl2 = '/forms/';
 
   public function getAll(Request $request, Response $response, $args): Response
   {
@@ -33,16 +34,20 @@ final class Form extends \App\v1\Controllers\Common
   {
     global $translator;
 
-    $item = new \App\Models\Forms\Form();
+    $item = new $this->model();
     $view = Twig::fromRequest($request);
 
     $myItem = $item::with('sections')->find($args['id']);
 
+    $rootUrl = $this->genereRootUrl($request, '/sections');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
+
     $sections = [];
-    foreach ($myItem->sections as $section) {
+    foreach ($myItem->sections as $section)
+    {
       $sections[$section->id] = [
-        'id' => $section->id,
-        'name' => $section->name,
+        'id'    => $section->id,
+        'name'  => $section->name,
       ];
 
       $item2 = new \App\Models\Forms\Section();
@@ -50,12 +55,7 @@ final class Form extends \App\v1\Controllers\Common
       $sections[$section->id]['questions_count'] = $myItem2->questions_count;
     }
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/sections');
-    $rootUrl2 = rtrim($rootUrl, '/forms/' . $args['id']);
-
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
-
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
 
     $viewData->addData('fields', $item->getFormData($myItem));
@@ -73,13 +73,17 @@ final class Form extends \App\v1\Controllers\Common
   {
     global $translator;
 
-    $item = new \App\Models\Forms\Form();
+    $item = new $this->model();
     $view = Twig::fromRequest($request);
 
     $myItem = $item::with('sections')->find($args['id']);
 
+    $rootUrl = $this->genereRootUrl($request, '/questions');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
+
     $sections = [];
-    foreach ($myItem->sections as $section) {
+    foreach ($myItem->sections as $section)
+    {
       $item2 = new \App\Models\Forms\Section();
       $myItem2 = $item2::with('questions')->find($section->id);
 
@@ -87,20 +91,16 @@ final class Form extends \App\v1\Controllers\Common
       $sections[$section->id]['id'] = $section->id;
       $sections[$section->id]['name'] = $section->name;
 
-      foreach ($myItem2->questions as $question) {
+      foreach ($myItem2->questions as $question)
+      {
         $sections[$section->id]['questions'][] = [
-          'id' => $question->id,
-          'name' => $question->name,
+          'id'    => $question->id,
+          'name'  => $question->name,
         ];
       }
     }
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/questions');
-    $rootUrl2 = rtrim($rootUrl, '/forms/' . $args['id']);
-
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
-
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
 
     $viewData->addData('fields', $item->getFormData($myItem));
@@ -118,38 +118,30 @@ final class Form extends \App\v1\Controllers\Common
   {
     global $translator;
 
-    $item = new \App\Models\Forms\Form();
+    $item = new $this->model();
     $view = Twig::fromRequest($request);
 
     $myItem = $item::with('sections')->find($args['id']);
 
-
     $item2 = new \App\Models\Forms\Answer();
     $myItem2 = $item2::with('user')->where('form_id', $args['id'])->get();
 
+    $rootUrl = $this->genereRootUrl($request, '/answers');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
+
     $answers = [];
-    foreach ($myItem2 as $answer) {
-      $user = $answer->user->lastname . ' ' . $answer->user->firstname;
-      $user = trim($user);
-      if ($user != '') {
-        $user = $user . ' (' . $answer->user->name . ')';
-      } else {
-        $user = $answer->user->name;
-      }
+    foreach ($myItem2 as $answer)
+    {
+      $user = $this->genereUserName($answer->user->name, $answer->user->lastname, $answer->user->firstname, true);
 
       $answers[$answer->id] = [
-        'id' => $answer->id,
-        'created_at' => $answer->created_at,
-        'user' => $user,
+        'id'          => $answer->id,
+        'created_at'  => $answer->created_at,
+        'user'        => $user,
       ];
     }
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/answers');
-    $rootUrl2 = rtrim($rootUrl, '/forms/' . $args['id']);
-
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
-
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
 
     $viewData->addData('fields', $item->getFormData($myItem));

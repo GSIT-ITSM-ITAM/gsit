@@ -29,6 +29,7 @@ class Appliance extends Common
     'entity',
     'certificates',
     'domains',
+    'infocom',
   ];
 
   protected $visible = [
@@ -50,19 +51,20 @@ class Appliance extends Common
     'tickets',
     'problems',
     'changes',
+    'infocom',
   ];
 
   protected $with = [
     'location:id,name',
     'type:id,name',
     'state:id,name',
-    'user:id,name',
-    'group:id,name',
-    'userstech:id,name',
-    'groupstech:id,name',
+    'user:id,name,firstname,lastname',
+    'group:id,name,completename',
+    'userstech:id,name,firstname,lastname',
+    'groupstech:id,name,completename',
     'manufacturer:id,name',
     'environment:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'certificates:id,name',
     'domains:id,name',
     'knowbaseitems:id,name',
@@ -71,6 +73,7 @@ class Appliance extends Common
     'tickets:id,name',
     'problems:id,name',
     'changes:id,name',
+    'infocom',
   ];
 
   public function location(): BelongsTo
@@ -209,6 +212,14 @@ class Appliance extends Common
       'change_item'
     )->withPivot(
       'change_id',
+    );
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
     );
   }
 }

@@ -51,7 +51,7 @@ class Domainrelation
       [
         'title' => $translator->translatePlural('Domain', 'Domains', 2),
         'icon' => 'globe americas',
-        'link' => '',
+        'link' => $rootUrl . '/domains',
       ],
       [
         'title' => $translator->translate('Historical'),

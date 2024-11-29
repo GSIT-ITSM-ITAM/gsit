@@ -31,6 +31,9 @@ class Ticket extends Common
     'changes',
     'linkedtickets',
     'followups',
+    'items',
+    'projecttasks',
+    'approvals',
   ];
 
   protected $visible = [
@@ -50,17 +53,20 @@ class Ticket extends Common
     'knowbaseitems',
     'followups',
     'costs',
+    'items',
+    'projecttasks',
+    'approvals',
   ];
 
   protected $with = [
-    'requester',
-    'requestergroup',
-    'watcher',
-    'watchergroup',
-    'technician',
-    'techniciangroup',
-    'usersidlastupdater:id,name',
-    'usersidrecipient:id,name',
+    'requester:id,name,firstname,lastname',
+    'requestergroup:id,name,completename',
+    'watcher:id,name,firstname,lastname',
+    'watchergroup:id,name,completename',
+    'technician:id,name,firstname,lastname',
+    'techniciangroup:id,name,completename',
+    'usersidlastupdater:id,name,firstname,lastname',
+    'usersidrecipient:id,name,firstname,lastname',
     'category:id,name',
     'location:id,name',
     'problems:id,name',
@@ -71,6 +77,9 @@ class Ticket extends Common
     'followups:id,content',
     'solutions',
     'costs:id,name,ticket_id,begin_date,end_date,actiontime,cost_time,cost_fixed,cost_material,budget_id,entity_id',
+    'items',
+    'projecttasks',
+    'approvals',
   ];
 
   // For default values
@@ -191,12 +200,12 @@ class Ticket extends Common
 
   public function problems(): BelongsToMany
   {
-    return $this->belongsToMany('\App\Models\Problem');
+    return $this->belongsToMany('\App\Models\Problem', 'problem_ticket', 'ticket_id', 'problem_id');
   }
 
   public function changes(): BelongsToMany
   {
-    return $this->belongsToMany('\App\Models\Change');
+    return $this->belongsToMany('\App\Models\Change', 'change_ticket', 'ticket_id', 'change_id');
   }
 
   public function linkedtickets(): BelongsToMany
@@ -236,7 +245,9 @@ class Ticket extends Common
         ->where('item_id', $id)
         ->where('is_private', false)
         ->get();
-    } else {
+    }
+    else
+    {
       $followups = \App\Models\Followup::where('item_type', 'App\Models\Ticket')->where('item_id', $id)->get();
     }
 
@@ -365,7 +376,9 @@ class Ticket extends Common
             "content"  => "",
             "time"     => null,
           ];
-        } else {
+        }
+        else
+        {
           $groupSpl = explode(" (", $log->old_value);
           $feeds[] = [
             "user"     => $userActionSpl[0],
@@ -420,5 +433,20 @@ class Ticket extends Common
   public function costs(): HasMany
   {
     return $this->hasMany('App\Models\Ticketcost', 'ticket_id');
+  }
+
+  public function items(): HasMany
+  {
+    return $this->hasMany('\App\Models\ItemTicket', 'ticket_id');
+  }
+
+  public function projecttasks(): HasMany
+  {
+    return $this->hasMany('\App\Models\ProjecttaskTicket', 'ticket_id');
+  }
+
+  public function approvals(): HasMany
+  {
+    return $this->hasMany('\App\Models\Ticketvalidation', 'ticket_id');
   }
 }

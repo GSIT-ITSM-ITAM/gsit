@@ -12,13 +12,25 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.entity }}</a>
-              <div class="description">{{ certificate.entity }}</div>
+              <div class="description">
+                {% if certificate.entity_url != '' %}
+                    <a href="{{ certificate.entity_url }}">{{ certificate.entity }}</a>
+                {% else %}
+                    {{ certificate.entity }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.type }}</a>
-              <div class="description">{{ certificate.type }}</div>
+              <div class="description">
+                {% if certificate.type_url != '' %}
+                    <a href="{{ certificate.type_url }}">{{ certificate.type }}</a>
+                {% else %}
+                    {{ certificate.type }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
@@ -47,8 +59,14 @@
           </div>
           <div class="item">
             <div class="content">
-              <a class="header">{{ translation.state }}</a>
-              <div class="description">{{ certificate.state }}</div>
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if certificate.state_url != '' %}
+                    <a href="{{ certificate.state_url }}">{{ certificate.state }}</a>
+                {% else %}
+                    {{ certificate.state }}
+                {% endif %}
+              </div>
             </div>
           </div>
         </div>

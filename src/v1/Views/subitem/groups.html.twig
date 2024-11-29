@@ -24,31 +24,31 @@
           {% if group.auto %}
             <td class="positive">
             <i class="check circle outline icon"></i>
-            Yes
+            {{ group.auto_val }}
           {% else %}
             <td class="negative">
             <i class="times circle outline icon"></i>
-            No
+            {{ group.auto_val }}
           {% endif %}
           </td>
           {% if group.is_manager %}
             <td class="positive">
             <i class="check circle outline icon"></i>
-            Yes
+            {{ group.is_manager_val }}
           {% else %}
             <td class="negative">
             <i class="times circle outline icon"></i>
-            No
+            {{ group.is_manager_val }}
           {% endif %}
           </td>
           {% if group.is_userdelegate %}
             <td class="positive">
             <i class="check circle outline icon"></i>
-            Yes
+            {{ group.is_userdelegate_val }}
           {% else %}
             <td class="negative">
             <i class="times circle outline icon"></i>
-            No
+            {{ group.is_userdelegate_val }}
           {% endif %}
           </td>
         </tr>
@@ -76,7 +76,13 @@
                 {{ group.name }}
             {% endif %}
           </td>
-          <td>{{ group.entity }}</td>
+          <td>
+            {% if group.entity_url != '' %}
+                <a href="{{ group.entity_url }}">{{ group.entity }}</a>
+            {% else %}
+                {{ group.entity }}
+            {% endif %}
+          </td>
           <td>{{ group.comment }}</td>
         </tr>
       {% endfor %}

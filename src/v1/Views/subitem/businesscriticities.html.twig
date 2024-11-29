@@ -1,0 +1,35 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.name }}</th>
+      <th>{{ translation.entity }}</th>
+      <th>{{ translation.comment }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,businesscriticity in data.businesscriticities %}
+      <tr>
+        <td>
+          {% if businesscriticity.url != '' %}
+              <a href="{{ businesscriticity.url }}">{{ businesscriticity.name }}</a>
+          {% else %}
+              {{ businesscriticity.name }}
+          {% endif %}
+        </td>
+        <td>
+          {% if businesscriticity.entity_url != '' %}
+              <a href="{{ businesscriticity.entity_url }}">{{ businesscriticity.entity }}</a>
+          {% else %}
+              {{ businesscriticity.entity }}
+          {% endif %}
+        </td>
+        <td>{{ businesscriticity.comment }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

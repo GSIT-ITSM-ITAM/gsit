@@ -118,8 +118,8 @@ class Link
       ],
       [
         'title' => $translator->translatePlural('Associated item type', 'Associated item types', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'desktop',
+        'link' => $rootUrl . '/associateditemtypes',
       ],
       [
         'title' => $translator->translate('Historical'),

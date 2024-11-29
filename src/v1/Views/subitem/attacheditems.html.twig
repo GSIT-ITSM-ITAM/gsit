@@ -1,0 +1,92 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.type }}</th>
+      <th>{{ translation.name }}</th>
+      <th>{{ translation.entity }}</th>
+      {% if data.show == 'domains' %}
+      <th>{{ translation.domain_relation }}</th>
+      {% endif %}
+      <th>{{ translation.serial }}</th>
+      <th>{{ translation.otherserial }}</th>
+      {% if data.show == 'contracts' %}
+      <th>{{ translation.status }}</th>
+      {% endif %}
+      {% if data.show == 'budgets' %}
+      <th>{{ translation.value }}</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,attacheditem in data.attacheditems %}
+      {% for key2,attacheditem2 in attacheditem.items %}
+        <tr>
+          {% if data.show == 'suppliers' or data.show == 'budgets' %}
+            {% if attacheditem2.first %}
+              {% if data.show == 'suppliers' %}
+                <td rowspan="{{ attacheditem.nb }}">{{ attacheditem.name }} : {{ attacheditem.nb }}</td>
+              {% endif %}
+              {% if data.show == 'budgets' %}
+                {% if attacheditem.nb > 1 %}
+                <td rowspan="{{ attacheditem.nb }}">{{ attacheditem.name }} : {{ attacheditem.nb }}</td>
+                {% else %}
+                <td>{{ attacheditem.name }}</td>
+                {% endif %}
+              {% endif %}
+            {% endif %}
+          {% else %}
+            <td>{{ attacheditem.name }}</td>
+          {% endif %}
+          <td>
+            {% if attacheditem2.nom_url != '' %}
+                <a href="{{ attacheditem2.nom_url }}">{{ attacheditem2.nom }}</a>
+            {% else %}
+                {{ attacheditem2.nom }}
+            {% endif %}
+          </td>
+          <td>
+            {% if attacheditem2.entity_url != '' %}
+                <a href="{{ attacheditem2.entity_url }}">{{ attacheditem2.entity }}</a>
+            {% else %}
+                {{ attacheditem2.entity }}
+            {% endif %}
+          </td>
+          {% if data.show == 'domains' %}
+          <td>
+            {% if attacheditem2.domain_relation_url != '' %}
+                <a href="{{ attacheditem2.domain_relation_url }}">{{ attacheditem2.domain_relation }}</a>
+            {% else %}
+                {{ attacheditem2.domain_relation }}
+            {% endif %}
+          </td>
+          {% endif %}
+          <td>{{ attacheditem2.serial }}</td>
+          <td>{{ attacheditem2.otherserial }}</td>
+          {% if data.show == 'contracts' %}
+          <td>{{ attacheditem2.status }}</td>
+          {% endif %}
+          {% if data.show == 'budgets' %}
+          <td>{{ attacheditem2.value }}</td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+    {% endfor %}
+    {% if data.show == 'suppliers' %}
+      <tr>
+        <td>{{ translation.total }} = {{ data.nb_total }}</td>
+        <td colspan="4"></td>
+      </tr>
+    {% endif %}
+    {% if data.show == 'budgets' %}
+      <tr>
+        <td>{{ translation.total }} = {{ data.nb_total }}</td>
+        <td colspan="5"></td>
+      </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

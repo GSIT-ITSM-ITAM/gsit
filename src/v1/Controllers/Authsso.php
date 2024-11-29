@@ -58,7 +58,9 @@ final class Authsso extends Common
         {
           // It's only value
           $authssooption->value = $option;
-        } else {
+        }
+        else
+        {
           $authssooption->key = $key;
           $authssooption->value = $option;
         }

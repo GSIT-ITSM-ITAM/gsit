@@ -39,7 +39,13 @@
             {{ connection.auto_val }}
           {% endif %}
           </td>
-          <td>{{ connection.entity }}</td>
+          <td>
+            {% if connection.entity_url != '' %}
+                <a href="{{ connection.entity_url }}">{{ connection.entity }}</a>
+            {% else %}
+                {{ connection.entity }}
+            {% endif %}
+          </td>
           <td>{{ connection.serial_number }}</td>
           <td>{{ connection.inventaire_number }}</td>
         </tr>

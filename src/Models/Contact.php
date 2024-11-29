@@ -36,7 +36,7 @@ class Contact extends Common
   protected $with = [
     'type:id,name',
     'title:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'notes:id',
     'documents:id,name',
     'suppliers:id,name',

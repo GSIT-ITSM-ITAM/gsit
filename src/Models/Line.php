@@ -25,6 +25,7 @@ class Line extends Common
     'group',
     'entity',
     'notes',
+    'infocom',
   ];
 
   protected $visible = [
@@ -38,6 +39,7 @@ class Line extends Common
     'notes',
     'documents',
     'contracts',
+    'infocom',
   ];
 
   protected $with = [
@@ -45,12 +47,13 @@ class Line extends Common
     'type:id,name',
     'operator:id,name',
     'state:id,name',
-    'user:id,name',
-    'group:id,name',
-    'entity:id,name',
+    'user:id,name,firstname,lastname',
+    'group:id,name,completename',
+    'entity:id,name,completename',
     'notes:id',
     'documents:id,name',
     'contracts:id,name',
+    'infocom',
   ];
 
   public function location(): BelongsTo
@@ -116,6 +119,14 @@ class Line extends Common
       'contract_item'
     )->withPivot(
       'contract_id',
+    );
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
     );
   }
 }

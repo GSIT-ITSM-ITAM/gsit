@@ -25,6 +25,7 @@ class Rack extends Common
     'userstech',
     'location',
     'entity',
+    'infocom',
   ];
 
   protected $visible = [
@@ -41,6 +42,7 @@ class Rack extends Common
     'tickets',
     'problems',
     'changes',
+    'infocom',
   ];
 
   protected $with = [
@@ -48,15 +50,16 @@ class Rack extends Common
     'model:id,name',
     'state:id,name',
     'manufacturer:id,name',
-    'groupstech:id,name',
-    'userstech:id,name',
+    'groupstech:id,name,completename',
+    'userstech:id,name,firstname,lastname',
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'documents:id,name',
     'contracts:id,name',
     'tickets:id,name',
     'problems:id,name',
     'changes:id,name',
+    'infocom',
   ];
 
 
@@ -153,6 +156,14 @@ class Rack extends Common
       'change_item'
     )->withPivot(
       'change_id',
+    );
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
     );
   }
 }

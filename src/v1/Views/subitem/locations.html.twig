@@ -29,7 +29,13 @@
               {{ location.name }}
           {% endif %}
         </td>
-        <td>{{ location.entity }}</td>
+        <td>
+          {% if location.entity_url != '' %}
+              <a href="{{ location.entity_url }}">{{ location.entity }}</a>
+          {% else %}
+              {{ location.entity }}
+          {% endif %}
+        </td>
         <td>{{ location.address }}</td>
         <td>{{ location.postcode }}</td>
         <td>{{ location.town }}</td>

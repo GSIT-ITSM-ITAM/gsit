@@ -2,7 +2,7 @@
 {{ include('headerForm.html.twig') }}
 
 
-{% if data.show == 'cluster' %}
+{% if data.show == 'clusters' %}
   <table class="ui blue table">
     <thead>
       <tr>
@@ -25,7 +25,7 @@
   </table>
 {% endif %}
 
-{% if data.show == 'appliance' %}
+{% if data.show == 'appliances' %}
   <table class="ui blue table">
     <thead>
       <tr>
@@ -68,7 +68,7 @@
   </table>
 {% endif %}
 
-{% if data.show == 'project' %}
+{% if data.show == 'projects' %}
   <table class="ui blue table">
     <thead>
       <tr>
@@ -90,13 +90,491 @@
                 {{ item.name }}
             {% endif %}
           </td>
-          <td>{{ item.entity }}</td>
+          <td>
+            {% if item.entity_url != '' %}
+                <a href="{{ item.entity_url }}">{{ item.entity }}</a>
+            {% else %}
+                {{ item.entity }}
+            {% endif %}
+          </td>
           <td>{{ item.serial_number }}</td>
           <td>{{ item.inventaire_number }}</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
+{% endif %}
+
+{% if data.show == 'devicepowersupplies' or data.show == 'devicecases' or data.show == 'devicesensors' or data.show == 'devicemotherboards' or data.show == 'devicesoundcards' or data.show == 'devicegenerics' or data.show == 'devicecontrols' or data.show == 'devicefirmwares' or data.show == 'devicedrives' or data.show == 'devicepcis' or data.show == 'devicesimcards' %}
+  {% for key,item in data.items %}
+    <h2>{{ item.name }}</h2>
+
+    <table class="ui blue table">
+      <thead>
+        <tr>
+          <th>{{ translation.name }}</th>
+          <th>{{ translation.location }}</th>
+          <th>{{ translation.documents }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key2,item2 in item.items %}
+          {% for key3,item3 in item2 %}
+            <tr>
+              <td>
+                {% if item3.url != '' %}
+                    <a href="{{ item3.url }}">{{ item3.name }}</a>
+                {% else %}
+                    {{ item3.name }}
+                {% endif %}
+              </td>
+              <td>
+                {% if item3.location_url != '' %}
+                    <a href="{{ item3.location_url }}">{{ item3.location }}</a>
+                {% else %}
+                    {{ item3.location }}
+                {% endif %}
+              </td>
+              <td>
+                {% for document in item3.documents %}
+                  <p>
+                    {% if document.url != '' %}
+                        <a href="{{ document.url }}">{{ document.name }}</a>
+                    {% else %}
+                        {{ document.name }}
+                    {% endif %}
+                  </p>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% endif %}
+
+{% if data.show == 'devicebatteries' %}
+  {% for key,item in data.items %}
+    <h2>{{ item.name }}</h2>
+
+    <table class="ui blue table">
+      <thead>
+        <tr>
+          <th>{{ translation.name }}</th>
+          {% if item.type == 'computers' %}
+            <th>{{ translation.serial }}</th>
+          {% endif %}
+          <th>{{ translation.location }}</th>
+          {% if item.type == 'computers' %}
+            <th>{{ translation.manufacturing_date }}</th>
+          {% endif %}
+          <th>{{ translation.documents }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key2,item2 in item.items %}
+          {% for key3,item3 in item2 %}
+            <tr>
+              <td>
+                {% if item3.url != '' %}
+                    <a href="{{ item3.url }}">{{ item3.name }}</a>
+                {% else %}
+                    {{ item3.name }}
+                {% endif %}
+              </td>
+              {% if item.type == 'computers' %}
+                <td>{{ item3.serial }}</td>
+              {% endif %}
+              <td>
+                {% if item3.location_url != '' %}
+                    <a href="{{ item3.location_url }}">{{ item3.location }}</a>
+                {% else %}
+                    {{ item3.location }}
+                {% endif %}
+              </td>
+              {% if item.type == 'computers' %}
+                <td>{{ item3.manufacturing_date }}</td>
+              {% endif %}
+              <td>
+                {% for document in item3.documents %}
+                  <p>
+                    {% if document.url != '' %}
+                        <a href="{{ document.url }}">{{ document.name }}</a>
+                    {% else %}
+                        {{ document.name }}
+                    {% endif %}
+                  </p>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% endif %}
+
+{% if data.show == 'devicegraphiccards' %}
+  {% for key,item in data.items %}
+    <h2>{{ item.name }}</h2>
+
+    <table class="ui blue table">
+      <thead>
+        <tr>
+          <th>{{ translation.name }}</th>
+          {% if item.type == 'computers' %}
+            <th>{{ translation.memory_mio }}</th>
+          {% endif %}
+          <th>{{ translation.location }}</th>
+          <th>{{ translation.documents }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key2,item2 in item.items %}
+          {% for key3,item3 in item2 %}
+            <tr>
+              <td>
+                {% if item3.url != '' %}
+                    <a href="{{ item3.url }}">{{ item3.name }}</a>
+                {% else %}
+                    {{ item3.name }}
+                {% endif %}
+              </td>
+              {% if item.type == 'computers' %}
+                <td>{{ item3.memory }}</td>
+              {% endif %}
+              <td>
+                {% if item3.location_url != '' %}
+                    <a href="{{ item3.location_url }}">{{ item3.location }}</a>
+                {% else %}
+                    {{ item3.location }}
+                {% endif %}
+              </td>
+              <td>
+                {% for document in item3.documents %}
+                  <p>
+                    {% if document.url != '' %}
+                        <a href="{{ document.url }}">{{ document.name }}</a>
+                    {% else %}
+                        {{ document.name }}
+                    {% endif %}
+                  </p>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% endif %}
+
+{% if data.show == 'devicenetworkcards' %}
+  {% for key,item in data.items %}
+    <h2>{{ item.name }}</h2>
+
+    <table class="ui blue table">
+      <thead>
+        <tr>
+          <th>{{ translation.name }}</th>
+          <th>{{ translation.mac }}</th>
+          <th>{{ translation.location }}</th>
+          <th>{{ translation.documents }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key2,item2 in item.items %}
+          {% for key3,item3 in item2 %}
+            <tr>
+              <td>
+                {% if item3.url != '' %}
+                    <a href="{{ item3.url }}">{{ item3.name }}</a>
+                {% else %}
+                    {{ item3.name }}
+                {% endif %}
+              </td>
+              <td>{{ item3.mac }}</td>
+              <td>
+                {% if item3.location_url != '' %}
+                    <a href="{{ item3.location_url }}">{{ item3.location }}</a>
+                {% else %}
+                    {{ item3.location }}
+                {% endif %}
+              </td>
+              <td>
+                {% for document in item3.documents %}
+                  <p>
+                    {% if document.url != '' %}
+                        <a href="{{ document.url }}">{{ document.name }}</a>
+                    {% else %}
+                        {{ document.name }}
+                    {% endif %}
+                  </p>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% endif %}
+
+{% if data.show == 'deviceharddrives' %}
+  {% for key,item in data.items %}
+    <h2>{{ item.name }}</h2>
+
+    <table class="ui blue table">
+      <thead>
+        <tr>
+          <th>{{ translation.name }}</th>
+          <th>{{ translation.capacity_mio }}</th>
+          {% if item.type == 'computers' %}
+            <th>{{ translation.serial }}</th>
+          {% endif %}
+          <th>{{ translation.location }}</th>
+          <th>{{ translation.documents }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key2,item2 in item.items %}
+          {% for key3,item3 in item2 %}
+            <tr>
+              <td>
+                {% if item3.url != '' %}
+                    <a href="{{ item3.url }}">{{ item3.name }}</a>
+                {% else %}
+                    {{ item3.name }}
+                {% endif %}
+              </td>
+              <td>{{ item3.capacity }}</td>
+              {% if item.type == 'computers' %}
+                <td>{{ item3.serial }}</td>
+              {% endif %}
+              <td>
+                {% if item3.location_url != '' %}
+                    <a href="{{ item3.location_url }}">{{ item3.location }}</a>
+                {% else %}
+                    {{ item3.location }}
+                {% endif %}
+              </td>
+              <td>
+                {% for document in item3.documents %}
+                  <p>
+                    {% if document.url != '' %}
+                        <a href="{{ document.url }}">{{ document.name }}</a>
+                    {% else %}
+                        {{ document.name }}
+                    {% endif %}
+                  </p>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% endif %}
+
+{% if data.show == 'devicememories' %}
+  {% for key,item in data.items %}
+    <h2>{{ item.name }}</h2>
+
+    <table class="ui blue table">
+      <thead>
+        <tr>
+          <th>{{ translation.name }}</th>
+          <th>{{ translation.size_mio }}</th>
+          {% if item.type == 'computers' %}
+            <th>{{ translation.serial }}</th>
+          {% endif %}
+          <th>{{ translation.location }}</th>
+          <th>{{ translation.documents }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key2,item2 in item.items %}
+          {% for key3,item3 in item2 %}
+            <tr>
+              <td>
+                {% if item3.url != '' %}
+                    <a href="{{ item3.url }}">{{ item3.name }}</a>
+                {% else %}
+                    {{ item3.name }}
+                {% endif %}
+              </td>
+              <td>{{ item3.size }}</td>
+              {% if item.type == 'computers' %}
+                <td>{{ item3.serial }}</td>
+              {% endif %}
+              <td>
+                {% if item3.location_url != '' %}
+                    <a href="{{ item3.location_url }}">{{ item3.location }}</a>
+                {% else %}
+                    {{ item3.location }}
+                {% endif %}
+              </td>
+              <td>
+                {% for document in item3.documents %}
+                  <p>
+                    {% if document.url != '' %}
+                        <a href="{{ document.url }}">{{ document.name }}</a>
+                    {% else %}
+                        {{ document.name }}
+                    {% endif %}
+                  </p>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% endif %}
+
+{% if data.show == 'deviceprocessors' %}
+  {% for key,item in data.items %}
+    <h2>{{ item.name }}</h2>
+
+    <table class="ui blue table">
+      <thead>
+        <tr>
+          <th>{{ translation.name }}</th>
+          {% if item.type == 'computers' %}
+            <th>{{ translation.frequence_mhz }}</th>
+          {% endif %}
+          <th>{{ translation.location }}</th>
+          {% if item.type == 'computers' %}
+            <th>{{ translation.nbcores }}</th>
+            <th>{{ translation.nbthreads }}</th>
+          {% endif %}
+          <th>{{ translation.documents }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key2,item2 in item.items %}
+          {% for key3,item3 in item2 %}
+            <tr>
+              <td>
+                {% if item3.url != '' %}
+                    <a href="{{ item3.url }}">{{ item3.name }}</a>
+                {% else %}
+                    {{ item3.name }}
+                {% endif %}
+              </td>
+              {% if item.type == 'computers' %}
+                <td>{{ item3.frequency }}</td>
+              {% endif %}
+              <td>
+                {% if item3.location_url != '' %}
+                    <a href="{{ item3.location_url }}">{{ item3.location }}</a>
+                {% else %}
+                    {{ item3.location }}
+                {% endif %}
+              </td>
+              {% if item.type == 'computers' %}
+                <td>{{ item3.nbcores }}</td>
+                <td>{{ item3.nbthreads }}</td>
+              {% endif %}
+              <td>
+                {% for document in item3.documents %}
+                  <p>
+                    {% if document.url != '' %}
+                        <a href="{{ document.url }}">{{ document.name }}</a>
+                    {% else %}
+                        {{ document.name }}
+                    {% endif %}
+                  </p>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% endif %}
+
+{% if data.show == 'enclosures' %}
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.name }}</th>
+      <th>{{ translation.position }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in data.items %}
+      <tr>
+        <td>
+          {% if item.url != '' %}
+              <a href="{{ item.url }}">{{ item.name }}</a>
+          {% else %}
+              {{ item.name }}
+          {% endif %}
+        </td>
+        <td>{{ item.position }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if data.show == 'tickets' or data.show == 'problems' or data.show == 'changes' %}
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.type }}</th>
+      <th>{{ translation.entity }}</th>
+      <th>{{ translation.name }}</th>
+      <th>{{ translation.serial_number }}</th>
+      <th>{{ translation.inventaire_number }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in data.items %}
+      <tr>
+        <td>{{ item.type }}</td>
+        <td>
+          {% if item.entity_url != '' %}
+              <a href="{{ item.entity_url }}">{{ item.entity }}</a>
+          {% else %}
+              {{ item.entity }}
+          {% endif %}
+        </td>
+        <td>
+          {% if item.url != '' %}
+              <a href="{{ item.url }}">{{ item.name }}</a>
+          {% else %}
+              {{ item.name }}
+          {% endif %}
+        </td>
+        <td>{{ item.serial_number }}</td>
+        <td>{{ item.inventaire_number }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if data.show == 'links' %}
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.type }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in data.items %}
+      <tr>
+        <td>{{ item.type }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endif %}
 
 {{ include('footer.html.twig') }}

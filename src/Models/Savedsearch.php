@@ -25,8 +25,8 @@ class Savedsearch extends Common
   ];
 
   protected $with = [
-    'user:id,name',
-    'entity:id,name',
+    'user:id,name,firstname,lastname',
+    'entity:id,name,completename',
   ];
 
 

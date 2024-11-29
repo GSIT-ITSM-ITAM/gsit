@@ -11,6 +11,7 @@ final class Peripheral extends Common
 {
   protected $model = '\App\Models\Peripheral';
   protected $rootUrl2 = '/peripherals/';
+  protected $choose = 'peripherals';
 
   public function getAll(Request $request, Response $response, $args): Response
   {

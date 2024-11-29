@@ -35,23 +35,23 @@ class Projecttasktemplate extends Common
     'state:id,name',
     'type:id,name',
     'projecttasks:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'documents:id,name',
   ];
 
   public function state(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Projectstate');
+    return $this->belongsTo('\App\Models\Projectstate', 'projectstate_id');
   }
 
   public function type(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Projecttasktype');
+    return $this->belongsTo('\App\Models\Projecttasktype', 'projecttasktype_id');
   }
 
   public function projecttasks(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Projecttask');
+    return $this->belongsTo('\App\Models\Projecttask', 'projecttask_id');
   }
 
   public function entity(): BelongsTo

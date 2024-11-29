@@ -24,7 +24,13 @@
               {{ contact.name }}
           {% endif %}
         </td>
-        <td>{{ contact.entity }}</td>
+        <td>
+          {% if contact.entity_url != '' %}
+              <a href="{{ contact.entity_url }}">{{ contact.entity }}</a>
+          {% else %}
+              {{ contact.entity }}
+          {% endif %}
+        </td>
         <td>{{ contact.phone }}</td>
         <td>{{ contact.phone2 }}</td>
         <td>{{ contact.mobile }}</td>
@@ -34,7 +40,13 @@
               <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
           {% endif %}
         </td>
-        <td>{{ contact.type }}</td>
+        <td>
+          {% if contact.type_url != '' %}
+              <a href="{{ contact.type_url }}">{{ contact.type }}</a>
+          {% else %}
+              {{ contact.type }}
+          {% endif %}
+        </td>
       </tr>
     {% endfor %}
   </tbody>

@@ -22,8 +22,20 @@
                 {{ version.name }}
             {% endif %}
           </td>
-          <td>{{ version.status }}</td>
-          <td>{{ version.os }}</td>
+          <td>
+            {% if version.status_url != '' %}
+                <a href="{{ version.status_url }}">{{ version.status }}</a>
+            {% else %}
+                {{ version.status }}
+            {% endif %}
+          </td>
+          <td>
+            {% if version.os_url != '' %}
+                <a href="{{ version.os_url }}">{{ version.os }}</a>
+            {% else %}
+                {{ version.os }}
+            {% endif %}
+          </td>
           <td>{{ version.nb_install }}</td>
           <td>{{ version.comment }}</td>
         </tr>

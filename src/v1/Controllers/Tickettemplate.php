@@ -39,6 +39,8 @@ final class Tickettemplate extends Common
 
     $myItem = $item::with('mandatoryfields')->find($args['id']);
 
+    $rootUrl = $this->genereRootUrl($request, '/mandatoryfields');
+
     $myMandatoryFields = [];
     foreach ($myItem->mandatoryfields as $mandatoryfield)
     {
@@ -53,9 +55,6 @@ final class Tickettemplate extends Common
         'interface'   => $interface,
       ];
     }
-
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/mandatoryfields');
 
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
@@ -79,6 +78,8 @@ final class Tickettemplate extends Common
 
     $myItem = $item::with('predefinedfields')->find($args['id']);
 
+    $rootUrl = $this->genereRootUrl($request, '/predefinedfields');
+
     $myPredefinedFields = [];
     foreach ($myItem->predefinedfields as $predefinedfield)
     {
@@ -89,9 +90,6 @@ final class Tickettemplate extends Common
         'value'     => $predefinedfield->value,
       ];
     }
-
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/predefinedfields');
 
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
@@ -115,18 +113,17 @@ final class Tickettemplate extends Common
 
     $myItem = $item::with('hiddenfields')->find($args['id']);
 
+    $rootUrl = $this->genereRootUrl($request, '/hiddenfields');
+
     $myHiddenFields = [];
     foreach ($myItem->hiddenfields as $hiddenfield)
     {
       $name = $hiddenfield->num;
 
       $myHiddenFields[] = [
-        'name'        => $name,
+        'name'    => $name,
       ];
     }
-
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/hiddenfields');
 
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));

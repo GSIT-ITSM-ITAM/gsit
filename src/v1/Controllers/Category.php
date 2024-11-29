@@ -47,41 +47,55 @@ final class Category extends Common
       ->where('category_id', $args['id'])
       ->get();
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/categories');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
+    $rootUrl = $this->genereRootUrl($request, '/categories');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $myCategories = [];
     foreach ($myItem2 as $current_category)
     {
       $name = $current_category->name;
 
-      $url = '';
-      if ($rootUrl2 != '') {
-        $url = $rootUrl2 . "/dropdown/categories/" . $current_category->id;
-      }
+      $url = $this->genereRootUrl2Link($rootUrl2, '/dropdowns/categories/', $current_category->id);
 
       $entity = '';
-      if ($current_category->entity != null) {
-        $entity = $current_category->entity->name;
+      $entity_url = '';
+      if ($current_category->entity !== null)
+      {
+        $entity = $current_category->entity->completename;
+        $entity_url = $this->genereRootUrl2Link($rootUrl2, '/entities/', $current_category->entity->id);
       }
 
       $user = '';
-      if ($current_category->users != null) {
-        $user = $current_category->users->name;
+      $user_url = '';
+      if ($current_category->users !== null)
+      {
+        $user = $this->genereUserName(
+          $current_category->users->name,
+          $current_category->users->lastname,
+          $current_category->users->firstname,
+          false
+        );
+        $user_url = $this->genereRootUrl2Link($rootUrl2, '/users/', $current_category->users->id);
       }
 
       $group = '';
-      if ($current_category->groups != null) {
-        $group = $current_category->groups->name;
+      $group_url = '';
+      if ($current_category->groups !== null)
+      {
+        $group = $current_category->groups->completename;
+        $group_url = $this->genereRootUrl2Link($rootUrl2, '/groups/', $current_category->groups->id);
       }
 
       $knowbaseitemcategory = '';
-      if ($current_category->knowbaseitemcategories != null) {
+      $knowbaseitemcategory_url = '';
+      if ($current_category->knowbaseitemcategories !== null)
+      {
         $knowbaseitemcategory = $current_category->knowbaseitemcategories->name;
+        $knowbaseitemcategory_url = $this->genereRootUrl2Link(
+          $rootUrl2,
+          '/dropdowns/knowbaseitemcategories/',
+          $current_category->knowbaseitemcategories->id
+        );
       }
 
       $visible_simplified_interface = $current_category->is_helpdeskvisible;
@@ -135,30 +149,66 @@ final class Category extends Common
       }
 
       $template_request = '';
-      if ($current_category->tickettemplatesDemand != null) {
+      $template_request_url = '';
+      if ($current_category->tickettemplatesDemand !== null)
+      {
         $template_request = $current_category->tickettemplatesDemand->name;
+        $template_request_url = $this->genereRootUrl2Link(
+          $rootUrl2,
+          '/dropdowns/ticketemplates/',
+          $current_category->tickettemplatesDemand->id
+        );
       }
+
       $template_incident = '';
-      if ($current_category->tickettemplatesIncident != null) {
+      $template_incident_url = '';
+      if ($current_category->tickettemplatesIncident !== null)
+      {
         $template_incident = $current_category->tickettemplatesIncident->name;
+        $template_incident_url = $this->genereRootUrl2Link(
+          $rootUrl2,
+          '/dropdowns/ticketemplates/',
+          $current_category->tickettemplatesIncident->id
+        );
       }
+
       $template_change = '';
-      if ($current_category->changetemplates != null) {
+      $template_change_url = '';
+      if ($current_category->changetemplates !== null)
+      {
         $template_change = $current_category->changetemplates->name;
+        $template_change_url = $this->genereRootUrl2Link(
+          $rootUrl2,
+          '/dropdowns/changetemplates/',
+          $current_category->changetemplates->id
+        );
       }
+
       $template_problem = '';
-      if ($current_category->problemtemplates != null) {
+      $template_problem_url = '';
+      if ($current_category->problemtemplates !== null)
+      {
         $template_problem = $current_category->problemtemplates->name;
+        $template_problem_url = $this->genereRootUrl2Link(
+          $rootUrl2,
+          '/dropdowns/problemtemplates/',
+          $current_category->problemtemplates->id
+        );
       }
+
       $comment = $current_category->comment;
 
       $myCategories[$current_category->id] = [
         'name'                                => $name,
         'url'                                 => $url,
         'entity'                              => $entity,
+        'entity_url'                          => $entity_url,
         'user'                                => $user,
+        'user_url'                            => $user_url,
         'group'                               => $group,
+        'group_url'                           => $group_url,
         'knowbaseitemcategory'                => $knowbaseitemcategory,
+        'knowbaseitemcategory_url'            => $knowbaseitemcategory_url,
         'visible_simplified_interface'        => $visible_simplified_interface,
         'visible_simplified_interface_val'    => $visible_simplified_interface_val,
         'visible_incident'                    => $visible_incident,
@@ -170,9 +220,13 @@ final class Category extends Common
         'visible_change'                      => $visible_change,
         'visible_change_val'                  => $visible_change_val,
         'template_request'                    => $template_request,
+        'template_request_url'                => $template_request_url,
         'template_incident'                   => $template_incident,
+        'template_incident_url'               => $template_incident_url,
         'template_change'                     => $template_change,
+        'template_change_url'                 => $template_change_url,
         'template_problem'                    => $template_problem,
+        'template_problem_url'                => $template_problem_url,
         'comment'                             => $comment,
       ];
     }

@@ -1,0 +1,76 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+{% if data.show == 'fqdns' %}
+  <table class="ui blue table">
+    <thead>
+      <tr>
+        <th>{{ translation.networkalias }}</th>
+        <th>{{ translation.computername }}</th>
+        <th>{{ translation.comment }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for key,networkalias in data.networkalias %}
+        <tr>
+          <td>
+            {% if networkalias.url != '' %}
+                <a href="{{ networkalias.url }}">{{ networkalias.name }}</a>
+            {% else %}
+                {{ networkalias.name }}
+            {% endif %}
+          </td>
+          <td>
+            {% if networkalias.computername_url != '' %}
+                <a href="{{ networkalias.computername_url }}">{{ networkalias.computername }}</a>
+            {% else %}
+                {{ networkalias.computername }}
+            {% endif %}
+          </td>
+          <td>{{ networkalias.comment }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% if data.show == 'networknames' %}
+  <table class="ui blue table">
+    <thead>
+      <tr>
+        <th>{{ translation.name }}</th>
+        <th>{{ translation.domain }}</th>
+        <th>{{ translation.entity }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for key,networkalias in data.networkalias %}
+        <tr>
+          <td>
+            {% if networkalias.url != '' %}
+                <a href="{{ networkalias.url }}">{{ networkalias.name }}</a>
+            {% else %}
+                {{ networkalias.name }}
+            {% endif %}
+          </td>
+          <td>
+            {% if networkalias.domain_url != '' %}
+                <a href="{{ networkalias.domain_url }}">{{ networkalias.domain }}</a>
+            {% else %}
+                {{ networkalias.domain }}
+            {% endif %}
+          </td>
+          <td>
+            {% if networkalias.entity_url != '' %}
+                <a href="{{ networkalias.entity_url }}">{{ networkalias.entity }}</a>
+            {% else %}
+                {{ networkalias.entity }}
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{{ include('footer.html.twig') }}

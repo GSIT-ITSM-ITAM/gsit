@@ -12,6 +12,8 @@ class Softwareversion extends Common
   use SoftDeletes;
 
   protected $definition = '\App\Models\Definitions\Softwareversion';
+  protected $titles = ['Software version', 'Software versions'];
+  protected $icon = 'edit';
 
   protected $appends = [
   ];
@@ -30,7 +32,7 @@ class Softwareversion extends Common
 
   protected $with = [
     'software:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'state:id,name',
     'operatingsystem:id,name',
   ];

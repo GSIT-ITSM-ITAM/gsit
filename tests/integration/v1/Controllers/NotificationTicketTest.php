@@ -19,6 +19,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass('\App\Models\Definitions\Entity')]
 #[UsesClass('\App\Models\Definitions\Followup')]
 #[UsesClass('\App\Models\Definitions\Group')]
+#[UsesClass('\App\Models\Definitions\ItemTicket')]
 #[UsesClass('\App\Models\Definitions\Knowbaseitem')]
 #[UsesClass('\App\Models\Definitions\Knowbaseitemcategory')]
 #[UsesClass('\App\Models\Definitions\Location')]
@@ -26,11 +27,13 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass('\App\Models\Definitions\Problem')]
 #[UsesClass('\App\Models\Definitions\Problemtemplate')]
 #[UsesClass('\App\Models\Definitions\Profile')]
+#[UsesClass('\App\Models\Definitions\ProjecttaskTicket')]
 #[UsesClass('\App\Models\Definitions\Solution')]
 #[UsesClass('\App\Models\Definitions\Ticket')]
 #[UsesClass('\App\Models\Definitions\User')]
 #[UsesClass('\App\Models\Definitions\ProfileUser')]
 #[UsesClass('\App\Models\Definitions\Ticketcost')]
+#[UsesClass('\App\Models\Definitions\Ticketvalidation')]
 #[UsesClass('\App\Models\Definitions\Usercategory')]
 #[UsesClass('\App\Models\Definitions\Usertitle')]
 #[UsesClass('\App\Models\Entity')]
@@ -326,6 +329,39 @@ final class NotificationTicketTest extends TestCase
     $ticket->time_to_resolve = '2024/11/04 10:05:50';
     $ticket->solved_at = '2024/11/04 10:05:50';
     $ticket->save();
+  }
+
+  public static function tearDownAfterClass(): void
+  {
+    $items = \App\Models\Location::get();
+    foreach ($items as $item)
+    {
+      $item->forceDelete();
+    }
+
+    $items = \App\Models\User::where('id', '>', 1)->get();
+    foreach ($items as $item)
+    {
+      $item->forceDelete();
+    }
+
+    $items = \App\Models\Group::get();
+    foreach ($items as $item)
+    {
+      $item->forceDelete();
+    }
+
+    $items = \App\Models\Category::get();
+    foreach ($items as $item)
+    {
+      $item->forceDelete();
+    }
+
+    $items = \App\Models\Ticket::get();
+    foreach ($items as $item)
+    {
+      $item->forceDelete();
+    }
   }
 
   public function testGenerateDataForNotification(): void

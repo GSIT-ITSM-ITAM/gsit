@@ -4,7 +4,12 @@
 <table class="ui blue table">
   <thead>
     <tr>
+      {% if data.show == 'tickets' %}
+      <th>{{ translation.projects }}</th>
+      <th>{{ translation.projecttasks }}</th>
+      {% else %}
       <th>{{ translation.name }}</th>
+      {% endif %}
       <th>{{ translation.type }}</th>
       <th>{{ translation.status }}</th>
       <th>{{ translation.percent_done }}</th>
@@ -18,6 +23,15 @@
   <tbody>
     {% for key,projecttask in data.projecttasks %}
       <tr>
+        {% if data.show == 'tickets' %}
+        <td>
+          {% if projecttask.project_url != '' %}
+              <a href="{{ projecttask.project_url }}">{{ projecttask.project }}</a>
+          {% else %}
+              {{ projecttask.project }}
+          {% endif %}
+        </td>
+        {% endif %}
         <td>
           {% if projecttask.url != '' %}
               <a href="{{ projecttask.url }}">{{ projecttask.name }}</a>
@@ -25,7 +39,13 @@
               {{ projecttask.name }}
           {% endif %}
         </td>
-        <td>{{ projecttask.type }}</td>
+        <td>
+          {% if projecttask.type_url != '' %}
+              <a href="{{ projecttask.type_url }}">{{ projecttask.type }}</a>
+          {% else %}
+              {{ projecttask.type }}
+          {% endif %}
+        </td>
         <td style="background-color: {{ projecttask.status_color }};">{{ projecttask.status }}</td>
         <td>{{ projecttask.percent_done }}</td>
         <td>{{ projecttask.planned_start_date }}</td>

@@ -20,8 +20,8 @@ class Notepad extends Common
   ];
 
   protected $with = [
-    'user:id,name',
-    'userlastupdater:id,name',
+    'user:id,name,firstname,lastname',
+    'userlastupdater:id,name,firstname,lastname',
   ];
 
   protected $fillable = [

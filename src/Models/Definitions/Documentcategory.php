@@ -59,8 +59,8 @@ class Documentcategory
       ],
       [
         'title' => $translator->translatePlural('Document heading', 'Document headings', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'edit',
+        'link' => $rootUrl . '/categories',
       ],
       [
         'title' => $translator->translate('Historical'),

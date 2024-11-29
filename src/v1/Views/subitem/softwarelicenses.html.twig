@@ -19,7 +19,13 @@
               {{ softwarelicense.name }}
           {% endif %}
         </td>
-        <td>{{ softwarelicense.entity }}</td>
+        <td>
+          {% if softwarelicense.entity_url != '' %}
+              <a href="{{ softwarelicense.entity_url }}">{{ softwarelicense.entity }}</a>
+          {% else %}
+              {{ softwarelicense.entity }}
+          {% endif %}
+        </td>
         <td>{{ softwarelicense.comment }}</td>
       </tr>
     {% endfor %}

@@ -1,0 +1,43 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.status }}</th>
+      <th>{{ translation.request_date }}</th>
+      <th>{{ translation.request_user }}</th>
+      <th>{{ translation.request_comment }}</th>
+      <th>{{ translation.approval_date }}</th>
+      <th>{{ translation.approval_user }}</th>
+      <th>{{ translation.approval_comment }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for approval in data.approvals %}
+      <tr>
+        <td style="background-color: {{ approval.status.color }};">{{ approval.status.title }}</td>
+        <td>{{ approval.request_date }}</td>
+        <td>
+          {% if approval.request_user_url != '' %}
+              <a href="{{ approval.request_user_url }}">{{ approval.request_user }}</a>
+          {% else %}
+              {{ approval.request_user }}
+          {% endif %}
+        </td>
+        <td>{{ approval.request_comment }}</td>
+        <td>{{ approval.approval_date }}</td>
+        <td>
+          {% if approval.approval_user_url != '' %}
+              <a href="{{ approval.approval_user_url }}">{{ approval.approval_user }}</a>
+          {% else %}
+              {{ approval.approval_user }}
+          {% endif %}
+        </td>
+        <td>{{ approval.approval_comment }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

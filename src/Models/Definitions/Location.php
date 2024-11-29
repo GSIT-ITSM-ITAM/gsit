@@ -219,7 +219,7 @@ class Location
       ],
       [
         'title' => $translator->translatePlural('Item', 'Items', 2),
-        'icon' => 'caret square down outline',
+        'icon' => 'desktop',
         'link' => '',
       ],
       [

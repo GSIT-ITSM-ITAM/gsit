@@ -25,7 +25,7 @@ class Projectstate
       [
         'id'    => 12,
         'title' => $translator->translate('Finished state'),
-        'type'  => 'input',
+        'type'  => 'boolean',
         'name'  => 'is_finished',
         'fillable' => true,
       ],

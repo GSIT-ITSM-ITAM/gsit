@@ -25,8 +25,7 @@ final class Home extends Common
 
     $view = Twig::fromRequest($request);
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/home');
+    $rootUrl = $this->genereRootUrl($request, '/home');
 
     $myItem = new \App\Models\Home();
 
@@ -37,24 +36,28 @@ final class Home extends Common
       foreach ($itemByUserid as $item)
       {
         $items[$item->module] = [
-          'column' => $item->column,
-          'row' => $item->row,
-          'datas' => [],
+          'column'  => $item->column,
+          'row'     => $item->row,
+          'datas'   => [],
         ];
       }
-    } else {
+    }
+    else
+    {
       $itemByProfileid = $myItem->where('profile_id', $GLOBALS['profile_id'])->orderBy('row', 'asc')->get();
       if (count($itemByProfileid) > 0)
       {
         foreach ($itemByProfileid as $item)
         {
           $items[$item->module] = [
-            'column' => $item->column,
-            'row' => $item->row,
-            'datas' => [],
+            'column'  => $item->column,
+            'row'     => $item->row,
+            'datas'   => [],
           ];
         }
-      } else {
+      }
+      else
+      {
         $itemByDefaultUseridProfileid = $myItem
           ->where(['user_id' => 0, 'profile_id' => 0])
           ->orderBy('row', 'asc')
@@ -64,9 +67,9 @@ final class Home extends Common
           foreach ($itemByDefaultUseridProfileid as $item)
           {
             $items[$item->module] = [
-              'column' => $item->column,
-              'row' => $item->row,
-              'datas' => [],
+              'column'  => $item->column,
+              'row'     => $item->row,
+              'datas'   => [],
             ];
           }
         }
@@ -81,18 +84,18 @@ final class Home extends Common
 
         foreach ($myItem2 as $it)
         {
-          if ($it->requester != null)
+          if ($it->requester !== null)
           {
             foreach ($it->requester as $req)
             {
               if ($req->pivot->user_id == $GLOBALS['user_id'])
               {
                 $items[$key]['datas'][$it->id] = [
-                  'name' => $it->name,
-                  'status' => $this->getStatusArray()[$it->status],
-                  'priority' => $this->getPriorityArray()[$it->priority],
-                  'date_open' => $it->date,
-                  'date_last_modif' => $it->updated_at,
+                  'name'              => $it->name,
+                  'status'            => $this->getStatusArray()[$it->status],
+                  'priority'          => $this->getPriorityArray()[$it->priority],
+                  'date_open'         => $it->date,
+                  'date_last_modif'   => $it->updated_at,
                 ];
               }
             }
@@ -115,50 +118,50 @@ final class Home extends Common
           $myItem2 = \App\Models\Ticket::with('requestergroup', 'watchergroup', 'techniciangroup')->take(5)->get();
           foreach ($myItem2 as $it)
           {
-            if ($it->requestergroup != null)
+            if ($it->requestergroup !== null)
             {
               foreach ($it->requestergroup as $req)
               {
                 if (array_key_exists($req->pivot->group_id, $groups))
                 {
                   $items[$key]['datas'][$it->id] = [
-                    'name' => $it->name,
-                    'status' => $this->getStatusArray()[$it->status],
-                    'priority' => $this->getPriorityArray()[$it->priority],
-                    'date_open' => $it->date,
-                    'date_last_modif' => $it->updated_at,
+                    'name'              => $it->name,
+                    'status'            => $this->getStatusArray()[$it->status],
+                    'priority'          => $this->getPriorityArray()[$it->priority],
+                    'date_open'         => $it->date,
+                    'date_last_modif'   => $it->updated_at,
                   ];
                 }
               }
             }
-            if ($it->watchergroup != null)
+            if ($it->watchergroup !== null)
             {
               foreach ($it->watchergroup as $req)
               {
                 if (array_key_exists($req->pivot->group_id, $groups))
                 {
                   $items[$key]['datas'][$it->id] = [
-                    'name' => $it->name,
-                    'status' => $this->getStatusArray()[$it->status],
-                    'priority' => $this->getPriorityArray()[$it->priority],
-                    'date_open' => $it->date,
-                    'date_last_modif' => $it->updated_at,
+                    'name'              => $it->name,
+                    'status'            => $this->getStatusArray()[$it->status],
+                    'priority'          => $this->getPriorityArray()[$it->priority],
+                    'date_open'         => $it->date,
+                    'date_last_modif'   => $it->updated_at,
                   ];
                 }
               }
             }
-            if ($it->techniciangroup != null)
+            if ($it->techniciangroup !== null)
             {
               foreach ($it->techniciangroup as $req)
               {
                 if (array_key_exists($req->pivot->group_id, $groups))
                 {
                   $items[$key]['datas'][$it->id] = [
-                    'name' => $it->name,
-                    'status' => $this->getStatusArray()[$it->status],
-                    'priority' => $this->getPriorityArray()[$it->priority],
-                    'date_open' => $it->date,
-                    'date_last_modif' => $it->updated_at,
+                    'name'              => $it->name,
+                    'status'            => $this->getStatusArray()[$it->status],
+                    'priority'          => $this->getPriorityArray()[$it->priority],
+                    'date_open'         => $it->date,
+                    'date_last_modif'   => $it->updated_at,
                   ];
                 }
               }
@@ -176,22 +179,22 @@ final class Home extends Common
         foreach ($myItem2 as $it)
         {
           $user = '';
-          if ($it->user != null)
+          if ($it->user !== null)
           {
             $user = $it->user->name;
           }
           $category = '';
-          if ($it->category != null)
+          if ($it->category !== null)
           {
             $category = $it->category->name;
           }
 
           $items[$key]['datas'][$it->id] = [
-            'name' => $it->name,
-            'user' => $user,
-            'category' => $category,
-            'visible_since' => $it->begin_date,
-            'visible_until' => $it->end_date,
+            'name'            => $it->name,
+            'user'            => $user,
+            'category'        => $category,
+            'visible_since'   => $it->begin_date,
+            'visible_until'   => $it->end_date,
           ];
         }
         $nbValTotal = $nbValTotal + count($items[$key]['datas']);
@@ -201,9 +204,9 @@ final class Home extends Common
           $limit = true;
         }
         $items[$key]['datas']['#'] = [
-          'limit' => $limit,
-          'nbLast' => $nbLast,
-          'nb_res' => $myItem3,
+          'limit'   => $limit,
+          'nbLast'  => $nbLast,
+          'nb_res'  => $myItem3,
         ];
       }
       if ($key == 'lastproblems')
@@ -215,11 +218,11 @@ final class Home extends Common
         foreach ($myItem2 as $it)
         {
           $items[$key]['datas'][$it->id] = [
-            'name' => $it->name,
-            'status' => $this->getStatusArray()[$it->status],
-            'priority' => $this->getPriorityArray()[$it->priority],
-            'date_open' => $it->date,
-            'date_last_modif' => $it->updated_at,
+            'name'              => $it->name,
+            'status'            => $this->getStatusArray()[$it->status],
+            'priority'          => $this->getPriorityArray()[$it->priority],
+            'date_open'         => $it->date,
+            'date_last_modif'   => $it->updated_at,
           ];
         }
         $nbValTotal = $nbValTotal + count($items[$key]['datas']);
@@ -229,9 +232,9 @@ final class Home extends Common
           $limit = true;
         }
         $items[$key]['datas']['#'] = [
-          'limit' => $limit,
-          'nbLast' => $nbLast,
-          'nb_res' => $myItem3,
+          'limit'   => $limit,
+          'nbLast'  => $nbLast,
+          'nb_res'  => $myItem3,
         ];
       }
       if ($key == 'todayincidents')
@@ -253,7 +256,7 @@ final class Home extends Common
           $myItem2 = $item2::with('requester', 'requestergroup')->take(5)->get();
           foreach ($myItem2 as $it)
           {
-            if ($it->requestergroup != null)
+            if ($it->requestergroup !== null)
             {
               foreach ($it->requestergroup as $req)
               {
@@ -266,7 +269,7 @@ final class Home extends Common
                 }
               }
             }
-            if ($it->requester != null)
+            if ($it->requester !== null)
             {
               foreach ($it->requester as $req)
               {
@@ -276,7 +279,9 @@ final class Home extends Common
                   {
                     $nbTodayIncidents = $nbTodayIncidents + 1;
                   }
-                } else  {
+                }
+                else
+                {
                   $user2 = new \App\Models\User();
                   $itemUser2 = $user2::with('group')->find($req->pivot->user_id);
                   $groups2 = [];
@@ -353,14 +358,14 @@ final class Home extends Common
         $incr = 0;
         foreach ($myItem2 as $it)
         {
-          if ($it->requester != null)
+          if ($it->requester !== null)
           {
             foreach ($it->requester as $req)
             {
               if ($req->pivot->user_id == $GLOBALS['user_id'])
               {
                 $others_tech = false;
-                if ($it->technician != null)
+                if ($it->technician !== null)
                 {
                   foreach ($it->technician as $tec)
                   {
@@ -373,7 +378,7 @@ final class Home extends Common
                 }
                 if ($others_tech === false)
                 {
-                  if ($it->techniciangroup != null)
+                  if ($it->techniciangroup !== null)
                   {
                     foreach ($it->techniciangroup as $tec)
                     {
@@ -389,11 +394,11 @@ final class Home extends Common
                   if ($incr <= $nbLast)
                   {
                     $items[$key]['datas'][$it->id] = [
-                      'name' => $it->name,
-                      'status' => $this->getStatusArray()[$it->status],
-                      'priority' => $this->getPriorityArray()[$it->priority],
-                      'date_open' => $it->date,
-                      'date_last_modif' => $it->updated_at,
+                      'name'              => $it->name,
+                      'status'            => $this->getStatusArray()[$it->status],
+                      'priority'          => $this->getPriorityArray()[$it->priority],
+                      'date_open'         => $it->date,
+                      'date_last_modif'   => $it->updated_at,
                     ];
                   }
                 }
@@ -409,9 +414,9 @@ final class Home extends Common
           $limit = true;
         }
         $items[$key]['datas']['#'] = [
-          'limit' => $limit,
-          'nbLast' => $nbLast,
-          'nb_res' => $incr,
+          'limit'   => $limit,
+          'nbLast'  => $nbLast,
+          'nb_res'  => $incr,
         ];
       }
       if ($key == 'knowledgelink')

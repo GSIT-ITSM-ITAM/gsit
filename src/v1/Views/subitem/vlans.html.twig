@@ -1,0 +1,35 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.name }}</th>
+      <th>{{ translation.entity }}</th>
+      <th>{{ translation.tagid }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,vlan in data.vlans %}
+      <tr>
+        <td>
+          {% if vlan.url != '' %}
+              <a href="{{ vlan.url }}">{{ vlan.name }}</a>
+          {% else %}
+              {{ vlan.name }}
+          {% endif %}
+        </td>
+        <td>
+          {% if vlan.entity_url != '' %}
+              <a href="{{ vlan.entity_url }}">{{ vlan.entity }}</a>
+          {% else %}
+              {{ vlan.entity }}
+          {% endif %}
+        </td>
+        <td>{{ vlan.tagid }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

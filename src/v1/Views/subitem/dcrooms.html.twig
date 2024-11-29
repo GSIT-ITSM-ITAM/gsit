@@ -1,0 +1,25 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.name }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,dcroom in data.dcrooms %}
+      <tr>
+        <td>
+          {% if dcroom.url != '' %}
+              <a href="{{ dcroom.url }}">{{ dcroom.name }}</a>
+          {% else %}
+              {{ dcroom.name }}
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

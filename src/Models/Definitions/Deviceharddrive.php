@@ -120,8 +120,8 @@ class Deviceharddrive
       ],
       [
         'title' => $translator->translatePlural('Item', 'Items', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'desktop',
+        'link' => $rootUrl . '/items',
       ],
       [
         'title' => $translator->translatePlural('Document', 'Documents', 2),

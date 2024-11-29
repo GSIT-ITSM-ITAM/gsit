@@ -26,7 +26,7 @@ class Netpoint extends Common
 
   protected $with = [
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   public function location(): BelongsTo

@@ -145,7 +145,9 @@ final class Notification extends Common
         if (isset($nestedFields[$definition['name']]))
         {
           $relationFields = $nestedFields[$definition['name']];
-        } else {
+        }
+        else
+        {
           $relationFields = $definition['relationfields'];
         }
 
@@ -162,14 +164,18 @@ final class Notification extends Common
               $relationFields
             );
               // $data[$definition['name']] = [];
-          } else {
+          }
+          else
+          {
             $data[$definition['name']] = $this->generateDataForNotification(
               $item->{$definition['name']},
               [],
               $relationFields
             );
           }
-        } else {
+        }
+        else
+        {
           // many to may relation
           $data[$definition['name']] = [];
           foreach ($item->{$definition['name']}()->get() as $rItem)
@@ -178,7 +184,9 @@ final class Notification extends Common
             $data[$definition['name']][] = $tempData;
           }
         }
-      } else {
+      }
+      else
+      {
         // it's fields
         if (is_null($item->{$definition['name']}))
         {
@@ -189,14 +197,18 @@ final class Notification extends Common
           if (empty($item->{$definition['name']}))
           {
             $data[$definition['name']] = null;
-          } else {
+          }
+          else
+          {
             $data[$definition['name']] = $definition['values'][$item->{$definition['name']}]['title'];
           }
         }
         elseif ($definition['type'] == 'datetime' && is_object($item->{$definition['name']}))
         {
           $data[$definition['name']] = $item->{$definition['name']}->toDateTimeString();
-        } else {
+        }
+        else
+        {
           $data[$definition['name']] = $item->{$definition['name']};
         }
       }
@@ -244,7 +256,9 @@ final class Notification extends Common
         if (isset($nestedFields[$definition['name']]))
         {
           $relationFields = $nestedFields[$definition['name']];
-        } else {
+        }
+        else
+        {
           $relationFields = $definition['relationfields'];
         }
 
@@ -254,7 +268,9 @@ final class Notification extends Common
           [],
           $relationFields
         );
-      } else {
+      }
+      else
+      {
         $data[$definition['name']] = $definition['title'];
       }
     }

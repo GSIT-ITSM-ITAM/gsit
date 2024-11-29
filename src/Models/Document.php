@@ -31,7 +31,7 @@ class Document extends Common
 
   protected $with = [
     'categorie:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'notes:id',
     'documents:id,name',
   ];

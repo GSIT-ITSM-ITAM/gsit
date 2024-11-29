@@ -32,6 +32,7 @@ class Softwarelicense extends Common
     'certificates',
     'notes',
     'childs',
+    'infocom',
   ];
 
   protected $visible = [
@@ -56,21 +57,22 @@ class Softwarelicense extends Common
     'problems',
     'changes',
     'childs',
+    'infocom',
   ];
 
   protected $with = [
     'location:id,name',
-    'softwarelicensetype:id,name',
-    'userstech:id,name',
-    'groupstech:id,name',
-    'user:id,name',
-    'group:id,name',
-    'state:id,name',
-    'softwareversionsBuy:id,name',
-    'softwareversionsUse:id,name',
+    'softwarelicensetype',
+    'userstech:id,name,firstname,lastname',
+    'groupstech:id,name,completename',
+    'user:id,name,firstname,lastname',
+    'group:id,name,completename',
+    'state',
+    'softwareversionsBuy',
+    'softwareversionsUse',
     'manufacturer:id,name',
     'software:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'certificates:id,name',
     'notes:id',
     'knowbaseitems:id,name',
@@ -80,6 +82,7 @@ class Softwarelicense extends Common
     'problems:id,name',
     'changes:id,name',
     'childs:id,name',
+    'infocom',
   ];
 
   public function location(): BelongsTo
@@ -114,7 +117,7 @@ class Softwarelicense extends Common
 
   public function state(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\State');
+    return $this->belongsTo('\App\Models\State', 'state_id');
   }
 
   public function softwareversionsBuy(): BelongsTo
@@ -231,5 +234,13 @@ class Softwarelicense extends Common
   public function childs(): HasMany
   {
     return $this->hasMany('\App\Models\Softwarelicense');
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
+    );
   }
 }

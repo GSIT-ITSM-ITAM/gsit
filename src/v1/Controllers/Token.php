@@ -28,13 +28,17 @@ final class Token
     if (isset($tmp['algo']) && $tmp['algo'])
     {
       $verify = password_verify($pass, $hash);
-    } elseif (strlen($hash) == 32)
+    }
+    elseif (strlen($hash) == 32)
     {
       $verify = md5($pass) === $hash;
-    } elseif (strlen($hash) == 40)
+    }
+    elseif (strlen($hash) == 40)
     {
       $verify = sha1($pass) === $hash;
-    } else {
+    }
+    else
+    {
       $salt = substr($hash, 0, 8);
       $verify = ($salt . sha1($salt . $pass) === $hash);
     }
@@ -70,7 +74,9 @@ final class Token
     {
       $jti = $this->generateToken();
       // $user->properties()->updateExistingPivot($jwtidId, ['value_string' => $jti]);
-    } else {
+    }
+    else
+    {
       $jti = $jwtid;
     }
 

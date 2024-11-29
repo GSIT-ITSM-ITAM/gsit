@@ -11,7 +11,7 @@ use Slim\Views\Twig;
 final class Location extends Common
 {
   protected $model = '\App\Models\Location';
-  protected $rootUrl2 = '/locations/';
+  protected $rootUrl2 = '/dropdowns/locations/';
 
   public function getAll(Request $request, Response $response, $args): Response
   {
@@ -44,44 +44,51 @@ final class Location extends Common
     $item2 = new $this->model();
     $myItem2 = $item2->where('location_id', $args['id'])->get();
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/locations');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
+    $rootUrl = $this->genereRootUrl($request, '/locations');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $myLocations = [];
     foreach ($myItem2 as $current_location)
     {
       $name = $current_location->name;
 
-      $url = '';
-      if ($rootUrl2 != '') {
-        $url = $rootUrl2 . "/dropdown/locations/" . $current_location->id;
-      }
+      $url = $this->genereRootUrl2Link($rootUrl2, '/dropdowns/locations/', $current_location->id);
 
       $entity = '';
-      if ($current_location->entity != null) {
-        $entity = $current_location->entity->name;
+      $entity_url = '';
+      if ($current_location->entity !== null)
+      {
+        $entity = $current_location->entity->completename;
+        $entity_url = $this->genereRootUrl2Link($rootUrl2, '/entities/', $current_location->entity->id);
       }
 
       $address = $current_location->address;
+
       $postcode = $current_location->postcode;
+
       $town = $current_location->town;
+
       $state = $current_location->state;
+
       $country = $current_location->country;
+
       $building = $current_location->building;
+
       $room = $current_location->room;
+
       $latitude = $current_location->latitude;
+
       $longitude = $current_location->longitude;
+
       $altitude = $current_location->altitude;
+
       $comment = $current_location->comment;
 
       $myLocations[$current_location->id] = [
         'name'             => $name,
         'url'              => $url,
         'entity'           => $entity,
+        'entity_url'       => $entity_url,
         'address'          => $address,
         'postcode'         => $postcode,
         'town'             => $town,

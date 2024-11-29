@@ -41,12 +41,8 @@ final class Cartridgeitem extends Common
 
     $myItem = $item::with('cartridges')->find($args['id']);
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/cartridges');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
+    $rootUrl = $this->genereRootUrl($request, '/cartridges');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $myCartridges_use = [];
     $myCartridges_out = [];
@@ -54,6 +50,7 @@ final class Cartridgeitem extends Common
     $total_new = 0;
     $total_use = 0;
     $total_out = 0;
+    $pages = [];
     foreach ($myItem->cartridges as $cartridge)
     {
       $status = '';
@@ -63,37 +60,46 @@ final class Cartridgeitem extends Common
       $use_on = '';
       $url = '';
 
-
-      if ($date_end != null) {
+      if ($date_end !== null)
+      {
         $status = $translator->translatePlural('cartridge' . "\004" . 'Worn', 'cartridge' . "\004" . 'Worn', 1);
         $total_out = $total_out + 1;
-      } elseif ($date_use != null) {
+      }
+      elseif ($date_use !== null)
+      {
         $status = $translator->translatePlural('cartridge' . "\004" . 'Used', 'cartridge' . "\004" . 'Used', 1);
         $total_use = $total_use + 1;
-      } else {
+      }
+      else
+      {
         $status = $translator->translatePlural('cartridge' . "\004" . 'New', 'cartridge' . "\004" . 'New', 1);
         $total_new = $total_new + 1;
       }
       $total = $total + 1;
 
-
       $use_on = '';
-      if ($cartridge->printer != null)
+      $printer_counter = '';
+      if ($cartridge->printer !== null)
       {
         $use_on = $cartridge->printer->name;
-        if ($rootUrl2 != '') {
-          $url = $rootUrl2 . "/printers/" . $cartridge->printer->id;
+
+        $url = $this->genereRootUrl2Link($rootUrl2, '/printers/', $cartridge->printer->id);
+
+        if (array_key_exists($cartridge->printer->id, $pages) !== true)
+        {
+          $pages[$cartridge->printer->id] = $cartridge->printer->init_pages_counter;
+        }
+
+        if ($pages[$cartridge->printer->id] < $cartridge->pages)
+        {
+          $pp = $cartridge->pages - $pages[$cartridge->printer->id];
+          $printer_counter = sprintf($translator->translatePlural('%d printed page', '%d printed pages', $pp), $pp);
+          $pages[$cartridge->printer->id] = $cartridge->pages;
         }
       }
 
-      $printer_counter = 0; // TODO
-
-      $printer_counter = sprintf(
-        $translator->translatePlural('%d printed page', '%d printed pages', $printer_counter),
-        $printer_counter
-      );
-
-      if ($cartridge->date_out == null) {
+      if ($cartridge->date_out == null)
+      {
         $myCartridges_use[] = [
           'status'       => $status,
           'url'          => $url,
@@ -101,7 +107,9 @@ final class Cartridgeitem extends Common
           'date_use'     => $date_use,
           'use_on'       => $use_on,
         ];
-      } else {
+      }
+      else
+      {
         $myCartridges_out[] = [
           'status'            => $status,
           'url'               => $url,
@@ -131,7 +139,6 @@ final class Cartridgeitem extends Common
     $viewData->addTranslation('date_end', $translator->translate('End date'));
     $viewData->addTranslation('use_on', $translator->translate('Used on'));
     $viewData->addTranslation('printer_counter', $translator->translate('Printer counter'));
-
     $viewData->addTranslation('cartridges_use', $translator->translate('Used cartridges'));
     $viewData->addTranslation('cartridges_out', $translator->translate('Worn cartridges'));
     $viewData->addTranslation('total', $translator->translate('Total'));
@@ -161,22 +168,15 @@ final class Cartridgeitem extends Common
 
     $myItem = $item::with('printermodels')->find($args['id']);
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/printermodels');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
+    $rootUrl = $this->genereRootUrl($request, '/printermodels');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $myPrintermodels = [];
     foreach ($myItem->printermodels as $printermodel)
     {
       $name = $printermodel->name;
 
-      $url = '';
-      if ($rootUrl2 != '') {
-        $url = $rootUrl2 . "/dropdowns/printermodels/" . $printermodel->id;
-      }
+      $url = $this->genereRootUrl2Link($rootUrl2, '/dropdowns/printermodels/', $printermodel->id);
 
       $myPrintermodels[$printermodel->id] = [
         'name'      => $name,

@@ -7,51 +7,63 @@
     <thead>
       <tr>
         <th>{{ translation.antivirus }}</th>
+        <th>{{ translation.manufacturer }}</th>
         <th>{{ translation.antivirus_version }}</th>
-        <th>{{ translation.publisher }}</th>
+        <th>{{ translation.signature }}</th>
         <th>{{ translation.is_dynamic }}</th>
         <th>{{ translation.is_active }}</th>
         <th>{{ translation.is_uptodate }}</th>
-        <th>{{ translation.signature }}</th>
       </tr>
     </thead>
     <tbody>
       {% for antivirus in data.antiviruses|sort((a, b) => a.antivirus.name|lower <=> b.antivirus.name|lower) %}
         <tr>
-          <td>{{ antivirus.name }}</td>
+          <td>
+            {% if antivirus.antivirus_url != '' %}
+                <a href="{{ antivirus.antivirus_url }}">{{ antivirus.name }}</a>
+            {% else %}
+                {{ antivirus.name }}
+            {% endif %}
+          </td>
+          <td>
+            {% if antivirus.manufacturer_url != '' %}
+                <a href="{{ antivirus.manufacturer_url }}">{{ antivirus.manufacturer }}</a>
+            {% else %}
+                {{ antivirus.manufacturer }}
+            {% endif %}
+          </td>
           <td>{{ antivirus.version }}</td>
-          <td>{{ antivirus.publisher }}</td>
+          <td>{{ antivirus.signature }}</td>
           {% if antivirus.is_dynamic %}
             <td class="positive">
             <i class="check circle outline icon"></i>
-            Yes
+            {{ antivirus.is_dynamic_val }}
           {% else %}
             <td class="negative">
             <i class="times circle outline icon"></i>
-            No
+            {{ antivirus.is_dynamic_val }}
           {% endif %}
           </td>
           {% if antivirus.is_active %}
             <td class="positive">
             <i class="check circle outline icon"></i>
-            Yes
+            {{ antivirus.is_active_val }}
           {% else %}
             <td class="negative">
             <i class="times circle outline icon"></i>
-            No
+            {{ antivirus.is_active_val }}
           {% endif %}
           </td>
           {% if not antivirus.is_uptodate %}
             <td class="positive">
             <i class="check circle outline icon"></i>
-            Yes
+            {{ antivirus.is_uptodate_val }}
           {% else %}
             <td class="negative">
             <i class="times circle outline icon"></i>
-            No
+            {{ antivirus.is_uptodate_val }}
           {% endif %}
           </td>
-          <td>{{ antivirus.signature }}</td>
         </tr>
       {% endfor %}
     </tbody>
@@ -68,8 +80,20 @@
   <tbody>
     {% for softwareversion in data.softwares|sort((a, b) => a.software.name|lower <=> b.software.name|lower) %}
       <tr>
-        <td><a>{{ softwareversion.software.name }}</a></td>
-        <td><a>{{ softwareversion.name }}</a></td>
+        <td>
+          {% if softwareversion.software.url != '' %}
+              <a href="{{ softwareversion.software.url }}">{{ softwareversion.software.name }}</a>
+          {% else %}
+            {{ softwareversion.software.name }}
+          {% endif %}
+        </td>
+        <td>
+          {% if softwareversion.url != '' %}
+              <a href="{{ softwareversion.url }}">{{ softwareversion.name }}</a>
+          {% else %}
+              {{ softwareversion.name }}
+          {% endif %}
+        </td>
       </tr>
     {% endfor %}
   </tbody>

@@ -24,6 +24,7 @@ class ItemDevicesimcard extends Common
     'user',
     'group',
     'entity',
+    'infocom',
   ];
 
   protected $visible = [
@@ -34,16 +35,18 @@ class ItemDevicesimcard extends Common
     'entity',
     'documents',
     'contracts',
+    'infocom',
   ];
 
   protected $with = [
     'state:id,name',
     'location:id,name',
-    'user:id,name',
-    'group:id,name',
-    'entity:id,name',
-    'documents:id,name',
+    'user:id,name,firstname,lastname',
+    'group:id,name,completename',
+    'entity:id,name,completename',
+    'documents',
     'contracts:id,name',
+    'infocom',
   ];
 
 
@@ -92,6 +95,14 @@ class ItemDevicesimcard extends Common
       'contract_item'
     )->withPivot(
       'contract_id',
+    );
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
     );
   }
 }

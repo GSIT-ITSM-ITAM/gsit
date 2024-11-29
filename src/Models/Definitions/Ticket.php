@@ -270,7 +270,7 @@ class Ticket
       //   'id'    => 6,
       //   'title' => $translator->translate('Assigned to a supplier'),
       //   'type'  => 'dropdown_remote',
-      //   'name'  => 'technician',
+      //   'name'  => 'technician:id,name,firstname,lastname',
       //   'itemtype' => '\App\Models\User',
       //   'multiple' => true,
       // ],
@@ -521,7 +521,9 @@ class Ticket
         {
           $day  = 0;
           $hour = floor($i / $HOUR_TIMESTAMP);
-        } else {
+        }
+        else
+        {
           $day  = floor($i / $DAY_TIMESTAMP);
           $hour = floor(($i % $DAY_TIMESTAMP) / $HOUR_TIMESTAMP);
         }
@@ -548,10 +550,13 @@ class Ticket
               $hour,
               $minute
             );
-          } else {
+          }
+          else
+          {
               $values[$i] = sprintf($translator->translatePlural('%d day', '%d days', $day), $day);
           }
-        } elseif ($hour > 0 || $minute > 0)
+        }
+        elseif ($hour > 0 || $minute > 0)
         {
           if ($minute < 10)
           {
@@ -589,7 +594,7 @@ class Ticket
       [
         'title' => $translator->translatePlural('Approval', 'Approvals', 2),
         'icon' => 'thumbs up',
-        'link' => '',
+        'link' => $rootUrl . '/approvals',
       ],
       [
         'title' => $translator->translate('Knowledge base'),
@@ -599,7 +604,7 @@ class Ticket
       [
         'title' => $translator->translatePlural('Item', 'Items', 2),
         'icon' => 'desktop',
-        'link' => '',
+        'link' => $rootUrl . '/items',
       ],
       [
         'title' => $translator->translatePlural('Cost', 'Costs', 2),
@@ -609,13 +614,13 @@ class Ticket
       [
         'title' => $translator->translatePlural('Project', 'Projects', 2),
         'icon' => 'folder open',
-        'link' => '',
+        'link' => $rootUrl . '/projects',
         'rightModel' => '\App\Models\Project',
       ],
       [
         'title' => $translator->translatePlural('Project task', 'Project tasks', 2),
         'icon' => 'tasks',
-        'link' => '',
+        'link' => $rootUrl . '/projecttasks',
         'rightModel' => '\App\Models\Project',
       ],
       [
@@ -627,7 +632,7 @@ class Ticket
       [
         'title' => $translator->translatePlural('Change', 'Changes', 2),
         'icon' => 'paint roller',
-        'link' => '',
+        'link' => $rootUrl . '/changes',
         'rightModel' => '\App\Models\Change',
       ],
       [

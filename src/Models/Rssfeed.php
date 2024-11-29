@@ -24,7 +24,7 @@ class Rssfeed extends Common
   ];
 
   protected $with = [
-    'user:id,name',
+    'user:id,name,firstname,lastname',
   ];
 
 

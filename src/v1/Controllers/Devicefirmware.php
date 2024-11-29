@@ -6,11 +6,13 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\PhpRenderer;
 use Slim\Routing\RouteContext;
+use Slim\Views\Twig;
 
 final class Devicefirmware extends Common
 {
   protected $model = '\App\Models\Devicefirmware';
-  protected $rootUrl2 = '/devicefirmwares/';
+  protected $rootUrl2 = '/devices/devicefirmwares/';
+  protected $choose = 'devicefirmwares';
 
   public function getAll(Request $request, Response $response, $args): Response
   {

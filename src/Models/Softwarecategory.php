@@ -29,6 +29,6 @@ class Softwarecategory extends Common
 
   public function category(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Softwarecategory');
+    return $this->belongsTo('\App\Models\Softwarecategory', 'softwarecategory_id');
   }
 }

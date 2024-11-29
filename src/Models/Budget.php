@@ -35,7 +35,7 @@ class Budget extends Common
   protected $with = [
     'location:id,name',
     'type:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'notes:id',
     'knowbaseitems:id,name',
     'documents:id,name',

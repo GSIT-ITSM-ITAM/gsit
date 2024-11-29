@@ -21,6 +21,7 @@ class Deviceharddrive extends Common
     'model',
     'interface',
     'entity',
+    'items',
   ];
 
   protected $visible = [
@@ -29,14 +30,16 @@ class Deviceharddrive extends Common
     'interface',
     'entity',
     'documents',
+    'items',
   ];
 
   protected $with = [
     'manufacturer:id,name',
     'model:id,name',
     'interface:id,name',
-    'entity:id,name',
-    'documents:id,name',
+    'entity:id,name,completename',
+    'documents',
+    'items',
   ];
 
   public function manufacturer(): BelongsTo
@@ -69,5 +72,10 @@ class Deviceharddrive extends Common
       'document_id',
       'updated_at',
     );
+  }
+
+  public function items(): HasMany
+  {
+    return $this->hasMany('\App\Models\ItemDeviceharddrive', 'deviceharddrive_id');
   }
 }

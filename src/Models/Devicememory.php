@@ -21,6 +21,7 @@ class Devicememory extends Common
     'type',
     'model',
     'entity',
+    'items',
   ];
 
   protected $visible = [
@@ -29,14 +30,16 @@ class Devicememory extends Common
     'model',
     'entity',
     'documents',
+    'items',
   ];
 
   protected $with = [
     'manufacturer:id,name',
     'type:id,name',
     'model:id,name',
-    'entity:id,name',
-    'documents:id,name',
+    'entity:id,name,completename',
+    'documents',
+    'items',
   ];
 
   public function manufacturer(): BelongsTo
@@ -69,5 +72,10 @@ class Devicememory extends Common
       'document_id',
       'updated_at',
     );
+  }
+
+  public function items(): HasMany
+  {
+    return $this->hasMany('\App\Models\ItemDevicememory', 'devicememory_id');
   }
 }

@@ -15,7 +15,7 @@
         <th>{{ translation.priority }}</th>
         <th>{{ translation.requesters }}</th>
         <th>{{ translation.technicians }}</th>
-        <th>{{ translation.planification }}</th>
+        {# <th>{{ translation.planification }}</th> #}
       </tr>
     </thead>
     <tbody>
@@ -28,7 +28,13 @@
                 {{ change.title }}
             {% endif %}
           </td>
-          <td>{{ change.category }}</td>
+          <td>
+            {% if change.category_url != '' %}
+                <a href="{{ change.category_url }}">{{ change.category }}</a>
+            {% else %}
+                {{ change.category }}
+            {% endif %}
+          </td>
           {% if change.status is iterable %}
             <td class="left {% if change.status.color is defined %}
                 {{ change.status.color }}
@@ -53,7 +59,13 @@
           {% endif %}
           <td>{{ change.date }}</td>
           <td>{{ change.last_update }}</td>
-          <td>{{ change.entity }}</td>
+          <td>
+            {% if change.entity_url != '' %}
+                <a href="{{ change.entity_url }}">{{ change.entity }}</a>
+            {% else %}
+                {{ change.entity }}
+            {% endif %}
+          </td>
           </td>
           {% if change.priority is iterable %}
             <td class="left {% if change.priority.color is defined %}
@@ -79,15 +91,27 @@
           {% endif %}
           <td>
           {% for requester in change.requesters %}
-          <p>{{ requester.name }}</p>
+            <p>
+              {% if requester.url != '' %}
+                  <a href="{{ requester.url }}">{{ requester.name }}</a>
+              {% else %}
+                  {{ requester.name }}
+              {% endif %}
+            </p>
           {% endfor %}
           </td>
           <td>
           {% for technician in change.technicians %}
-          <p>{{ technician.name }}</p>
+          <p>
+            {% if technician.url != '' %}
+                <a href="{{ technician.url }}">{{ technician.name }}</a>
+            {% else %}
+                {{ technician.name }}
+            {% endif %}
+          </p>
           {% endfor %}
           </td>
-          <td>{{ change.planification }}</td>
+          {# <td>{{ change.planification }}</td> #}
         </tr>
       {% endfor %}
     </tbody>

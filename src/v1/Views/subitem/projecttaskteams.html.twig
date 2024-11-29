@@ -1,0 +1,27 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.type }}</th>
+      <th>{{ translation.member }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,projecttaskteam in data.projecttaskteams %}
+      <tr>
+        <td>{{ projecttaskteam.type }}</td>
+        <td>
+          {% if projecttaskteam.url != '' %}
+              <a href="{{ projecttaskteam.url }}">{{ projecttaskteam.member }}</a>
+          {% else %}
+              {{ projecttaskteam.member }}
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

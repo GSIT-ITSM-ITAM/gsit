@@ -73,8 +73,8 @@ class Knowbaseitemcategory
       ],
       [
         'title' => $translator->translatePlural('Knowledge base category', 'Knowledge base categories', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'edit',
+        'link' => $rootUrl . '/knowbaseitemcategories',
       ],
       [
         'title' => $translator->translate('Icon'),

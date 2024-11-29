@@ -72,7 +72,7 @@ class Fqdn
       [
         'title' => $translator->translatePlural('Network alias', 'Network aliases', 1),
         'icon' => 'caret square down outline',
-        'link' => '',
+        'link' => $rootUrl . '/networkalias',
       ],
       [
         'title' => $translator->translate('Historical'),

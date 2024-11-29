@@ -34,17 +34,20 @@ final class Authldap extends Common
   public static function importUsers(\App\Models\Authldap $ldap, $login)
   {
     $connection = new \LdapRecord\Connection([
-      'hosts' => [$ldap->host],
-      'port' => (int) $ldap->post,
-      'base_dn' => $ldap->basedn,
-      'username' => $ldap->rootdn,
-      'password' => $ldap->rootdn_passwd,
-      'timeout'  => 1,
+      'hosts'     => [$ldap->host],
+      'port'      => (int) $ldap->post,
+      'base_dn'   => $ldap->basedn,
+      'username'  => $ldap->rootdn,
+      'password'  => $ldap->rootdn_passwd,
+      'timeout'   => 1,
     ]);
 
-    try {
+    try
+    {
       $connection->connect();
-    } catch (\Throwable $e) {
+    }
+    catch (\Throwable $e)
+    {
       return false;
     }
 
@@ -70,12 +73,13 @@ final class Authldap extends Common
     }
 
     $connection = new \LdapRecord\Connection([
-      'hosts' => [$authldap->host],
-      'port' => (int) $authldap->post,
-      'timeout'  => 1,
+      'hosts'     => [$authldap->host],
+      'port'      => (int) $authldap->post,
+      'timeout'   => 1,
     ]);
 
-    if ($connection->auth()->attempt($userdn, $passowrd, $stayAuthenticated = true)) {
+    if ($connection->auth()->attempt($userdn, $passowrd, $stayAuthenticated = true))
+    {
       echo 'FOUND';
       return true;
     }

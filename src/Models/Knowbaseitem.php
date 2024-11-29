@@ -26,7 +26,7 @@ class Knowbaseitem extends Common
 
   protected $with = [
     'category:id,name',
-    'user:id,name',
+    'user:id,name,firstname,lastname',
   ];
 
   public function category(): BelongsTo

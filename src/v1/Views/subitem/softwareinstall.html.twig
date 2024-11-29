@@ -1,0 +1,81 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.version }}</th>
+      <th>{{ translation.type }}</th>
+      <th>{{ translation.nom }}</th>
+      <th>{{ translation.serial }}</th>
+      <th>{{ translation.otherserial }}</th>
+      <th>{{ translation.location }}</th>
+      <th>{{ translation.status }}</th>
+      <th>{{ translation.group }}</th>
+      <th>{{ translation.user }}</th>
+      <th>{{ translation.licences }}</th>
+      <th>{{ translation.date_install }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,softwareinstall in data.softwareinstall %}
+      <tr>
+        <td>
+          {% if softwareinstall.version_url != '' %}
+              <a href="{{ softwareinstall.version_url }}">{{ softwareinstall.version }}</a>
+          {% else %}
+              {{ softwareinstall.version }}
+          {% endif %}
+        </td>
+        <td>{{ softwareinstall.type }}</td>
+        <td>
+          {% if softwareinstall.nom_url != '' %}
+              <a href="{{ softwareinstall.nom_url }}">{{ softwareinstall.nom }}</a>
+          {% else %}
+              {{ softwareinstall.nom }}
+          {% endif %}
+        </td>
+        <td>{{ softwareinstall.serial }}</td>
+        <td>{{ softwareinstall.otherserial }}</td>
+        <td>
+          {% if softwareinstall.location_url != '' %}
+              <a href="{{ softwareinstall.location_url }}">{{ softwareinstall.location }}</a>
+          {% else %}
+              {{ softwareinstall.location }}
+          {% endif %}
+        </td>
+        <td>
+          {% if softwareinstall.status_url != '' %}
+              <a href="{{ softwareinstall.status_url }}">{{ softwareinstall.status }}</a>
+          {% else %}
+              {{ softwareinstall.status }}
+          {% endif %}
+        </td>
+        <td>
+          {% if softwareinstall.group_url != '' %}
+              <a href="{{ softwareinstall.group_url }}">{{ softwareinstall.group }}</a>
+          {% else %}
+              {{ softwareinstall.group }}
+          {% endif %}
+        </td>
+        <td>
+          {% if softwareinstall.user_url != '' %}
+              <a href="{{ softwareinstall.user_url }}">{{ softwareinstall.user }}</a>
+          {% else %}
+              {{ softwareinstall.user }}
+          {% endif %}
+        </td>
+        <td>
+          {% if softwareinstall.licences_url != '' %}
+              <a href="{{ softwareinstall.licences_url }}">{{ softwareinstall.licences }}</a>{{ softwareinstall.licences_serial_type }}
+          {% else %}
+              {{ softwareinstall.licences }}{{ softwareinstall.licences_serial_type }}
+          {% endif %}
+        </td>
+        <td>{{ softwareinstall.date_install }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

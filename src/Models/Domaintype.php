@@ -23,7 +23,7 @@ class Domaintype extends Common
   ];
 
   protected $with = [
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   public function entity(): BelongsTo

@@ -9,6 +9,7 @@ use Slim\Views\Twig;
 final class Question extends \App\v1\Controllers\Common
 {
   protected $model = '\App\Models\Forms\Question';
+  protected $rootUrl2 = '/questions/';
 
   public function getAll(Request $request, Response $response, $args): Response
   {
@@ -32,25 +33,24 @@ final class Question extends \App\v1\Controllers\Common
   {
     global $translator;
 
-    $item = new \App\Models\Forms\Question();
+    $item = new $this->model();
     $view = Twig::fromRequest($request);
 
     $myItem = $item::with('sections')->find($args['id']);
 
+    $rootUrl = $this->genereRootUrl($request, '/sections');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
+
     $sections = [];
-    foreach ($myItem->sections as $section) {
+    foreach ($myItem->sections as $section)
+    {
       $sections[$section->id] = [
-        'id' => $section->id,
-        'name' => $section->name,
+        'id'    => $section->id,
+        'name'  => $section->name,
       ];
     }
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/sections');
-    $rootUrl2 = rtrim($rootUrl, '/questions/' . $args['id']);
-
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
-
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
 
     $viewData->addData('fields', $item->getFormData($myItem));
@@ -67,30 +67,30 @@ final class Question extends \App\v1\Controllers\Common
   {
     global $translator;
 
-    $item = new \App\Models\Forms\Question();
+    $item = new $this->model();
     $view = Twig::fromRequest($request);
 
     $myItem = $item::with('sections')->find($args['id']);
 
+    $rootUrl = $this->genereRootUrl($request, '/forms');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
+
     $forms = [];
-    foreach ($myItem->sections as $section) {
+    foreach ($myItem->sections as $section)
+    {
       $item2 = new \App\Models\Forms\Section();
       $myItem2 = $item2::with('forms')->find($section->id);
 
-      foreach ($myItem2->forms as $form) {
+      foreach ($myItem2->forms as $form)
+      {
         $forms[$form->id] = [
-          'id' => $form->id,
-          'name' => $form->name,
+          'id'    => $form->id,
+          'name'  => $form->name,
         ];
       }
     }
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/forms');
-    $rootUrl2 = rtrim($rootUrl, '/questions/' . $args['id']);
-
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
-
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
 
     $viewData->addData('fields', $item->getFormData($myItem));
@@ -111,7 +111,8 @@ final class Question extends \App\v1\Controllers\Common
 
     $tabInfos = [];
 
-    foreach ($myItem->sections as $section) {
+    foreach ($myItem->sections as $section)
+    {
       $tabInfos[] =
         [
           'key'   => 'section_' . $section->id,
@@ -121,11 +122,12 @@ final class Question extends \App\v1\Controllers\Common
     }
 
     $forms = [];
-    foreach ($myItem->sections as $section) {
+    foreach ($myItem->sections as $section)
+    {
       $item2 = new \App\Models\Forms\Section();
       $myItem2 = $item2::with('forms')->find($section->id);
-
-      foreach ($myItem2->forms as $form) {
+      foreach ($myItem2->forms as $form)
+      {
         $tabInfos[] =
           [
             'key'   => 'form_' . $form->id,

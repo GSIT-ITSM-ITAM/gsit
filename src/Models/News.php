@@ -21,7 +21,7 @@ class News extends Common
   ];
 
   protected $with = [
-    // 'user:id,name',
+    // 'user:id,name,firstname,lastname',
   ];
 
   // public function user(): BelongsTo

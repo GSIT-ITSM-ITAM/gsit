@@ -31,6 +31,7 @@ class Computer extends Common
     // 'location',
     // 'autoupdatesystem',
     'entity',
+    'infocom',
   ];
 
   protected $visible = [
@@ -68,6 +69,8 @@ class Computer extends Common
     'devicecases',
     'devicegraphiccards',
     'devicedrives',
+    'infocom',
+    'reservations',
   ];
 
   protected $with = [
@@ -76,10 +79,10 @@ class Computer extends Common
     'state:id,name',
     'manufacturer:id,name',
     'network:id,name',
-    'groupstech:id,name',
-    'userstech:id,name',
-    'user:id,name',
-    'group:id,name',
+    'groupstech:id,name,completename',
+    'userstech:id,name,firstname,lastname',
+    'user:id,name,firstname,lastname',
+    'group:id,name,completename',
     'location:id,name',
     'autoupdatesystem:id,name',
     'softwareversions:id,name',
@@ -94,7 +97,7 @@ class Computer extends Common
     'volumes:id,name',
     'virtualization:id,name',
     'certificates:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'domains:id,name',
     'appliances:id,name',
     'notes:id',
@@ -114,6 +117,8 @@ class Computer extends Common
     'devicecases:id,name',
     'devicegraphiccards:id,name',
     'devicedrives:id,name',
+    'infocom',
+    'reservations',
   ];
 
   protected static function booted(): void
@@ -176,12 +181,12 @@ class Computer extends Common
 
   public function user(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\User');
+    return $this->belongsTo('\App\Models\User', 'user_id');
   }
 
   public function group(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Group');
+    return $this->belongsTo('\App\Models\Group', 'group_id');
   }
 
   public function location(): BelongsTo
@@ -233,6 +238,9 @@ class Computer extends Common
       'serial',
       'busID',
       'location_id',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -245,6 +253,10 @@ class Computer extends Common
     )->withPivot(
       'devicefirmware_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -260,6 +272,11 @@ class Computer extends Common
       'nbcores',
       'nbthreads',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -274,6 +291,10 @@ class Computer extends Common
       'capacity',
       'serial',
       'location_id',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -288,6 +309,9 @@ class Computer extends Common
       'manufacturing_date',
       'serial',
       'location_id',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -300,6 +324,11 @@ class Computer extends Common
     )->withPivot(
       'devicesoundcard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -312,6 +341,11 @@ class Computer extends Common
     )->withPivot(
       'devicecontrol_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -450,6 +484,10 @@ class Computer extends Common
     )->withPivot(
       'devicepowersupply_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -462,6 +500,10 @@ class Computer extends Common
     )->withPivot(
       'devicesensor_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -474,6 +516,11 @@ class Computer extends Common
     )->withPivot(
       'devicepci_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -486,6 +533,10 @@ class Computer extends Common
     )->withPivot(
       'devicegeneric_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -498,6 +549,12 @@ class Computer extends Common
     )->withPivot(
       'devicenetworkcard_id',
       'location_id',
+      'mac',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -510,6 +567,14 @@ class Computer extends Common
     )->withPivot(
       'devicesimcard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'msin',
+      'user_id',
+      'group_id',
+      'line_id',
+      'id',
     );
   }
 
@@ -522,6 +587,10 @@ class Computer extends Common
     )->withPivot(
       'devicemotherboard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -534,6 +603,10 @@ class Computer extends Common
     )->withPivot(
       'devicecase_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -546,6 +619,12 @@ class Computer extends Common
     )->withPivot(
       'devicegraphiccard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'memory',
+      'id',
     );
   }
 
@@ -558,6 +637,27 @@ class Computer extends Common
     )->withPivot(
       'devicedrive_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
+    );
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
+    );
+  }
+
+  public function reservations(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Reservationitem',
+      'item',
     );
   }
 }

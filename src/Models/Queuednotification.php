@@ -26,7 +26,7 @@ class Queuednotification extends Common
 
   protected $with = [
     'notificationtemplate:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   public function notificationtemplate(): BelongsTo

@@ -27,7 +27,13 @@
         <td style="background-color: {{ project.status_color }};">{{ project.status }}</td>
         <td>{{ project.open_date }}</td>
         <td>{{ project.last_update }}</td>
-        <td>{{ project.entity }}</td>
+        <td>
+          {% if project.entity_url != '' %}
+              <a href="{{ project.entity_url }}">{{ project.entity }}</a>
+          {% else %}
+              {{ project.entity }}
+          {% endif %}
+        </td>
         {% if project.priority is iterable %}
           <td class="left {% if project.priority.color is defined %}
               {{ project.priority.color }}

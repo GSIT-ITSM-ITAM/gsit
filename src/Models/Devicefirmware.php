@@ -23,6 +23,7 @@ class Devicefirmware extends Common
     'type',
     'model',
     'entity',
+    'items',
   ];
 
   protected $visible = [
@@ -31,14 +32,16 @@ class Devicefirmware extends Common
     'model',
     'entity',
     'documents',
+    'items',
   ];
 
   protected $with = [
     'manufacturer:id,name',
     'type:id,name',
     'model:id,name',
-    'entity:id,name',
-    'documents:id,name',
+    'entity:id,name,completename',
+    'documents',
+    'items',
   ];
 
   public function manufacturer(): BelongsTo
@@ -71,5 +74,10 @@ class Devicefirmware extends Common
       'document_id',
       'updated_at',
     );
+  }
+
+  public function items(): HasMany
+  {
+    return $this->hasMany('\App\Models\ItemDevicefirmware', 'devicefirmware_id');
   }
 }

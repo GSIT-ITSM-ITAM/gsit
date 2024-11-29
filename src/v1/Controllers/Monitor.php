@@ -11,6 +11,7 @@ final class Monitor extends Common
 {
   protected $model = '\App\Models\Monitor';
   protected $rootUrl2 = '/monitors/';
+  protected $choose = 'monitors';
 
   public function getAll(Request $request, Response $response, $args): Response
   {

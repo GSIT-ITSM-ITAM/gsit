@@ -135,7 +135,9 @@ class Supplier
       {
          $name1 = 'firstname';
          $name2 = 'name';
-      } else {
+      }
+         else
+         {
          $name1 = 'name';
          $name2 = 'firstname';
       }
@@ -211,7 +213,7 @@ class Supplier
       [
         'title' => $translator->translatePlural('Item', 'Items', 2),
         'icon' => 'desktop',
-        'link' => '',
+        'link' => $rootUrl . '/attacheditems',
       ],
       [
         'title' => $translator->translatePlural('Document', 'Documents', 2),

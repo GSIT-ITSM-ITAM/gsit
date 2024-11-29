@@ -10,6 +10,7 @@ use Slim\Routing\RouteContext;
 final class Section extends \App\v1\Controllers\Common
 {
   protected $model = '\App\Models\Forms\Section';
+  protected $rootUrl2 = '/sections/';
 
   public function getAll(Request $request, Response $response, $args): Response
   {
@@ -33,25 +34,24 @@ final class Section extends \App\v1\Controllers\Common
   {
     global $translator;
 
-    $item = new \App\Models\Forms\Section();
+    $item = new $this->model();
     $view = Twig::fromRequest($request);
 
     $myItem = $item::with('questions')->find($args['id']);
 
+    $rootUrl = $this->genereRootUrl($request, '/questions');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
+
     $questions = [];
-    foreach ($myItem->questions as $question) {
+    foreach ($myItem->questions as $question)
+    {
       $questions[] = [
-        'id' => $question->id,
-        'name' => $question->name,
+        'id'    => $question->id,
+        'name'  => $question->name,
       ];
     }
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/questions');
-    $rootUrl2 = rtrim($rootUrl, '/sections/' . $args['id']);
-
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
-
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
 
     $viewData->addData('fields', $item->getFormData($myItem));
@@ -68,25 +68,24 @@ final class Section extends \App\v1\Controllers\Common
   {
     global $translator;
 
-    $item = new \App\Models\Forms\Section();
+    $item = new $this->model();
     $view = Twig::fromRequest($request);
 
     $myItem = $item::with('forms')->find($args['id']);
 
+    $rootUrl = $this->genereRootUrl($request, '/forms');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
+
     $forms = [];
-    foreach ($myItem->forms as $form) {
+    foreach ($myItem->forms as $form)
+    {
       $forms[] = [
-        'id' => $form->id,
-        'name' => $form->name,
+        'id'    => $form->id,
+        'name'  => $form->name,
       ];
     }
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/forms');
-    $rootUrl2 = rtrim($rootUrl, '/sections/' . $args['id']);
-
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
-
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
 
     $viewData->addData('fields', $item->getFormData($myItem));
@@ -106,7 +105,8 @@ final class Section extends \App\v1\Controllers\Common
     $myItem = $item::with('forms')->find($item->id);
 
     $tabInfos = [];
-    foreach ($myItem->forms as $form) {
+    foreach ($myItem->forms as $form)
+    {
       $tabInfos[] =
         [
           'key'   => 'form_' . $form->id,

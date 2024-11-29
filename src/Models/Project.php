@@ -42,15 +42,15 @@ class Project extends Common
 
   protected $with = [
     'type:id,name',
-    'state:id,name',
-    'user:id,name',
-    'group:id,name',
-    'entity:id,name',
+    'state',
+    'user:id,name,firstname,lastname',
+    'group:id,name,completename',
+    'entity:id,name,completename',
     'notes:id',
     'knowbaseitems:id,name',
     'documents:id,name',
     'contracts:id,name',
-    'tasks:id,name',
+    'tasks',
     'parents:id,name',
     'costs:id,name',
   ];

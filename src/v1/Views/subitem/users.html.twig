@@ -1,69 +1,118 @@
 {{ include('header.html.twig') }}
 {{ include('headerForm.html.twig') }}
 
-<table class="ui blue table">
-  <thead>
-    <tr>
-      <th>{{ translation.name }}</th>
-      <th>{{ translation.auto }}</th>
-      <th>{{ translation.manager }}</th>
-      <th>{{ translation.userdelegate }}</th>
-      <th>{{ translation.active }}</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for user in data.users|sort((a, b) => a.user.name|lower <=> b.user.name|lower) %}
+{% if data.show == 'groups' %}
+  <table class="ui blue table">
+    <thead>
       <tr>
-        <td>
-          {% if user.url != '' %}
-              <a href="{{ user.url }}">{{ user.name }}</a>
-          {% else %}
-              {{ user.name }}
-          {% endif %}
-        </td>
-        {% if user.auto %}
-          <td class="positive">
-          <i class="check circle outline icon"></i>
-          Yes
-        {% else %}
-          <td class="negative">
-          <i class="times circle outline icon"></i>
-          No
-        {% endif %}
-        </td>
-        {% if user.is_manager %}
-          <td class="positive">
-          <i class="check circle outline icon"></i>
-          Yes
-        {% else %}
-          <td class="negative">
-          <i class="times circle outline icon"></i>
-          No
-        {% endif %}
-        </td>
-        {% if user.is_userdelegate %}
-          <td class="positive">
-          <i class="check circle outline icon"></i>
-          Yes
-        {% else %}
-          <td class="negative">
-          <i class="times circle outline icon"></i>
-          No
-        {% endif %}
-        </td>
-        {% if user.is_active %}
-          <td class="positive">
-          <i class="check circle outline icon"></i>
-          Yes
-        {% else %}
-          <td class="negative">
-          <i class="times circle outline icon"></i>
-          No
-        {% endif %}
-        </td>
+        <th>{{ translation.name }}</th>
+        <th>{{ translation.auto }}</th>
+        <th>{{ translation.manager }}</th>
+        <th>{{ translation.userdelegate }}</th>
+        <th>{{ translation.active }}</th>
       </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {% for user in data.users|sort((a, b) => a.user.name|lower <=> b.user.name|lower) %}
+        <tr>
+          <td>
+            {% if user.url != '' %}
+                <a href="{{ user.url }}">{{ user.name }}</a>
+            {% else %}
+                {{ user.name }}
+            {% endif %}
+          </td>
+          {% if user.auto %}
+            <td class="positive">
+            <i class="check circle outline icon"></i>
+            {{ user.auto_val }}
+          {% else %}
+            <td class="negative">
+            <i class="times circle outline icon"></i>
+            {{ user.auto_val }}
+          {% endif %}
+          </td>
+          {% if user.is_manager %}
+            <td class="positive">
+            <i class="check circle outline icon"></i>
+            {{ user.is_manager_val }}
+          {% else %}
+            <td class="negative">
+            <i class="times circle outline icon"></i>
+            {{ user.is_manager_val }}
+          {% endif %}
+          </td>
+          {% if user.is_userdelegate %}
+            <td class="positive">
+            <i class="check circle outline icon"></i>
+            {{ user.is_userdelegate_val }}
+          {% else %}
+            <td class="negative">
+            <i class="times circle outline icon"></i>
+            {{ user.is_userdelegate_val }}
+          {% endif %}
+          </td>
+          {% if user.is_active %}
+            <td class="positive">
+            <i class="check circle outline icon"></i>
+            {{ user.is_active_val }}
+          {% else %}
+            <td class="negative">
+            <i class="times circle outline icon"></i>
+            {{ user.is_active_val }}
+          {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% if data.show == 'profiles' %}
+  {% for key,item in data.users %}
+    <h2>{{ item.name }}</h2>
+
+    <table class="ui blue table">
+      <thead>
+        <tr>
+          <th>{{ translation.name }}</th>
+          <th>{{ translation.is_dynamic }}</th>
+          <th>{{ translation.is_recursive }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in item.users %}
+          <tr>
+            <td>
+              {% if user.url != '' %}
+                  <a href="{{ user.url }}">{{ user.name }}</a>
+              {% else %}
+                  {{ user.name }}
+              {% endif %}
+            </td>
+            {% if user.is_dynamic %}
+              <td class="positive">
+              <i class="check circle outline icon"></i>
+            {% else %}
+              <td class="negative">
+              <i class="times circle outline icon"></i>
+            {% endif %}
+            {{ user.is_dynamic_val }}
+            </td>
+            {% if user.is_recursive %}
+              <td class="positive">
+              <i class="check circle outline icon"></i>
+            {% else %}
+              <td class="negative">
+              <i class="times circle outline icon"></i>
+            {% endif %}
+            {{ user.is_recursive_val }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% endif %}
 
 {{ include('footer.html.twig') }}

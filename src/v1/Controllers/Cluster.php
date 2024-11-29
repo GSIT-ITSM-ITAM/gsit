@@ -10,6 +10,7 @@ final class Cluster extends Common
 {
   protected $model = '\App\Models\Cluster';
   protected $rootUrl2 = '/clusters/';
+  protected $choose = 'clusters';
 
   public function getAll(Request $request, Response $response, $args): Response
   {
@@ -42,32 +43,25 @@ final class Cluster extends Common
     $item2 = new \App\Models\Clusteritem();
     $myItem2 = $item2::where('cluster_id', $args['id'])->get();
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/items');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
+    $rootUrl = $this->genereRootUrl($request, '/items');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $myItems = [];
-    foreach ($myItem2 as $item)
+    foreach ($myItem2 as $current_item)
     {
-      $item3 = new $item->item_type();
-      $myItem3 = $item3->find($item->item_id);
+      $item3 = new $current_item->item_type();
+      $myItem3 = $item3->find($current_item->item_id);
+      if ($myItem3 !== null)
+      {
+        $type = $item3->getTable();
 
-      if ($myItem3 != null) {
         $name = $myItem3->name;
-        if ($name == '') {
+        if ($name == '')
+        {
           $name = '(' . $myItem3->id . ')';
         }
 
-        $url = '';
-        if ($rootUrl2 != '') {
-          $table = $item3->getTable();
-          if ($table != '') {
-            $url = $rootUrl2 . "/" . $table . "/" . $myItem3->id;
-          }
-        }
+        $url = $this->genereRootUrl2Link($rootUrl2, '/' . $type . '/', $myItem3->id);
 
         $myItems[] = [
           'name'     => $name,
@@ -77,7 +71,7 @@ final class Cluster extends Common
     }
 
     // tri ordre alpha
-    usort($myItems, function ($a, $b)
+    uasort($myItems, function ($a, $b)
     {
       return strtolower($a['name']) > strtolower($b['name']);
     });
@@ -87,7 +81,7 @@ final class Cluster extends Common
 
     $viewData->addData('fields', $item->getFormData($myItem));
     $viewData->addData('items', $myItems);
-    $viewData->addData('show', 'cluster');
+    $viewData->addData('show', $this->choose);
 
     $viewData->addTranslation('name', $translator->translatePlural('Item', 'Items', 1));
 

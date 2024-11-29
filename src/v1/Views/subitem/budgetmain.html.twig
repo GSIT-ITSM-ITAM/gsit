@@ -1,0 +1,52 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.entity }}</th>
+      {% for key,budgetmaintype in data.budgetmaintype %}
+      <th>{{ budgetmaintype.name }}</th>
+      {% endfor %}
+      <th>{{ translation.total }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,budgetmain in data.budgetmain %}
+    <tr>
+      <td>
+        {% if budgetmain.entity_url != '' %}
+            <a href="{{ budgetmain.entity_url }}">{{ budgetmain.name }}</a>
+        {% else %}
+            {{ budgetmain.name }}
+        {% endif %}
+      </td>
+      {% for key,budgetmaintype in data.budgetmaintype %}
+        {% for key2,budgetmain2 in budgetmain.items %}
+            {% if key == key2 %}
+              <td>{{ budgetmain2.total }}</td>
+            {% endif %}
+        {% endfor %}
+      {% endfor %}
+      <td>{{ budgetmain.total }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <td>{{ translation.total }}</td>
+      {% for key,budgetmaintype in data.budgetmaintype %}
+      <td>{{ budgetmaintype.total }}</td>
+      {% endfor %}
+      <td>{{ data.total_spent }}</td>
+    </tr>
+    <tr>
+      <td colspan="{{ data.colspan }}" style="text-align: right;">{{ translation.total_spent }}</td>
+      <td>{{ data.total_spent }}</td>
+    </tr>
+    <tr>
+      <td colspan="{{ data.colspan }}" style="text-align: right;">{{ translation.total_remaining }}</td>
+      <td {% if data.alert_budget %}style="background-color: #f27960;"{% endif %}>{{ data.total_remaining }}</td>
+    </tr>
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

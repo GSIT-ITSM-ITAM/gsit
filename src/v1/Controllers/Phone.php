@@ -11,6 +11,7 @@ final class Phone extends Common
 {
   protected $model = '\App\Models\Phone';
   protected $rootUrl2 = '/phones/';
+  protected $choose = 'phones';
 
   public function getAll(Request $request, Response $response, $args): Response
   {

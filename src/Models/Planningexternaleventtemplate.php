@@ -26,12 +26,12 @@ class Planningexternaleventtemplate extends Common
 
   protected $with = [
     'category:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   public function category(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Planningeventcategory');
+    return $this->belongsTo('\App\Models\Planningeventcategory', 'planningeventcategory_id');
   }
 
   public function entity(): BelongsTo

@@ -15,10 +15,10 @@ final class Login extends Common
     $view = Twig::fromRequest($request);
 
     $viewData = [
-      'title'    => 'GSIT - ' . 'Login page',
-      'rootpath' => \App\v1\Controllers\Toolbox::getRootPath($request),
-      'basePath' => $basePath,
-      'sso' => [],
+      'title'     => 'GSIT - ' . 'Login page',
+      'rootpath'  => \App\v1\Controllers\Toolbox::getRootPath($request),
+      'basePath'  => $basePath,
+      'sso'       => [],
     ];
 
     $authsso = \App\Models\Authsso::where('is_active', true)->get();
@@ -135,10 +135,13 @@ final class Login extends Common
   {
     $provider = $this->prepareSSOService($request, $args);
 
-    try {
+    try
+    {
       header('Location: ' . $provider->makeAuthUrl());
-    } catch (\Exception $e) {
-        echo $e->getMessage();
+    }
+    catch (\Exception $e)
+    {
+      echo $e->getMessage();
     }
     exit;
   }
@@ -199,23 +202,31 @@ final class Login extends Common
             if (is_null($option->key))
             {
               $dataProvider['options'][$item['suboption']][] = $option->value;
-            } else {
+            }
+            else
+            {
               $dataProvider['options'][$item['suboption']][$option->key] = $option->value;
             }
           }
-        } else {
+        }
+        else
+        {
           $dataProvider['options'] = [];
           foreach ($options as $option)
           {
             if (is_null($option->key))
             {
               $dataProvider['options'][] = $option->value;
-            } else {
+            }
+            else
+            {
               $dataProvider['options'][$option->key] = $option->value;
             }
           }
         }
-      } else {
+      }
+      else
+      {
         $dataProvider[$field] = $authsso->{strtolower($field)};
       }
     }
@@ -252,7 +263,9 @@ final class Login extends Common
     if ($data->changeEntityRecursive == 'on')
     {
       $data->changeEntityRecursive = true;
-    } else {
+    }
+    else
+    {
       $data->changeEntityRecursive = false;
     }
 
@@ -271,7 +284,10 @@ final class Login extends Common
             $data->changeEntityRecursive = false;
           }
           break;
-        } elseif ($profile->pivot->is_recursive) {
+        }
+        elseif
+        ($profile->pivot->is_recursive)
+        {
           // search if $data->changeEntity is in sub
           $profileEntity = \App\Models\Entity::find($profile->pivot->entity_id);
           $entity = \App\Models\Entity::

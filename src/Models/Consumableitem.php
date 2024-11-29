@@ -23,6 +23,7 @@ class Consumableitem extends Common
     'userstech',
     'location',
     'entity',
+    'infocom',
   ];
 
   protected $visible = [
@@ -35,18 +36,20 @@ class Consumableitem extends Common
     'notes',
     'documents',
     'consumables',
+    'infocom',
   ];
 
   protected $with = [
     'type:id,name',
     'manufacturer:id,name',
-    'groupstech:id,name',
-    'userstech:id,name',
+    'groupstech:id,name,completename',
+    'userstech:id,name,firstname,lastname',
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'notes:id',
     'documents:id,name',
     'consumables:id',
+    'infocom',
   ];
 
 
@@ -103,5 +106,13 @@ class Consumableitem extends Common
   public function consumables(): HasMany
   {
     return $this->hasMany('\App\Models\Consumable', 'consumableitem_id');
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
+    );
   }
 }

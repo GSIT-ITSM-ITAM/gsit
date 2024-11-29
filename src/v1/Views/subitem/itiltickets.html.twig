@@ -16,7 +16,7 @@
         <th>{{ translation.requesters }}</th>
         <th>{{ translation.technicians }}</th>
         <th>{{ translation.associated_items }}</th>
-        <th>{{ translation.planification }}</th>
+        {# <th>{{ translation.planification }}</th> #}
       </tr>
     </thead>
     <tbody>
@@ -29,7 +29,13 @@
                 {{ ticket.title }}
             {% endif %}
           </td>
-          <td>{{ ticket.category }}</td>
+          <td>
+            {% if ticket.category_url != '' %}
+                <a href="{{ ticket.category_url }}">{{ ticket.category }}</a>
+            {% else %}
+                {{ ticket.category }}
+            {% endif %}
+          </td>
           {% if ticket.status is iterable %}
             <td class="left {% if ticket.status.color is defined %}
                 {{ ticket.status.color }}
@@ -54,7 +60,13 @@
           {% endif %}
           <td>{{ ticket.date }}</td>
           <td>{{ ticket.last_update }}</td>
-          <td>{{ ticket.entity }}</td>
+          <td>
+            {% if ticket.entity_url != '' %}
+                <a href="{{ ticket.entity_url }}">{{ ticket.entity }}</a>
+            {% else %}
+                {{ ticket.entity }}
+            {% endif %}
+          </td>
           </td>
           {% if ticket.priority is iterable %}
             <td class="left {% if ticket.priority.color is defined %}
@@ -80,20 +92,38 @@
           {% endif %}
           <td>
           {% for requester in ticket.requesters %}
-          <p>{{ requester.name }}</p>
+            <p>
+              {% if requester.url != '' %}
+                  <a href="{{ requester.url }}">{{ requester.name }}</a>
+              {% else %}
+                  {{ requester.name }}
+              {% endif %}
+            </p>
           {% endfor %}
           </td>
           <td>
           {% for technician in ticket.technicians %}
-          <p>{{ technician.name }}</p>
+          <p>
+            {% if technician.url != '' %}
+                <a href="{{ technician.url }}">{{ technician.name }}</a>
+            {% else %}
+                {{ technician.name }}
+            {% endif %}
+          </p>
           {% endfor %}
           </td>
           <td>
           {% for associated_item in ticket.associated_items %}
-          <p>{{ associated_item.name }}</p>
+          <p>
+            {% if associated_item.url != '' %}
+              {{ associated_item.type }}<a href="{{ associated_item.url }}">{{ associated_item.name }}</a>
+            {% else %}
+              {{ associated_item.type }}{{ associated_item.name }}
+            {% endif %}
+          </p>
           {% endfor %}
           </td>
-          <td>{{ ticket.planification }}</td>
+          {# <td>{{ ticket.planification }}</td> #}
         </tr>
       {% endfor %}
     </tbody>

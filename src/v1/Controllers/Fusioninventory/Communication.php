@@ -19,7 +19,9 @@ final class Communication extends \App\v1\Controllers\Common
       $computer = new Computer();
       $computer->importComputer($data);
       $payload = [];
-    } else {
+    }
+    else
+    {
       $payload = [
         "PROLOG_FREQ" => 24,
         "RESPONSE" => "SEND",

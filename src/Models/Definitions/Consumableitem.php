@@ -232,7 +232,8 @@ class Consumableitem
     if ($number == "")
     {
       $number = 0;
-    } elseif ($number == "-")
+    }
+    elseif ($number == "-")
     { // used for not defines value (from Infocom::Amort, p.e.)
       return "-";
     }
@@ -287,12 +288,203 @@ class Consumableitem
       if ($size > 1024)
       {
         $size = $size / 1024;
-      } else {
+      }
+      else
+      {
         break;
       }
     }
     //TRANS: %1$s is a number maybe float or string and %2$s the unit
     return sprintf($translator->translate('%1$s %2$s'), round($size, 2), $val);
+  }
+
+  public static function getDefinitionInfocom()
+  {
+    global $translator;
+    return [
+      [
+        'id'    => 1,
+        'title' => $translator->translate('Order date'),
+        'type'  => 'date',
+        'name'  => 'order_date',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 2,
+        'title' => $translator->translate('Date of purchase'),
+        'type'  => 'date',
+        'name'  => 'buy_date',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 3,
+        'title' => $translator->translate('Delivery date'),
+        'type'  => 'date',
+        'name'  => 'delivery_date',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 4,
+        'title' => $translator->translate('Startup date'),
+        'type'  => 'date',
+        'name'  => 'use_date',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 5,
+        'title' => $translator->translate('Date of last physical inventory'),
+        'type'  => 'date',
+        'name'  => 'inventory_date',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 6,
+        'title' => $translator->translate('Decommission date'),
+        'type'  => 'date',
+        'name'  => 'decommission_date',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 7,
+        'title' => $translator->translatePlural('Supplier', 'Suppliers', 1),
+        'type'  => 'dropdown_remote',
+        'name'  => 'supplier',
+        'dbname' => 'supplier_id',
+        'itemtype' => '\App\Models\Supplier',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 8,
+        'title' => $translator->translatePlural('Budget', 'Budgets', 1),
+        'type'  => 'dropdown_remote',
+        'name'  => 'budget',
+        'dbname' => 'budget_id',
+        'itemtype' => '\App\Models\Budget',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 9,
+        'title' => $translator->translate('Order number'),
+        'type'  => 'input',
+        'name'  => 'order_number',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 10,
+        'title' => $translator->translate('Immobilization number'),
+        'type'  => 'input',
+        'name'  => 'immo_number',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 11,
+        'title' => $translator->translate('Invoice number'),
+        'type'  => 'input',
+        'name'  => 'bill',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 12,
+        'title' => $translator->translate('Delivery form'),
+        'type'  => 'input',
+        'name'  => 'delivery_number',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 13,
+        'title' => $translator->translate('Value'),
+        'type'  => 'input',
+        'name'  => 'value',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 14,
+        'title' => $translator->translate('Warranty extension value'),
+        'type'  => 'input',
+        'name'  => 'warranty_value',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 15,
+        'title' => $translator->translate('Amortization type'),
+        'type'  => 'dropdown',
+        'name'  => 'sink_type',
+        'dbname'  => 'sink_type',
+        'values' => self::getAmortType(),
+        'fillable' => true,
+      ],
+      [
+        'id'    => 16,
+        'title' => $translator->translate('Amortization duration'),
+        'type'  => 'dropdown',
+        'name'  => 'sink_time',
+        'dbname'  => 'sink_time',
+        'values' => self::getNumberArray(0, 15, 1, [], 'year'),
+        'fillable' => true,
+      ],
+      [
+        'id'    => 17,
+        'title' => $translator->translate('Amortization coefficient'),
+        'type'  => 'input',
+        'name'  => 'sink_coeff',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 18,
+        'title' => $translator->translatePlural('Business criticity', 'Business criticities', 1),
+        'type'  => 'dropdown_remote',
+        'name'  => 'businesscriticity',
+        'dbname' => 'businesscriticity_id',
+        'itemtype' => '\App\Models\Businesscriticity',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 19,
+        'title' => $translator->translate('Comments'),
+        'type'  => 'textarea',
+        'name'  => 'comment',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 20,
+        'title' => $translator->translate('Start date of warranty'),
+        'type'  => 'date',
+        'name'  => 'warranty_date',
+        'fillable' => true,
+      ],
+      [
+        'id'    => 21,
+        'title' => $translator->translate('Warranty duration'),
+        'type'  => 'dropdown',
+        'name'  => 'warranty_duration',
+        'dbname'  => 'warranty_duration',
+        'values' => self::getNumberArray(0, 120, 1, ['-1' => $translator->translate('Lifelong')], 'month'),
+        'fillable' => true,
+      ],
+      [
+        'id'    => 22,
+        'title' => $translator->translate('Warranty information'),
+        'type'  => 'input',
+        'name'  => 'warranty_info',
+        'fillable' => true,
+      ],
+    ];
+  }
+
+  public static function getAmortType()
+  {
+    global $translator;
+    return [
+      0 => [
+        'title' => '',
+      ],
+      1 => [
+        'title' => $translator->translate('Decreasing'),
+      ],
+      2 => [
+        'title' => $translator->translate('Linear'),
+      ],
+    ];
   }
 
   public static function getRelatedPages($rootUrl)
@@ -312,7 +504,7 @@ class Consumableitem
       [
         'title' => $translator->translate('Management'),
         'icon' => 'caret square down outline',
-        'link' => '',
+        'link' => $rootUrl . '/infocom',
       ],
       [
         'title' => $translator->translatePlural('Document', 'Documents', 2),

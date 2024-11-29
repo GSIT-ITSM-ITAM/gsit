@@ -24,6 +24,8 @@ class Enclosure extends Common
     'userstech',
     'location',
     'entity',
+    'items',
+    'infocom',
   ];
 
   protected $visible = [
@@ -56,16 +58,18 @@ class Enclosure extends Common
     'devicecases',
     'devicegraphiccards',
     'devicedrives',
+    'items',
+    'infocom',
   ];
 
   protected $with = [
     'model:id,name',
     'state:id,name',
     'manufacturer:id,name',
-    'groupstech:id,name',
-    'userstech:id,name',
+    'groupstech:id,name,completename',
+    'userstech:id,name,firstname,lastname',
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'documents:id,name',
     'contracts:id,name',
     'tickets:id,name',
@@ -88,6 +92,8 @@ class Enclosure extends Common
     'devicecases:id,name',
     'devicegraphiccards:id,name',
     'devicedrives:id,name',
+    'items',
+    'infocom',
   ];
 
   public function model(): BelongsTo
@@ -193,6 +199,9 @@ class Enclosure extends Common
       'serial',
       'busID',
       'location_id',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -205,6 +214,10 @@ class Enclosure extends Common
     )->withPivot(
       'devicefirmware_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -220,6 +233,11 @@ class Enclosure extends Common
       'nbcores',
       'nbthreads',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -234,6 +252,10 @@ class Enclosure extends Common
       'capacity',
       'serial',
       'location_id',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -248,6 +270,9 @@ class Enclosure extends Common
       'manufacturing_date',
       'serial',
       'location_id',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -260,6 +285,11 @@ class Enclosure extends Common
     )->withPivot(
       'devicesoundcard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -272,6 +302,11 @@ class Enclosure extends Common
     )->withPivot(
       'devicecontrol_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -284,6 +319,10 @@ class Enclosure extends Common
     )->withPivot(
       'devicepowersupply_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -296,6 +335,10 @@ class Enclosure extends Common
     )->withPivot(
       'devicesensor_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -308,6 +351,11 @@ class Enclosure extends Common
     )->withPivot(
       'devicepci_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -320,6 +368,10 @@ class Enclosure extends Common
     )->withPivot(
       'devicegeneric_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -332,6 +384,12 @@ class Enclosure extends Common
     )->withPivot(
       'devicenetworkcard_id',
       'location_id',
+      'mac',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -344,6 +402,14 @@ class Enclosure extends Common
     )->withPivot(
       'devicesimcard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'msin',
+      'user_id',
+      'group_id',
+      'line_id',
+      'id',
     );
   }
 
@@ -356,6 +422,10 @@ class Enclosure extends Common
     )->withPivot(
       'devicemotherboard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -368,6 +438,10 @@ class Enclosure extends Common
     )->withPivot(
       'devicecase_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -380,6 +454,12 @@ class Enclosure extends Common
     )->withPivot(
       'devicegraphiccard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'memory',
+      'id',
     );
   }
 
@@ -392,6 +472,24 @@ class Enclosure extends Common
     )->withPivot(
       'devicedrive_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
+    );
+  }
+
+  public function items(): HasMany
+  {
+    return $this->hasMany('\App\Models\ItemEnclosure', 'enclosure_id');
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
     );
   }
 }

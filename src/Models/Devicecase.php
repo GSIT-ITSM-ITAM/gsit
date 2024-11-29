@@ -21,6 +21,7 @@ class Devicecase extends Common
     'type',
     'model',
     'entity',
+    'items',
   ];
 
   protected $visible = [
@@ -29,14 +30,16 @@ class Devicecase extends Common
     'model',
     'entity',
     'documents',
+    'items',
   ];
 
   protected $with = [
     'manufacturer:id,name',
     'type:id,name',
     'model:id,name',
-    'entity:id,name',
-    'documents:id,name',
+    'entity:id,name,completename',
+    'documents',
+    'items',
   ];
 
   public function manufacturer(): BelongsTo
@@ -69,5 +72,10 @@ class Devicecase extends Common
       'document_id',
       'updated_at',
     );
+  }
+
+  public function items(): HasMany
+  {
+    return $this->hasMany('\App\Models\ItemDevicecase', 'devicecase_id');
   }
 }

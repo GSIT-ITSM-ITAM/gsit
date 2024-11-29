@@ -19,7 +19,13 @@
               {{ entity.name }}
           {% endif %}
         </td>
-        <td>{{ entity.entity }}</td>
+        <td>
+          {% if entity.entity_url != '' %}
+              <a href="{{ entity.entity_url }}">{{ entity.entity }}</a>
+          {% else %}
+              {{ entity.entity }}
+          {% endif %}
+        </td>
         <td>{{ entity.comment }}</td>
       </tr>
     {% endfor %}

@@ -11,4 +11,5 @@ class Answerquestion extends \App\Models\Common
   protected $definition = '\App\Models\Definitions\Forms\Answerquestion';
   protected $titles = ['Answerquestion', 'Answerquestions'];
   protected $icon = 'cubes';
+  protected $hasEntityField = false;
 }

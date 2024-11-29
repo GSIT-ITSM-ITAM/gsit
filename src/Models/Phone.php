@@ -29,6 +29,7 @@ class Phone extends Common
     'userstech',
     'location',
     'entity',
+    'infocom',
   ];
 
   protected $visible = [
@@ -74,6 +75,8 @@ class Phone extends Common
     'devicedrives',
     'volumes',
     'connections',
+    'infocom',
+    'reservations',
   ];
 
   protected $with = [
@@ -82,13 +85,13 @@ class Phone extends Common
     'phonepowersupply:id,name',
     'state:id,name',
     'manufacturer:id,name',
-    'user:id,name',
-    'group:id,name',
+    'user:id,name,firstname,lastname',
+    'group:id,name,completename',
     'network:id,name',
-    'groupstech:id,name',
-    'userstech:id,name',
+    'groupstech:id,name,completename',
+    'userstech:id,name,firstname,lastname',
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'domains:id,name',
     'appliances:id,name',
     'notes:id',
@@ -119,6 +122,8 @@ class Phone extends Common
     'devicedrives:id,name',
     'volumes:id,name',
     'connections:id,name',
+    'infocom',
+    'reservations',
   ];
 
 
@@ -316,6 +321,9 @@ class Phone extends Common
       'serial',
       'busID',
       'location_id',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -328,6 +336,10 @@ class Phone extends Common
     )->withPivot(
       'devicefirmware_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -343,6 +355,11 @@ class Phone extends Common
       'nbcores',
       'nbthreads',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -357,6 +374,10 @@ class Phone extends Common
       'capacity',
       'serial',
       'location_id',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -371,6 +392,9 @@ class Phone extends Common
       'manufacturing_date',
       'serial',
       'location_id',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -383,6 +407,11 @@ class Phone extends Common
     )->withPivot(
       'devicesoundcard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -395,6 +424,11 @@ class Phone extends Common
     )->withPivot(
       'devicecontrol_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -407,6 +441,10 @@ class Phone extends Common
     )->withPivot(
       'devicepowersupply_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -419,6 +457,10 @@ class Phone extends Common
     )->withPivot(
       'devicesensor_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -431,6 +473,11 @@ class Phone extends Common
     )->withPivot(
       'devicepci_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -443,6 +490,10 @@ class Phone extends Common
     )->withPivot(
       'devicegeneric_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -455,6 +506,12 @@ class Phone extends Common
     )->withPivot(
       'devicenetworkcard_id',
       'location_id',
+      'mac',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -467,6 +524,14 @@ class Phone extends Common
     )->withPivot(
       'devicesimcard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'msin',
+      'user_id',
+      'group_id',
+      'line_id',
+      'id',
     );
   }
 
@@ -479,6 +544,10 @@ class Phone extends Common
     )->withPivot(
       'devicemotherboard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -491,6 +560,10 @@ class Phone extends Common
     )->withPivot(
       'devicecase_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -503,6 +576,12 @@ class Phone extends Common
     )->withPivot(
       'devicegraphiccard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'memory',
+      'id',
     );
   }
 
@@ -515,6 +594,11 @@ class Phone extends Common
     )->withPivot(
       'devicedrive_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -532,6 +616,22 @@ class Phone extends Common
     )->withPivot(
       'computer_id',
       'is_dynamic',
+    );
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
+    );
+  }
+
+  public function reservations(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Reservationitem',
+      'item',
     );
   }
 }

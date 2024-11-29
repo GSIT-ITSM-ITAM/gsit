@@ -713,9 +713,11 @@ class Project
     if ($number == "")
     {
       $number = 0;
-    } elseif ($number == "-")
-    { // used for not defines value (from Infocom::Amort, p.e.)
-        return "-";
+    }
+    elseif ($number == "-")
+    {
+      // used for not defines value (from Infocom::Amort, p.e.)
+      return "-";
     }
 
     $number  = doubleval($number);
@@ -768,7 +770,9 @@ class Project
       if ($size > 1024)
       {
         $size = $size / 1024;
-      } else {
+      }
+      else
+      {
         break;
       }
     }

@@ -38,7 +38,7 @@ class Contract extends Common
   protected $with = [
     'type:id,name',
     'state:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'notes:id',
     'knowbaseitems:id,name',
     'documents:id,name',

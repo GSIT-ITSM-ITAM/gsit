@@ -73,8 +73,8 @@ class Softwarelicensetype
       ],
       [
         'title' => $translator->translatePlural('License type', 'License types', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'edit',
+        'link' => $rootUrl . '/licencetypes',
       ],
       [
         'title' => $translator->translate('Historical'),

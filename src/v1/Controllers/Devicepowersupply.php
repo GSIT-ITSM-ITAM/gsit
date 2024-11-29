@@ -6,11 +6,13 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\PhpRenderer;
 use Slim\Routing\RouteContext;
+use Slim\Views\Twig;
 
 final class Devicepowersupply extends Common
 {
   protected $model = '\App\Models\Devicepowersupply';
-  protected $rootUrl2 = '/devicepowersupplies/';
+  protected $rootUrl2 = '/devices/devicepowersupplies/';
+  protected $choose = 'devicepowersupplies';
 
   public function getAll(Request $request, Response $response, $args): Response
   {

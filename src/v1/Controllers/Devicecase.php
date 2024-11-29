@@ -6,11 +6,13 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\PhpRenderer;
 use Slim\Routing\RouteContext;
+use Slim\Views\Twig;
 
 final class Devicecase extends Common
 {
   protected $model = '\App\Models\Devicecase';
-  protected $rootUrl2 = '/devicecases/';
+  protected $rootUrl2 = '/devices/devicecases/';
+  protected $choose = 'devicecases';
 
   public function getAll(Request $request, Response $response, $args): Response
   {

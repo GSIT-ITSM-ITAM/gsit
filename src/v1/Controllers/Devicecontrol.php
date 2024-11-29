@@ -6,11 +6,13 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\PhpRenderer;
 use Slim\Routing\RouteContext;
+use Slim\Views\Twig;
 
 final class Devicecontrol extends Common
 {
   protected $model = '\App\Models\Devicecontrol';
-  protected $rootUrl2 = '/devicecontrols/';
+  protected $rootUrl2 = '/devices/devicecontrols/';
+  protected $choose = 'devicecontrols';
 
   public function getAll(Request $request, Response $response, $args): Response
   {

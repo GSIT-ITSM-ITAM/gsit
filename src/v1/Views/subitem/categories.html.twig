@@ -31,10 +31,34 @@
               {{ categorie.name }}
           {% endif %}
         </td>
-        <td>{{ categorie.entity }}</td>
-        <td>{{ categorie.user }}</td>
-        <td>{{ categorie.group }}</td>
-        <td>{{ categorie.knowbaseitemcategory }}</td>
+        <td>
+          {% if categorie.entity_url != '' %}
+              <a href="{{ categorie.entity_url }}">{{ categorie.entity }}</a>
+          {% else %}
+              {{ categorie.entity }}
+          {% endif %}
+        </td>
+        <td>
+          {% if categorie.user_url != '' %}
+              <a href="{{ categorie.user_url }}">{{ categorie.user }}</a>
+          {% else %}
+              {{ categorie.user }}
+          {% endif %}
+        </td>
+        <td>
+          {% if categorie.group_url != '' %}
+              <a href="{{ categorie.group_url }}">{{ categorie.group }}</a>
+          {% else %}
+              {{ categorie.group }}
+          {% endif %}
+        </td>
+        <td>
+          {% if categorie.knowbaseitemcategory_url != '' %}
+              <a href="{{ categorie.knowbaseitemcategory_url }}">{{ categorie.knowbaseitemcategory }}</a>
+          {% else %}
+              {{ categorie.knowbaseitemcategory }}
+          {% endif %}
+        </td>
         {% if categorie.visible_simplified_interface %}
           <td class="positive">
           <i class="check circle outline icon"></i>
@@ -80,10 +104,34 @@
         {% endif %}
         {{ categorie.visible_change_val }}
         </td>
-        <td>{{ categorie.template_request }}</td>
-        <td>{{ categorie.template_incident }}</td>
-        <td>{{ categorie.template_change }}</td>
-        <td>{{ categorie.template_problem }}</td>
+        <td>
+          {% if categorie.template_request_url != '' %}
+              <a href="{{ categorie.template_request_url }}">{{ categorie.template_request }}</a>
+          {% else %}
+              {{ categorie.template_request }}
+          {% endif %}
+        </td>
+        <td>
+          {% if categorie.template_incident_url != '' %}
+              <a href="{{ categorie.template_incident_url }}">{{ categorie.template_incident }}</a>
+          {% else %}
+              {{ categorie.template_incident }}
+          {% endif %}
+        </td>
+        <td>
+          {% if categorie.template_change_url != '' %}
+              <a href="{{ categorie.template_change_url }}">{{ categorie.template_change }}</a>
+          {% else %}
+              {{ categorie.template_change }}
+          {% endif %}
+        </td>
+        <td>
+          {% if categorie.template_problem_url != '' %}
+              <a href="{{ categorie.template_problem_url }}">{{ categorie.template_problem }}</a>
+          {% else %}
+              {{ categorie.template_problem }}
+          {% endif %}
+        </td>
         <td>{{ categorie.comment }}</td>
         </td>
       </tr>

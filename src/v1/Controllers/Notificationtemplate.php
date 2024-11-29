@@ -43,14 +43,14 @@ final class Notificationtemplate extends Common
     foreach ($templatetrs as $templatetr)
     {
       $datat = [
-        'id'      => $templatetr->id,
-        'lang'    => $templatetr->language,
-        'subject' => true,
+        'id'            => $templatetr->id,
+        'lang'          => $templatetr->language,
+        'subject'       => true,
         'subject_error' => '',
-        'text'    => false,
-        'text_error' => '',
-        'html'    => true,
-        'html_error' => '',
+        'text'          => false,
+        'text_error'    => '',
+        'html'          => true,
+        'html_error'    => '',
       ];
       if (empty($datat['lang']))
       {
@@ -65,21 +65,29 @@ final class Notificationtemplate extends Common
       }
       $item = new $className();
 
-      try {
+      try
+      {
         $notificationctrl->render($templatetr->subject, $item);
-      } catch (\Throwable $th) {
+      }
+      catch (\Throwable $th)
+      {
         $datat['subject_error'] = $th->getMessage();
         $datat['subject'] = false;
       }
-      try {
+      try
+      {
         $notificationctrl->render($templatetr->content_text, $item);
-      } catch (\Throwable $th) {
+      }
+      catch (\Throwable $th)
+      {
         $datat['text_error'] = $th->getMessage();
         $datat['text'] = false;
       }
       try {
         $notificationctrl->render($templatetr->content_html, $item);
-      } catch (\Throwable $th) {
+      }
+      catch (\Throwable $th)
+      {
         $datat['html_error'] = $th->getMessage();
         $datat['html'] = false;
       }
@@ -106,9 +114,6 @@ final class Notificationtemplate extends Common
     $view = Twig::fromRequest($request);
     $template = \App\Models\Notificationtemplate::find($args['id']);
     $templatetr = \App\Models\Notificationtemplatetranslation::find($args['translationid']);
-
-
-
 
 
     $rootUrl = $this->getUrlWithoutQuery($request);

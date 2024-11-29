@@ -1,0 +1,39 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.name }}</th>
+      <th>{{ translation.begin }}</th>
+      <th>{{ translation.end }}</th>
+      <th>{{ translation.recurrent }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,holiday in data.holidays %}
+      <tr>
+        <td>
+          {% if holiday.url != '' %}
+              <a href="{{ holiday.url }}">{{ holiday.name }}</a>
+          {% else %}
+              {{ holiday.name }}
+          {% endif %}
+        </td>
+        <td>{{ holiday.begin }}</td>
+        <td>{{ holiday.end }}</td>
+        {% if holiday.recurrent %}
+          <td class="positive">
+          <i class="check circle outline icon"></i>
+        {% else %}
+          <td class="negative">
+          <i class="times circle outline icon"></i>
+        {% endif %}
+        {{ holiday.recurrent_val }}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

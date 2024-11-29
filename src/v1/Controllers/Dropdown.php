@@ -61,7 +61,9 @@ final class Dropdown extends Common
       $item = new $data->itemtype();
       $dropData = $item->getDropdownValues($data->q);
       $success = true;
-    } else {
+    }
+    else
+    {
       $dropData = [];
       $success = false;
     }

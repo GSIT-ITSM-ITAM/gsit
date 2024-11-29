@@ -41,12 +41,8 @@ final class Consumableitem extends Common
 
     $myItem = $item::with('consumables')->find($args['id']);
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/consumables');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
+    $rootUrl = $this->genereRootUrl($request, '/consumables');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $myConsumables_new = [];
     $myConsumables_use = [];
@@ -56,41 +52,49 @@ final class Consumableitem extends Common
     foreach ($myItem->consumables as $consumable)
     {
       $status = '';
+
       $date_in = $consumable->date_in;
-      $date_out = $consumable->date_out;
+
       $url = '';
 
-      if ($date_out != null) {
+      $date_out = $consumable->date_out;
+      if ($date_out !== null)
+      {
         $status = $translator->translatePlural('consumable' . "\004" . 'Used', 'consumable' . "\004" . 'Used', 1);
         $total_use = $total_use + 1;
-      } else {
+      }
+      else
+      {
         $status = $translator->translatePlural('consumable' . "\004" . 'New', 'consumable' . "\004" . 'New', 1);
         $total_new = $total_new + 1;
       }
-      $total = $total + 1;
 
       $given_to = '';
-      if (($consumable->item_type != '') && ($consumable->item_id != 0)) {
+      if (($consumable->item_type != '') && ($consumable->item_id != 0))
+      {
         $item3 = new $consumable->item_type();
         $myItem3 = $item3->find($consumable->item_id);
-        $given_to = $myItem3->name;
+        if ($myItem3 !== null)
+        {
+          $type = $item3->getTable();
 
-        $url = '';
-        if ($rootUrl2 != '') {
-          $table = $item3->getTable();
-          if ($table != '') {
-            $url = $rootUrl2 . "/" . $table . "/" . $myItem3->id;
-          }
+          $given_to = $myItem3->name;
+
+          $url = $this->genereRootUrl2Link($rootUrl2, '/' . $type . '/', $myItem3->id);
         }
       }
 
+      $total = $total + 1;
 
-      if ($consumable->date_out == null) {
+      if ($consumable->date_out == null)
+      {
         $myConsumables_new[] = [
           'status'       => $status,
           'date_in'      => $date_in,
         ];
-      } else {
+      }
+      else
+      {
         $myConsumables_use[] = [
           'status'       => $status,
           'url'          => $url,

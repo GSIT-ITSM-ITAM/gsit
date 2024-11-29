@@ -12,7 +12,13 @@
             <div class="item">
               <div class="content">
                 <a class="header">{{ translation.type }}</a>
-                <div class="description">{{ record.type }}</div>
+                <div class="description">
+                  {% if record.type_url != '' %}
+                      <a href="{{ record.type_url }}">{{ record.type }}</a>
+                  {% else %}
+                      {{ record.type }}
+                  {% endif %}
+                </div>
               </div>
             </div>
             <div class="item">

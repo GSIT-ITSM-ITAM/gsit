@@ -26,12 +26,12 @@ class Followuptemplate extends Common
 
   protected $with = [
     'source:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   public function source(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Requesttype');
+    return $this->belongsTo('\App\Models\Requesttype', 'requesttype_id');
   }
 
   public function entity(): BelongsTo

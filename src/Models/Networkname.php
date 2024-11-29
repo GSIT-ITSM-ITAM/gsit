@@ -17,16 +17,19 @@ class Networkname extends Common
   protected $appends = [
     'fqdn',
     'entity',
+    'alias',
   ];
 
   protected $visible = [
     'fqdn',
     'entity',
+    'alias',
   ];
 
   protected $with = [
     'fqdn:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
+    'alias',
   ];
 
   public function fqdn(): BelongsTo
@@ -37,5 +40,10 @@ class Networkname extends Common
   public function entity(): BelongsTo
   {
     return $this->belongsTo('\App\Models\Entity');
+  }
+
+  public function alias(): HasMany
+  {
+    return $this->hasMany('\App\Models\Networkalias', 'networkname_id');
   }
 }

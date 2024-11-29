@@ -32,7 +32,7 @@ class Location extends Common
 
   protected $with = [
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'documents:id,name',
   ];
 

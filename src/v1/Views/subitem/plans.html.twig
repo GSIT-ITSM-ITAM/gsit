@@ -1,0 +1,20 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<form method="post" class="ui form">
+  <button class="ui button right floated" type="submit">{{ translation.savebutton }}</button>
+  <div class="ui internally celled grid">
+    <div class="row">
+      <div class="column">
+        {% for item in data.fields %}
+          {% if item.name != 'comment' %}
+            {{ include('fields.html.twig') }}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <button class="ui button right floated" type="submit">{{ translation.savebutton }}</button>
+</form>
+
+{{ include('footer.html.twig') }}

@@ -28,6 +28,7 @@ class Monitor extends Common
     'userstech',
     'location',
     'entity',
+    'infocom',
   ];
 
   protected $visible = [
@@ -53,6 +54,8 @@ class Monitor extends Common
     'problems',
     'changes',
     'connections',
+    'infocom',
+    'reservations',
   ];
 
   protected $with = [
@@ -60,12 +63,12 @@ class Monitor extends Common
     'model:id,name',
     'state:id,name',
     'manufacturer:id,name',
-    'user:id,name',
-    'group:id,name',
-    'groupstech:id,name',
-    'userstech:id,name',
+    'user:id,name,firstname,lastname',
+    'group:id,name,completename',
+    'userstech:id,name,firstname,lastname',
+    'groupstech:id,name,completename',
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'domains:id,name',
     'appliances:id,name',
     'notes:id',
@@ -79,17 +82,19 @@ class Monitor extends Common
     'problems:id,name',
     'changes:id,name',
     'connections:id,name',
+    'infocom',
+    'reservations',
   ];
 
 
   public function type(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Monitortype');
+    return $this->belongsTo('\App\Models\Monitortype', 'monitortype_id');
   }
 
   public function model(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Monitormodel');
+    return $this->belongsTo('\App\Models\Monitormodel', 'monitormodel_id');
   }
 
   public function state(): BelongsTo
@@ -263,6 +268,22 @@ class Monitor extends Common
     )->withPivot(
       'computer_id',
       'is_dynamic',
+    );
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
+    );
+  }
+
+  public function reservations(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Reservationitem',
+      'item',
     );
   }
 }

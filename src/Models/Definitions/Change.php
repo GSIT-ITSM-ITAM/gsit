@@ -98,7 +98,7 @@ class Change
         'id'    => 7,
         'title' => $translator->translate('Category'),
         'type'  => 'dropdown_remote',
-        'name'  => 'categorie',
+        'name'  => 'itilcategorie',
         'dbname' => 'category_id',
         'itemtype' => '\App\Models\Category',
         'fillable' => true,
@@ -196,14 +196,16 @@ class Change
         'additionalfields'   => ['status']
       ];
       if (!Session::isCron() // no filter for cron
-      && Session::getCurrentInterface() == 'helpdesk') {
+      && Session::getCurrentInterface() == 'helpdesk')
+      {
       $newtab['condition']         = ['is_helpdeskvisible' => 1];
       }
       $tab[] = $newtab;
 
       // Filter search fields for helpdesk
       if (!Session::isCron() // no filter for cron
-      && Session::getCurrentInterface() != 'central') {
+      && Session::getCurrentInterface() != 'central')
+      {
       // last updater no search
       $newtab['nosearch'] = true;
       }
@@ -495,7 +497,9 @@ class Change
         {
           $day  = 0;
           $hour = floor($i / $HOUR_TIMESTAMP);
-        } else {
+        }
+        else
+        {
           $day  = floor($i / $DAY_TIMESTAMP);
           $hour = floor(($i % $DAY_TIMESTAMP) / $HOUR_TIMESTAMP);
         }
@@ -522,10 +526,13 @@ class Change
               $hour,
               $minute
             );
-          } else {
+          }
+          else
+          {
             $values[$i] = sprintf($translator->translatePlural('%d day', '%d days', $day), $day);
           }
-        } elseif ($hour > 0 || $minute > 0)
+        }
+        elseif ($hour > 0 || $minute > 0)
         {
           if ($minute < 10)
           {
@@ -546,6 +553,50 @@ class Change
     return $tab;
   }
 
+  public static function getDefinitionAnalysis()
+  {
+    global $translator;
+    return [
+      [
+        'id'    => 1,
+        'title' => $translator->translate('Impacts'),
+        'type'  => 'textarea',
+        'name'  => 'impactcontent',
+      ],
+      [
+        'id'    => 2,
+        'title' => $translator->translate('Control list'),
+        'type'  => 'textarea',
+        'name'  => 'controlistcontent',
+      ],
+    ];
+  }
+
+  public static function getDefinitionPlans()
+  {
+    global $translator;
+    return [
+      [
+        'id'    => 1,
+        'title' => $translator->translate('Deployment plan'),
+        'type'  => 'textarea',
+        'name'  => 'rolloutplancontent',
+      ],
+      [
+        'id'    => 2,
+        'title' => $translator->translate('Backup plan'),
+        'type'  => 'textarea',
+        'name'  => 'backoutplancontent',
+      ],
+      [
+        'id'    => 3,
+        'title' => $translator->translate('Checklist'),
+        'type'  => 'textarea',
+        'name'  => 'checklistcontent',
+      ],
+    ];
+  }
+
   public static function getRelatedPages($rootUrl)
   {
     global $translator;
@@ -561,64 +612,62 @@ class Change
         'link' => '',
       ],
       [
-        'title' => $translator->translatePlural('Change', 'Changes', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
-      ],
-      [
         'title' => $translator->translate('Analysis'),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'edit',
+        'link' => $rootUrl . '/analysis',
       ],
       [
         'title' => $translator->translate('Plans'),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'edit',
+        'link' => $rootUrl . '/plans',
       ],
       [
         'title' => $translator->translate('Statistics'),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'chartline',
+        'link' => $rootUrl . '/stats',
       ],
       [
-        'title' => $translator->translatePlural('Validation', 'Validations', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'title' => $translator->translatePlural('Approval', 'Approvals', 2),
+        'icon' => 'thumbs up',
+        'link' => $rootUrl . '/approvals',
+      ],
+      [
+        'title' => $translator->translatePlural('Ticket', 'Tickets', 2),
+        'icon' => 'hands helping',
+        'link' => $rootUrl . '/tickets',
+        'rightModel' => '\App\Models\Ticket',
+      ],
+      [
+        'title' => $translator->translatePlural('Problem', 'Problems', 2),
+        'icon' => 'drafting compass',
+        'link' => $rootUrl . '/problem',
+        'rightModel' => '\App\Models\Problem',
       ],
       [
         'title' => $translator->translatePlural('Cost', 'Costs', 2),
         'icon' => 'money bill alternate',
-        'link' => '',
+        'link' => $rootUrl . '/costs',
       ],
       [
         'title' => $translator->translatePlural('Project', 'Projects', 2),
         'icon' => 'folder open',
-        'link' => '',
-      ],
-      [
-        'title' => $translator->translatePlural('Problem', 'Problems', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
-      ],
-      [
-        'title' => $translator->translatePlural('Ticket', 'Tickets', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'link' => $rootUrl . '/projects',
+        'rightModel' => '\App\Models\Project',
       ],
       [
         'title' => $translator->translatePlural('Item', 'Items', 2),
         'icon' => 'desktop',
-        'link' => '',
-      ],
-      [
-        'title' => $translator->translate('Knowledge base'),
-        'icon' => 'book',
-        'link' => $rootUrl . '/knowbaseitems',
+        'link' => $rootUrl . '/items',
       ],
       [
         'title' => $translator->translatePlural('Note', 'Notes', 2),
         'icon' => 'sticky note',
         'link' => $rootUrl . '/notes',
+      ],
+      [
+        'title' => $translator->translate('Knowledge base'),
+        'icon' => 'book',
+        'link' => $rootUrl . '/knowbaseitems',
       ],
       [
         'title' => $translator->translate('Historical'),

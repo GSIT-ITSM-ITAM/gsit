@@ -20,6 +20,7 @@ class Devicegeneric extends Common
     'manufacturer',
     'type',
     'entity',
+    'items',
   ];
 
   protected $visible = [
@@ -27,13 +28,15 @@ class Devicegeneric extends Common
     'type',
     'entity',
     'documents',
+    'items',
   ];
 
   protected $with = [
     'manufacturer:id,name',
     'type:id,name',
-    'entity:id,name',
-    'documents:id,name',
+    'entity:id,name,completename',
+    'documents',
+    'items',
   ];
 
   public function manufacturer(): BelongsTo
@@ -61,5 +64,10 @@ class Devicegeneric extends Common
       'document_id',
       'updated_at',
     );
+  }
+
+  public function items(): HasMany
+  {
+    return $this->hasMany('\App\Models\ItemDevicegeneric', 'devicegeneric_id');
   }
 }

@@ -26,7 +26,7 @@ class State extends Common
 
   protected $with = [
     'state:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   public function state(): BelongsTo

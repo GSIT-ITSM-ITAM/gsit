@@ -36,7 +36,7 @@ class Supplier extends Common
 
   protected $with = [
     'type:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'notes:id',
     'knowbaseitems:id,name',
     'documents:id,name',

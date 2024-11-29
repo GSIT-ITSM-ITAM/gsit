@@ -10,7 +10,9 @@ final class Contract extends Common
 {
   protected $model = '\App\Models\Contract';
   protected $rootUrl2 = '/contracts/';
-  protected $costchoose = 'contract';
+  protected $choose = 'contracts';
+  protected $associateditems_model = '\App\Models\ContractItem';
+  protected $associateditems_model_id = 'contract_id';
 
   public function getAll(Request $request, Response $response, $args): Response
   {

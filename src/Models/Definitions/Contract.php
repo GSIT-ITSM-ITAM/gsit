@@ -469,7 +469,8 @@ class Contract
     if ($number == "")
     {
       $number = 0;
-    } elseif ($number == "-")
+    }
+    elseif ($number == "-")
     { // used for not defines value (from Infocom::Amort, p.e.)
       return "-";
     }
@@ -524,7 +525,9 @@ class Contract
       if ($size > 1024)
       {
         $size = $size / 1024;
-      } else {
+      }
+      else
+      {
         break;
       }
     }
@@ -554,7 +557,7 @@ class Contract
       [
         'title' => $translator->translatePlural('Item', 'Items', 2),
         'icon' => 'desktop',
-        'link' => '',
+        'link' => $rootUrl . '/attacheditems',
       ],
       [
         'title' => $translator->translatePlural('Document', 'Documents', 2),

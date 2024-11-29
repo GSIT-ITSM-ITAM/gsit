@@ -10,6 +10,7 @@ final class Certificate extends Common
 {
   protected $model = '\App\Models\Certificate';
   protected $rootUrl2 = '/certificates/';
+  protected $choose = 'certificates';
   protected $associateditems_model = '\App\Models\Certificateitem';
   protected $associateditems_model_id = 'certificate_id';
 
@@ -44,64 +45,91 @@ final class Certificate extends Common
     $item2 = new \App\Models\Domain();
     $myItem2 = $item2::with('certificates')->get();
 
+    $rootUrl = $this->genereRootUrl($request, '/domains');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
+
     $myDomains = [];
     foreach ($myItem2 as $domain)
     {
       $add_domain = false;
-      if ($domain->certificates != null) {
-        foreach ($domain->certificates as $certificate) {
-          if ($args['id'] == $certificate->id) {
+      if ($domain->certificates !== null)
+      {
+        foreach ($domain->certificates as $certificate)
+        {
+          if ($args['id'] == $certificate->id)
+          {
             $add_domain = true;
             break;
           }
         }
       }
 
-      if ($add_domain) {
+      if ($add_domain)
+      {
         $entity = '';
+        $entity_url = '';
         if ($domain->entity !== null)
         {
-          $entity = $domain->entity->name;
+          $entity = $domain->entity->completename;
+          $entity_url = $this->genereRootUrl2Link($rootUrl2, '/entities/', $domain->entity->id);
         }
+
         $groupstech = '';
+        $groupstech_url = '';
         if ($domain->groupstech !== null)
         {
-          $groupstech = $domain->groupstech->name;
+          $groupstech = $domain->groupstech->completename;
+          $groupstech_url = $this->genereRootUrl2Link($rootUrl2, '/groups/', $domain->groupstech->id);
         }
+
         $userstech = '';
+        $userstech_url = '';
         if ($domain->userstech !== null)
         {
-          $userstech = $domain->userstech->name;
+          $userstech = $this->genereUserName(
+            $domain->userstech->name,
+            $domain->userstech->lastname,
+            $domain->userstech->firstname
+          );
+          $userstech_url = $this->genereRootUrl2Link($rootUrl2, '/users/', $domain->userstech->id);
         }
+
         $type = '';
+        $type_url = '';
         if ($domain->type !== null)
         {
           $type = $domain->type->name;
+          $type_url = $this->genereRootUrl2Link($rootUrl2, '/dropdowns/domaintypes/', $domain->type->id);
         }
 
         $relation = '';
-        $domainrelation = null;
+        $relation_url = '';
 
         $item3 = new \App\Models\DomainItem();
         $myItem3 = $item3::with('relation')->where('domain_id', $domain->id)->get();
-
-        foreach ($myItem3 as $domainitem) {
+        foreach ($myItem3 as $domainitem)
+        {
           if (($args['id'] == $domainitem->item_id) && ('\\' . $domainitem->item_type == $this->model))
           {
             $domainrelation = \App\Models\Domainrelation::find($domainitem->domainrelation_id);
             if ($domainrelation !== null)
             {
               $relation = $domainrelation->name;
+              $relation_url = $this->genereRootUrl2Link($rootUrl2, '/dropdowns/domainrelations/', $domainrelation->id);
             }
           }
         }
 
         $alert_expiration = false;
         $date_expiration = $domain->date_expiration;
-        if ($date_expiration == null) {
+        if ($date_expiration == null)
+        {
           $date_expiration = $translator->translate("N'expire pas");
-        } else {
-          if ($date_expiration < date('Y-m-d H:i:s')) {
+        }
+        else
+        {
+          if ($date_expiration < date('Y-m-d H:i:s'))
+          {
             $alert_expiration = true;
           }
         }
@@ -109,10 +137,15 @@ final class Certificate extends Common
         $myDomains[] = [
           'name'              => $domain->name,
           'entity'            => $entity,
+          'entity_url'        => $entity_url,
           'group'             => $groupstech,
+          'group_url'         => $groupstech_url,
           'user'              => $userstech,
+          'user_url'          => $userstech_url,
           'type'              => $type,
+          'type_url'          => $type_url,
           'relation'          => $relation,
+          'relation_url'      => $relation_url,
           'date_create'       => $domain->created_at,
           'date_exp'          => $date_expiration,
           'alert_expiration'  => $alert_expiration,
@@ -120,14 +153,12 @@ final class Certificate extends Common
       }
     }
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/domains');
-
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
 
     $viewData->addData('fields', $item->getFormData($myItem));
     $viewData->addData('domains', $myDomains);
+    $viewData->addData('show', $this->choose);
 
     $viewData->addTranslation('entity', $translator->translatePlural('Entity', 'Entities', 1));
     $viewData->addTranslation('group', $translator->translate('Group in charge'));

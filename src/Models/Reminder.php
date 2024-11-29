@@ -27,7 +27,7 @@ class Reminder extends Common
   ];
 
   protected $with = [
-    'user:id,name',
+    'user:id,name,firstname,lastname',
     'documents:id,name',
   ];
 

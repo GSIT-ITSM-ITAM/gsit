@@ -1,0 +1,27 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.name }}</th>
+      <th>{{ translation.number }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,plug in data.plugs %}
+      <tr>
+        <td>
+          {% if plug.url != '' %}
+              <a href="{{ plug.url }}">{{ plug.name }}</a>
+          {% else %}
+              {{ plug.name }}
+          {% endif %}
+        </td>
+        <td>{{ plug.number_plugs }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

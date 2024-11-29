@@ -22,7 +22,13 @@
               {{ associateditem.name }}
           {% endif %}
         </td>
-        <td>{{ associateditem.entity }}</td>
+        <td>
+          {% if associateditem.entity_url != '' %}
+              <a href="{{ associateditem.entity_url }}">{{ associateditem.entity }}</a>
+          {% else %}
+              {{ associateditem.entity }}
+          {% endif %}
+        </td>
         <td>{{ associateditem.serial_number }}</td>
         <td>{{ associateditem.inventaire_number }}</td>
       </tr>

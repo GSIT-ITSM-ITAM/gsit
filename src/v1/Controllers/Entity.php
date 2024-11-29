@@ -39,46 +39,44 @@ final class Entity extends Common
 
     $myItem = $item->find($args['id']);
 
+    $rootUrl = $this->genereRootUrl($request, '/address');
+
     $address = [];
     foreach ($myItem as $os)
     {
       $address = [
-        'phonenumber' => $myItem->phonenumber,
-        'fax' => $myItem->fax,
-        'website' => $myItem->website,
-        'email' => $myItem->email,
-        'address' => $myItem->address,
-        'postcode' => $myItem->postcode,
-        'town' => $myItem->town,
-        'state' => $myItem->state,
-        'country' => $myItem->country,
-        'longitude' => $myItem->longitude,
-        'latitude' => $myItem->latitude,
-        'altitude' => $myItem->altitude,
+        'phonenumber'   => $myItem->phonenumber,
+        'fax'           => $myItem->fax,
+        'website'       => $myItem->website,
+        'email'         => $myItem->email,
+        'address'       => $myItem->address,
+        'postcode'      => $myItem->postcode,
+        'town'          => $myItem->town,
+        'state'         => $myItem->state,
+        'country'       => $myItem->country,
+        'longitude'     => $myItem->longitude,
+        'latitude'      => $myItem->latitude,
+        'altitude'      => $myItem->altitude,
       ];
     }
-
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/address');
 
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
 
-
     $getDefs = $item->getSpecificFunction('getDefinitionAddress');
     $myItemData = [
-      'phonenumber'  => $address['phonenumber'],
-      'fax'  => $address['fax'],
-      'website'  => $address['website'],
-      'email'  => $address['email'],
-      'address'  => $address['address'],
-      'postcode'  => $address['postcode'],
-      'town'  => $address['town'],
-      'state'  => $address['state'],
-      'country'  => $address['country'],
-      'longitude'  => $address['longitude'],
-      'latitude'  => $address['latitude'],
-      'altitude'  => $address['altitude'],
+      'phonenumber'   => $address['phonenumber'],
+      'fax'           => $address['fax'],
+      'website'       => $address['website'],
+      'email'         => $address['email'],
+      'address'       => $address['address'],
+      'postcode'      => $address['postcode'],
+      'town'          => $address['town'],
+      'state'         => $address['state'],
+      'country'       => $address['country'],
+      'longitude'     => $address['longitude'],
+      'latitude'      => $address['latitude'],
+      'altitude'      => $address['altitude'],
     ];
     $myItemDataObject = json_decode(json_encode($myItemData));
 
@@ -100,36 +98,32 @@ final class Entity extends Common
     $item2 = new $this->model();
     $myItem2 = $item2::where('entity_id', $args['id'])->get();
 
-
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/entities');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
+    $rootUrl = $this->genereRootUrl($request, '/entities');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $myEntities = [];
     foreach ($myItem2 as $child)
     {
       $name = $child->name;
 
-      $url = '';
-      if ($rootUrl2 != '') {
-        $url = $rootUrl2 . "/entities/" . $child->id;
-      }
+      $url = $this->genereRootUrl2Link($rootUrl2, '/entities/', $child->id);
 
       $entity = '';
-      if ($child->entity != null) {
-        $entity = $child->entity->name;
+      $entity_url = '';
+      if ($child->entity !== null)
+      {
+        $entity = $child->entity->completename;
+        $entity_url = $this->genereRootUrl2Link($rootUrl2, '/entities/', $child->entity->id);
       }
 
       $comment = $child->comment;
 
       $myEntities[$child->id] = [
-        'name'        => $name,
-        'url'         => $url,
-        'entity'      => $entity,
-        'comment'     => $comment,
+        'name'          => $name,
+        'url'           => $url,
+        'entity'        => $entity,
+        'entity_url'    => $entity_url,
+        'comment'       => $comment,
       ];
     }
 
@@ -156,21 +150,18 @@ final class Entity extends Common
 
     $myItem = $item::with('profilesusers')->find($args['id']);
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/users');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
+    $rootUrl = $this->genereRootUrl($request, '/users');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $myProfilesUsers = [];
     foreach ($myItem->profilesusers as $profileuser)
     {
       $user = \App\Models\User::find($profileuser->user_id);
       $profile = \App\Models\Profile::find($profileuser->profile_id);
-
-      if (($user !== null) && ($profile !== null)) {
-        if (array_key_exists($profile->id, $myProfilesUsers) !== true) {
+      if (($user !== null) && ($profile !== null))
+      {
+        if (array_key_exists($profile->id, $myProfilesUsers) !== true)
+        {
           $myProfilesUsers[$profile->id] = [
             'name'    => $profile->name,
             'users'   => [],
@@ -186,6 +177,7 @@ final class Entity extends Common
         {
           $auto_val = $translator->translate('No');
         }
+
         $recursive = $profileuser->is_recursive;
         if ($profileuser->is_recursive == 1)
         {
@@ -196,8 +188,10 @@ final class Entity extends Common
           $recursive_val = $translator->translate('No');
         }
 
+        $user_name = $this->genereUserName($user->name, $user->lastname, $user->firstname);
+
         $myProfilesUsers[$profile->id]['users'][$user->id] = [
-          'name'             => $user->name,
+          'name'             => $user_name,
           'auto'             => $auto,
           'auto_val'         => $auto_val,
           'recursive'        => $recursive,
@@ -207,7 +201,7 @@ final class Entity extends Common
     }
 
     // tri ordre alpha
-    usort($myProfilesUsers, function ($a, $b)
+    uasort($myProfilesUsers, function ($a, $b)
     {
       return strtolower($a['name']) > strtolower($b['name']);
     });

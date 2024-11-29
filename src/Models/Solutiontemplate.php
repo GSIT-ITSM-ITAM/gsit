@@ -26,12 +26,12 @@ class Solutiontemplate extends Common
 
   protected $with = [
     'types:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   public function types(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Solutiontype');
+    return $this->belongsTo('\App\Models\Solutiontype', 'solutiontype_id');
   }
 
   public function entity(): BelongsTo

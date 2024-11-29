@@ -24,14 +24,26 @@
               {{ document.name }}
           {% endif %}
         </td>
-        <td>{{ document.entity }}</td>
+        <td>
+          {% if document.entity_url != '' %}
+              <a href="{{ document.entity_url }}">{{ document.entity }}</a>
+          {% else %}
+              {{ document.entity }}
+          {% endif %}
+        </td>
         <td>{{ document.file }}</td>
         <td>
           {% if document.weblink != '' %}
               <a href="{{ document.weblink }}" target="_blank">{{ document.weblink }}</a>
           {% endif %}
         </td>
-        <td>{{ document.rubrique }}</td>
+        <td>
+          {% if document.rubrique_url != '' %}
+              <a href="{{ document.rubrique_url }}">{{ document.rubrique }}</a>
+          {% else %}
+              {{ document.rubrique }}
+          {% endif %}
+        </td>
         <td>{{ document.mimetype }}</td>
         <td>{{ document.balise }}</td>
         <td>{{ document.date }}</td>

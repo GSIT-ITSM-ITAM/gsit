@@ -26,12 +26,12 @@ class Businesscriticity extends Common
 
   protected $with = [
     'category:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   public function category(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Businesscriticity');
+    return $this->belongsTo('\App\Models\Businesscriticity', 'businesscriticity_id');
   }
 
   public function entity(): BelongsTo

@@ -205,8 +205,10 @@ class Rssfeed
     if ($number == "")
     {
       $number = 0;
-    } elseif ($number == "-")
-    { // used for not defines value (from Infocom::Amort, p.e.)
+    }
+    elseif ($number == "-")
+    {
+      // used for not defines value (from Infocom::Amort, p.e.)
       return "-";
     }
 
@@ -260,7 +262,9 @@ class Rssfeed
       if ($size > 1024)
       {
           $size = $size / 1024;
-      } else {
+      }
+      else
+      {
           break;
       }
     }
@@ -335,7 +339,9 @@ class Rssfeed
         {
           $day  = 0;
           $hour = floor($i / $HOUR_TIMESTAMP);
-        } else {
+        }
+        else
+        {
           $day  = floor($i / $DAY_TIMESTAMP);
           $hour = floor(($i % $DAY_TIMESTAMP) / $HOUR_TIMESTAMP);
         }
@@ -362,10 +368,13 @@ class Rssfeed
               $hour,
               $minute
             );
-          } else {
+          }
+          else
+          {
             $values[$i] = sprintf($translator->translatePlural('%d day', '%d days', $day), $day);
           }
-        } elseif ($hour > 0 || $minute > 0)
+        }
+        elseif ($hour > 0 || $minute > 0)
         {
           if ($minute < 10)
           {

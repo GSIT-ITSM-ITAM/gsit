@@ -45,8 +45,8 @@ class Softwarecategory
       ],
       [
         'title' => $translator->translatePlural('Software category', 'Software categories', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'edit',
+        'link' => $rootUrl . '/softwarecategories',
       ],
       [
         'title' => $translator->translate('Historical'),

@@ -1,0 +1,27 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.name }}</th>
+      <th>{{ translation.comment }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,softwarecategory in data.softwarecategories %}
+      <tr>
+        <td>
+          {% if softwarecategory.url != '' %}
+              <a href="{{ softwarecategory.url }}">{{ softwarecategory.name }}</a>
+          {% else %}
+              {{ softwarecategory.name }}
+          {% endif %}
+        </td>
+        <td>{{ softwarecategory.comment }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

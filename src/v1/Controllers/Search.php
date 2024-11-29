@@ -69,7 +69,9 @@ final class Search extends Common
       if (is_array($value))
       {
         $item = $item->where($key, $value[0], $value[1]);
-      } else {
+      }
+      else
+      {
         $item = $item->where($key, $value);
       }
     }
@@ -85,7 +87,9 @@ final class Search extends Common
         if ($GLOBALS['entity_recursive'])
         {
           $query->where('treepath', 'LIKE', $GLOBALS['entity_treepath'] . '%');
-        } else {
+        }
+        else
+        {
           $query->where('treepath', $GLOBALS['entity_treepath']);
         }
       });
@@ -117,10 +121,10 @@ final class Search extends Common
     // die();
 
     $itemDbData['paging'] = [
-      'total'   => $cnt,
-      'pages'   => ceil($cnt / $limit),
-      'current' => $page,
-      'linkpage' => $uri . '?page=',
+      'total'     => $cnt,
+      'pages'     => ceil($cnt / $limit),
+      'current'   => $page,
+      'linkpage'  => $uri . '?page=',
     ];
     return $itemDbData;
   }
@@ -151,7 +155,9 @@ final class Search extends Common
             $myData[$field['name']] = [
               'value' => '',
             ];
-          } else {
+          }
+          else
+          {
             if (isset($field['count']))
             {
               $elements = [];
@@ -173,7 +179,9 @@ final class Search extends Common
               $myData[$field['name']] = [
                 'value' => implode(', ', $elements),
               ];
-            } else {
+            }
+            else
+            {
               $myData[$field['name']] = [
                 'value' => $item->{$field['name']}->name,
               ];
@@ -187,7 +195,9 @@ final class Search extends Common
             $myData[$field['name']] = [
               'value' => $field['values'][$item->{$field['name']}],
             ];
-          } else {
+          }
+          else
+          {
             $myData[$field['name']] = [];
           }
         }
@@ -207,9 +217,9 @@ final class Search extends Common
       $allData[] = $myData;
     }
     return [
-      'header' => $header,
-      'data'   => $allData,
-      'allFields' => $itemDef,
+      'header'      => $header,
+      'data'        => $allData,
+      'allFields'   => $itemDef,
     ];
   }
 
@@ -224,7 +234,9 @@ final class Search extends Common
           if ($field['type'] == 'dropdown_remote')
           {
             return [$field['name'] => $params['value']];
-          } else {
+          }
+          else
+          {
             return [$field['name'] => ['LIKE', '%' . $params['value'] . '%']];
           }
         }

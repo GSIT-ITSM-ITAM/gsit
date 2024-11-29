@@ -21,7 +21,7 @@ class DomainItem extends Common
 
   protected $with = [
     'domain:id,name',
-    'relation:id,name',
+    'relation',
   ];
 
   public function domain(): BelongsTo
@@ -31,6 +31,6 @@ class DomainItem extends Common
 
   public function relation(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Domainrelation');
+    return $this->belongsTo('\App\Models\Domainrelation', 'domainrelation_id');
   }
 }

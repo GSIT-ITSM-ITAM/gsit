@@ -44,26 +44,22 @@ final class State extends Common
     $item2 = new $this->model();
     $myItem2 = $item2->where('state_id', $args['id'])->get();
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/categories');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
+    $rootUrl = $this->genereRootUrl($request, '/categories');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $myStates = [];
     foreach ($myItem2 as $current_category)
     {
       $name = $current_category->name;
 
-      $url = '';
-      if ($rootUrl2 != '') {
-        $url = $rootUrl2 . "/dropdown/categories/" . $current_category->id;
-      }
+      $url = $this->genereRootUrl2Link($rootUrl2, '/dropdown/categories/', $current_category->id);
 
       $entity = '';
-      if ($current_category->entity != null) {
-        $entity = $current_category->entity->name;
+      $entity_url = '';
+      if ($current_category->entity !== null)
+      {
+        $entity = $current_category->entity->completename;
+        $entity_url = $this->genereRootUrl2Link($rootUrl2, '/entities/', $current_category->entity->id);
       }
 
       $is_visible_computer = $current_category->is_visible_computer;
@@ -232,38 +228,39 @@ final class State extends Common
         'name'                                => $name,
         'url'                                 => $url,
         'entity'                              => $entity,
-        'is_visible_computer'        => $is_visible_computer,
-        'is_visible_computer_val'    => $is_visible_computer_val,
-        'is_visible_monitor'                    => $is_visible_monitor,
-        'is_visible_monitor_val'                => $is_visible_monitor_val,
-        'is_visible_networkequipment'                     => $is_visible_networkequipment,
-        'is_visible_networkequipment_val'                 => $is_visible_networkequipment_val,
-        'is_visible_peripheral'                     => $is_visible_peripheral,
-        'is_visible_peripheral_val'                 => $is_visible_peripheral_val,
-        'is_visible_phone'                      => $is_visible_phone,
-        'is_visible_phone_val'                  => $is_visible_phone_val,
-        'is_visible_printer'                    => $is_visible_printer,
-        'is_visible_printer_val'                   => $is_visible_printer_val,
-        'is_visible_certificate'                    => $is_visible_certificate,
-        'is_visible_certificate_val'                    => $is_visible_certificate_val,
-        'is_visible_cluster'                    => $is_visible_cluster,
-        'is_visible_cluster_val'                    => $is_visible_cluster_val,
-        'is_visible_contract'                    => $is_visible_contract,
-        'is_visible_contract_val'                    => $is_visible_contract_val,
-        'is_visible_appliance'                    => $is_visible_appliance,
-        'is_visible_appliance_val'                    => $is_visible_appliance_val,
-        'is_visible_pdu'                    => $is_visible_pdu,
-        'is_visible_pdu_val'                    => $is_visible_pdu_val,
-        'is_visible_softwarelicense'                    => $is_visible_softwarelicense,
-        'is_visible_softwarelicense_val'                    => $is_visible_softwarelicense_val,
-        'is_visible_softwareversion'                    => $is_visible_softwareversion,
-        'is_visible_softwareversion_val'                    => $is_visible_softwareversion_val,
-        'is_visible_line'                    => $is_visible_line,
-        'is_visible_line_val'                    => $is_visible_line_val,
-        'is_visible_enclosure'                    => $is_visible_enclosure,
-        'is_visible_enclosure_val'                    => $is_visible_enclosure_val,
-        'is_visible_rack'                    => $is_visible_rack,
-        'is_visible_rack_val'                    => $is_visible_rack_val,
+        'entity_url'                          => $entity_url,
+        'is_visible_computer'                 => $is_visible_computer,
+        'is_visible_computer_val'             => $is_visible_computer_val,
+        'is_visible_monitor'                  => $is_visible_monitor,
+        'is_visible_monitor_val'              => $is_visible_monitor_val,
+        'is_visible_networkequipment'         => $is_visible_networkequipment,
+        'is_visible_networkequipment_val'     => $is_visible_networkequipment_val,
+        'is_visible_peripheral'               => $is_visible_peripheral,
+        'is_visible_peripheral_val'           => $is_visible_peripheral_val,
+        'is_visible_phone'                    => $is_visible_phone,
+        'is_visible_phone_val'                => $is_visible_phone_val,
+        'is_visible_printer'                  => $is_visible_printer,
+        'is_visible_printer_val'              => $is_visible_printer_val,
+        'is_visible_certificate'              => $is_visible_certificate,
+        'is_visible_certificate_val'          => $is_visible_certificate_val,
+        'is_visible_cluster'                  => $is_visible_cluster,
+        'is_visible_cluster_val'              => $is_visible_cluster_val,
+        'is_visible_contract'                 => $is_visible_contract,
+        'is_visible_contract_val'             => $is_visible_contract_val,
+        'is_visible_appliance'                => $is_visible_appliance,
+        'is_visible_appliance_val'            => $is_visible_appliance_val,
+        'is_visible_pdu'                      => $is_visible_pdu,
+        'is_visible_pdu_val'                  => $is_visible_pdu_val,
+        'is_visible_softwarelicense'          => $is_visible_softwarelicense,
+        'is_visible_softwarelicense_val'      => $is_visible_softwarelicense_val,
+        'is_visible_softwareversion'          => $is_visible_softwareversion,
+        'is_visible_softwareversion_val'      => $is_visible_softwareversion_val,
+        'is_visible_line'                     => $is_visible_line,
+        'is_visible_line_val'                 => $is_visible_line_val,
+        'is_visible_enclosure'                => $is_visible_enclosure,
+        'is_visible_enclosure_val'            => $is_visible_enclosure_val,
+        'is_visible_rack'                     => $is_visible_rack,
+        'is_visible_rack_val'                 => $is_visible_rack_val,
         'comment'                             => $comment,
       ];
     }

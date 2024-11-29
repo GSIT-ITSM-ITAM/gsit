@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Projecttask extends Common
 {
@@ -21,6 +23,8 @@ class Projecttask extends Common
     'type',
     'state',
     'tickets',
+    'notes',
+    'documents',
   ];
 
   protected $visible = [
@@ -29,14 +33,18 @@ class Projecttask extends Common
     'type',
     'state',
     'tickets',
+    'notes',
+    'documents',
   ];
 
   protected $with = [
-    'entity:id,name',
+    'entity:id,name,completename',
     'parent:id,name',
     'type:id,name',
     'state:id,name,color',
     'tickets:id,name',
+    'notes:id',
+    'documents:id,name',
   ];
 
   public function entity(): BelongsTo
@@ -62,5 +70,25 @@ class Projecttask extends Common
   public function tickets(): BelongsToMany
   {
     return $this->belongsToMany('\App\Models\Ticket', 'projecttask_ticket', 'projecttask_id', 'ticket_id');
+  }
+
+  public function notes(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Notepad',
+      'item',
+    );
+  }
+
+  public function documents(): MorphToMany
+  {
+    return $this->morphToMany(
+      '\App\Models\Document',
+      'item',
+      'document_item'
+    )->withPivot(
+      'document_id',
+      'updated_at',
+    );
   }
 }

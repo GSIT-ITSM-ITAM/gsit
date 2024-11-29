@@ -92,8 +92,8 @@ class Ipnetwork
       ],
       [
         'title' => $translator->translatePlural('VLAN', 'VLANs', 1),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'edit',
+        'link' => $rootUrl . '/vlans',
       ],
       [
         'title' => $translator->translatePlural('IP address', 'IP addresses', 2),

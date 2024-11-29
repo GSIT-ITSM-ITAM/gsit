@@ -31,7 +31,7 @@ class Entity extends Common
   ];
 
   protected $with = [
-    'entity:id,name',
+    'entity:id,name,completename',
     'notes:id',
     'knowbaseitems:id,name',
     'documents:id,name',

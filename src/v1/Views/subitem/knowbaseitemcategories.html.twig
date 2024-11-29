@@ -1,0 +1,35 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.name }}</th>
+      <th>{{ translation.entity }}</th>
+      <th>{{ translation.comment }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,knowbaseitemcategory in data.knowbaseitemcategories %}
+      <tr>
+        <td>
+          {% if knowbaseitemcategory.url != '' %}
+              <a href="{{ knowbaseitemcategory.url }}">{{ knowbaseitemcategory.name }}</a>
+          {% else %}
+              {{ knowbaseitemcategory.name }}
+          {% endif %}
+        </td>
+        <td>
+          {% if knowbaseitemcategory.entity_url != '' %}
+              <a href="{{ knowbaseitemcategory.entity_url }}">{{ knowbaseitemcategory.entity }}</a>
+          {% else %}
+              {{ knowbaseitemcategory.entity }}
+          {% endif %}
+        </td>
+        <td>{{ knowbaseitemcategory.comment }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

@@ -173,7 +173,9 @@ class Common extends \App\v1\Controllers\Common
             if (isset($this->regex_results[0]))
             {
               // $res = RuleAction::getRegexResultById($action->value, $this->regex_results[0]);
-            } else {
+            }
+            else
+            {
               $res = $action->value;
             }
 
@@ -182,7 +184,9 @@ class Common extends \App\v1\Controllers\Common
               if (isset($params[$action->field]))
               {
                 $res = $params[$action->field] . $res;
-              } else {
+              }
+              else
+              {
                 //keep rule value to append in a separate entry
                 $output[$action->field . '_append'] = $res;
               }
@@ -232,7 +236,10 @@ class Common extends \App\v1\Controllers\Common
         }
         // }
       }
-    } else { // OR MATCHING
+    }
+    else
+    {
+      // OR MATCHING
       $doactions = false;
       foreach ($criteria as $criterion)
       {
@@ -290,7 +297,9 @@ class Common extends \App\v1\Controllers\Common
         $this->criterias_results,
         $partial_regex_result
       );
-    } else {
+    }
+    else
+    {
       //If the value is, in fact, an array of values
       // Negative condition : Need to match all condition (never be)
       if (
@@ -321,7 +330,9 @@ class Common extends \App\v1\Controllers\Common
             break;
           }
         }
-      } else {
+      }
+      else
+      {
         // Positive condition : Need to match one
         $res = false;
         foreach ($input[$criterion->criteria] as $crit)
@@ -345,7 +356,10 @@ class Common extends \App\v1\Controllers\Common
       if (!count($this->regex_results))
       {
         $this->regex_results = $partial_regex_result;
-      } else { // Already existing regex : append found values
+      }
+      else
+      {
+        // Already existing regex : append found values
         $temp_result = [];
         foreach ($partial_regex_result as $new)
         {

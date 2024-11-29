@@ -14,30 +14,54 @@
               <div class="content">
                 <a class="header">{{ translation.auto }}</a>
                 <div class="description">
-                    {% if virtualmachine.auto == 1 %}
-                        <i class="check circle outline icon"></i>{{ virtualmachine.auto_val }}
-                    {% else %}
-                        <i class="times circle outline icon"></i>{{ virtualmachine.auto_val }}
-                    {% endif %}
+                  {% if virtualmachine.auto == 1 %}
+                    <div style="box-shadow: 0 0 0 #a3c293 inset;background: #fcfff5;color: #2c662d;">
+                      <i class="check circle outline icon"></i>
+                      {{ virtualmachine.auto_val }}
+                    </div>
+                  {% else %}
+                    <div style="box-shadow: 0 0 0 #e0b4b4 inset;background: #fff6f6;color: #9f3a38;">
+                      <i class="times circle outline icon"></i>
+                      {{ virtualmachine.auto_val }}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="content">
+                <a class="header">{{ translation.virtualmachinemodel }}</a>
+                <div class="description">
+                  {% if virtualmachine.virtualmachinesystem_url != '' %}
+                      <a href="{{ virtualmachine.virtualmachinesystem_url }}">{{ virtualmachine.virtualmachinesystem }}</a>
+                  {% else %}
+                      {{ virtualmachine.virtualmachinesystem }}
+                  {% endif %}
                 </div>
               </div>
             </div>
             <div class="item">
               <div class="content">
                 <a class="header">{{ translation.virtualmachinesystem }}</a>
-                <div class="description">{{ virtualmachine.virtualmachinesystem }}</div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="content">
-                <a class="header">{{ translation.virtualmachinemodel }}</a>
-                <div class="description">{{ virtualmachine.virtualmachinemodel }}</div>
+                <div class="description">
+                  {% if virtualmachine.virtualmachinemodel_url != '' %}
+                      <a href="{{ virtualmachine.virtualmachinemodel_url }}">{{ virtualmachine.virtualmachinemodel }}</a>
+                  {% else %}
+                      {{ virtualmachine.virtualmachinemodel }}
+                  {% endif %}
+                </div>
               </div>
             </div>
             <div class="item">
               <div class="content">
                 <a class="header">{{ translation.virtualmachinestate }}</a>
-                <div class="description">{{ virtualmachine.virtualmachinestate }}</div>
+                <div class="description">
+                  {% if virtualmachine.virtualmachinestate_url != '' %}
+                      <a href="{{ virtualmachine.virtualmachinestate_url }}">{{ virtualmachine.virtualmachinestate }}</a>
+                  {% else %}
+                      {{ virtualmachine.virtualmachinestate }}
+                  {% endif %}
+                </div>
               </div>
             </div>
             <div class="item">

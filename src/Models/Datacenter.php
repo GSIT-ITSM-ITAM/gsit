@@ -17,16 +17,19 @@ class Datacenter extends Common
   protected $appends = [
     'location',
     'entity',
+    'dcrooms',
   ];
 
   protected $visible = [
     'location',
     'entity',
+    'dcrooms',
   ];
 
   protected $with = [
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
+    'dcrooms',
   ];
 
   public function location(): BelongsTo
@@ -37,5 +40,10 @@ class Datacenter extends Common
   public function entity(): BelongsTo
   {
     return $this->belongsTo('\App\Models\Entity');
+  }
+
+  public function dcrooms(): HasMany
+  {
+    return $this->hasMany('App\Models\Dcroom');
   }
 }

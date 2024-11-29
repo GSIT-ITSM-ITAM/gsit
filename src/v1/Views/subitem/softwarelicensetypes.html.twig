@@ -1,0 +1,35 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.name }}</th>
+      <th>{{ translation.entity }}</th>
+      <th>{{ translation.comment }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,licensetype in data.licensetypes %}
+      <tr>
+        <td>
+          {% if licensetype.url != '' %}
+              <a href="{{ licensetype.url }}">{{ licensetype.name }}</a>
+          {% else %}
+              {{ licensetype.name }}
+          {% endif %}
+        </td>
+        <td>
+          {% if licensetype.entity_url != '' %}
+              <a href="{{ licensetype.entity_url }}">{{ licensetype.entity }}</a>
+          {% else %}
+              {{ licensetype.entity }}
+          {% endif %}
+        </td>
+        <td>{{ licensetype.comment }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

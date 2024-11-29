@@ -25,7 +25,7 @@ class Domainrecord extends Common
   ];
 
   protected $with = [
-    'entity:id,name',
+    'entity:id,name,completename',
     'type:id,name',
   ];
 

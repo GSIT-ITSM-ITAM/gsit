@@ -12,6 +12,7 @@ final class Printer extends Common
 {
   protected $model = '\App\Models\Printer';
   protected $rootUrl2 = '/printers/';
+  protected $choose = 'printers';
 
   public function getAll(Request $request, Response $response, $args): Response
   {
@@ -41,52 +42,68 @@ final class Printer extends Common
 
     $myItem = $item::with('cartridges')->find($args['id']);
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/cartridges');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
+    $rootUrl = $this->genereRootUrl($request, '/cartridges');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $myCartridges_use = [];
     $myCartridges_out = [];
+    $pages = $myItem->init_pages_counter;
+
     foreach ($myItem->cartridges as $cartridge)
     {
-      $url = '';
-
       $model = '';
+      $model_url = '';
       $type = '';
-      if ($cartridge->cartridgeitems != null) {
+      $type_url = '';
+      if ($cartridge->cartridgeitems !== null)
+      {
         $model = $cartridge->cartridgeitems->name . '' . $cartridge->cartridgeitems->ref;
+        $model_url = $this->genereRootUrl2Link($rootUrl2, '/cartridgeitems/', $cartridge->cartridgeitems->id);
 
-        if ($cartridge->cartridgeitems->type != null) {
+        if ($cartridge->cartridgeitems->type !== null)
+        {
           $type = $cartridge->cartridgeitems->type->name;
-        }
-
-        if ($rootUrl2 != '') {
-          $url = $rootUrl2 . "/cartridgeitems/" . $cartridge->cartridgeitems->id;
+          $type_url = $this->genereRootUrl2Link(
+            $rootUrl2,
+            '/dropdowns/cartridgeitemtypes/',
+            $cartridge->cartridgeitems->type->id
+          );
         }
       }
 
       $date_add = $cartridge->date_in;
-      $date_use = $cartridge->date_use;
-      $date_end = $cartridge->date_out;
-      $printer_counter = $cartridge->pages;
-      $printed_pages = 0; // TODO
 
-      if ($cartridge->date_out == null) {
+      $date_use = $cartridge->date_use;
+
+      $date_end = $cartridge->date_out;
+
+      $printer_counter = $cartridge->pages;
+
+      $printed_pages = 0;
+      if ($pages < $cartridge->pages)
+      {
+        $printed_pages = $cartridge->pages - $pages;
+        $pages = $cartridge->pages;
+      }
+
+      if ($cartridge->date_out == null)
+      {
         $myCartridges_use[] = [
           'model'        => $model,
-          'url'          => $url,
+          'model_url'    => $model_url,
           'type'         => $type,
+          'type_url'     => $type_url,
           'date_add'     => $date_add,
           'date_use'     => $date_use,
         ];
-      } else {
+      }
+      else
+      {
         $myCartridges_out[] = [
           'model'               => $model,
-          'url'                 => $url,
+          'model_url'           => $model_url,
           'type'                => $type,
+          'type_url'            => $type_url,
           'date_add'            => $date_add,
           'date_use'            => $date_use,
           'date_end'            => $date_end,
@@ -110,10 +127,8 @@ final class Printer extends Common
     $viewData->addTranslation('date_end', $translator->translate('End date'));
     $viewData->addTranslation('printer_counter', $translator->translate('Printer counter'));
     $viewData->addTranslation('printed_pages', $translator->translate('Printed pages'));
-
     $viewData->addTranslation('cartridges_use', $translator->translate('Used cartridges'));
     $viewData->addTranslation('cartridges_out', $translator->translate('Worn cartridges'));
-
 
     return $view->render($response, 'subitem/cartridgesprinters.html.twig', (array)$viewData);
   }

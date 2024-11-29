@@ -33,7 +33,7 @@ class Group
         'id'    => 13,
         'title' => $translator->translate('As child of'),
         'type'  => 'dropdown_remote',
-        'name'  => 'group',
+        'name'  => 'child',
         'dbname' => 'group_id',
         'itemtype' => '\App\Models\Group',
         'fillable' => true,
@@ -250,7 +250,7 @@ class Group
       ],
       [
         'title' => $translator->translate('Child groups'),
-        'icon' => 'caret square down outline',
+        'icon' => 'users',
         'link' => $rootUrl . '/groups',
       ],
       [
@@ -275,18 +275,20 @@ class Group
       ],
       [
         'title' => $translator->translate('Created tickets'),
-        'icon' => 'caret square down outline',
+        'icon' => 'hands helping',
         'link' => $rootUrl . '/tickets',
       ],
       [
         'title' => $translator->translatePlural('Problem', 'Problems', 2),
-        'icon' => 'caret square down outline',
+        'icon' => 'drafting compass',
         'link' => $rootUrl . '/problems',
+        'rightModel' => '\App\Models\Problem',
       ],
       [
         'title' => $translator->translatePlural('Change', 'Changes', 2),
-        'icon' => 'caret square down outline',
+        'icon' => 'paint roller',
         'link' => $rootUrl . '/changes',
+        'rightModel' => '\App\Models\Change',
       ],
       [
         'title' => $translator->translatePlural('Note', 'Notes', 2),

@@ -65,7 +65,12 @@ class Datacenter
       [
         'title' => $translator->translatePlural('Server room', 'Server rooms', 2),
         'icon' => 'caret square down outline',
-        'link' => '',
+        'link' => $rootUrl . '/dcrooms',
+      ],
+      [
+        'title' => $translator->translate('Historical'),
+        'icon' => 'history',
+        'link' => $rootUrl . '/history',
       ],
     ];
   }

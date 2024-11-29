@@ -74,12 +74,12 @@ class Slm
       [
         'title' => $translator->translate('SLA'),
         'icon' => 'caret square down outline',
-        'link' => '',
+        'link' => $rootUrl . '/slas',
       ],
       [
         'title' => $translator->translate('OLA',),
         'icon' => 'caret square down outline',
-        'link' => '',
+        'link' => $rootUrl . '/olas',
       ],
       [
         'title' => $translator->translate('Historical'),

@@ -42,9 +42,9 @@ class Cluster extends Common
   protected $with = [
     'type:id,name',
     'state:id,name',
-    'userstech:id,name',
-    'groupstech:id,name',
-    'entity:id,name',
+    'userstech:id,name,firstname,lastname',
+    'groupstech:id,name,completename',
+    'entity:id,name,completename',
     'appliances:id,name',
     'documents:id,name',
     'contracts:id,name',

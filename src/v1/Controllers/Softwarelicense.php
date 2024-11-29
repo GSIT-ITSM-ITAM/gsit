@@ -39,38 +39,37 @@ final class Softwarelicense extends Common
 
     $myItem = $item::with('childs')->find($args['id']);
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/licenses');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
+    $rootUrl = $this->genereRootUrl($request, '/licenses');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $mySoftwarelicenses = [];
     foreach ($myItem->childs as $child)
     {
       $name = $child->name;
-      $url = '';
-      if ($rootUrl2 != '') {
-        $url = $rootUrl2 . "/softwarelicenses/" . $child->id;
-      }
-      $entity = '';
-      if ($child->entity != null) {
-        $entity = $child->entity->name;
-      }
-      $comment = $child->comment;
 
+      $url = $this->genereRootUrl2Link($rootUrl2, '/softwarelicenses/', $child->id);
+
+      $entity = '';
+      $entity_url = '';
+      if ($child->entity !== null)
+      {
+        $entity = $child->entity->completename;
+        $entity_url = $this->genereRootUrl2Link($rootUrl2, '/entities/', $child->entity->id);
+      }
+
+      $comment = $child->comment;
 
       $mySoftwarelicenses[] = [
         'name'        => $name,
         'url'         => $url,
         'entity'      => $entity,
+        'entity_url'  => $entity_url,
         'comment'     => $comment,
       ];
     }
 
     // tri ordre alpha
-    usort($mySoftwarelicenses, function ($a, $b)
+    uasort($mySoftwarelicenses, function ($a, $b)
     {
       return strtolower($a['name']) > strtolower($b['name']);
     });
@@ -84,7 +83,6 @@ final class Softwarelicense extends Common
     $viewData->addTranslation('name', $translator->translate('Name'));
     $viewData->addTranslation('entity', $translator->translatePlural('Entity', 'Entities', 1));
     $viewData->addTranslation('comment', $translator->translatePlural('Comment', 'Comments', 2));
-
 
     return $view->render($response, 'subitem/softwarelicenses.html.twig', (array)$viewData);
   }

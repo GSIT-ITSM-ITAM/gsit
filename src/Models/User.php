@@ -48,10 +48,10 @@ class User extends Common
     'category:id,name',
     'title:id,name',
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'profile:id,name',
-    'supervisor:id,name',
-    'group:id,name',
+    'supervisor:id,name,firstname,lastname',
+    'group:id,name,completename',
     'certificates:id,name',
     'defaultgroup:id,name',
     'documents:id,name',
@@ -127,7 +127,9 @@ class User extends Common
         $names[] = $this->lastname;
       }
       $name = implode(' ', $names);
-    } else {
+    }
+    else
+    {
       $name = $this->name;
     }
     return $name;

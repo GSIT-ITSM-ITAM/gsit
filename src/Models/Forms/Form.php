@@ -26,7 +26,7 @@ class Form extends \App\Models\Common
 
   protected $with = [
     'category:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   public function category(): BelongsTo

@@ -68,7 +68,8 @@ final class Queuednotification extends Common
     {
       // TODO send mail
 
-      try {
+      try
+      {
         //Server settings
         // $mailer->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
         $mailer->isSMTP();                                            //Send using SMTP
@@ -114,7 +115,9 @@ final class Queuednotification extends Common
         $mail->delete();
 
         $nbMailsSend++;
-      } catch (Exception $e) {
+      }
+      catch (Exception $e)
+      {
         echo "Message could not be sent. Mailer Error: {$mailer->ErrorInfo}";
       }
     }

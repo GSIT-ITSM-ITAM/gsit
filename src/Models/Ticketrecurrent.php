@@ -41,16 +41,16 @@ class Ticketrecurrent extends Common
   ];
 
   protected $with = [
-    // 'requester:id,name',
-    // 'requestergroup:id,name',
-    // 'watcher:id,name',
-    // 'watchergroup:id,name',
-    // 'technician:id,name',
-    // 'techniciangroup:id,name',
-    // 'usersidlastupdater:id,name',
-    // 'usersidrecipient:id,name',
+    // 'requester:id,name,firstname,lastname',
+    // 'requestergroup:id,name,completename',
+    // 'watcher:id,name,firstname,lastname',
+    // 'watchergroup::id,name,completename',
+    // 'technician:id,name,firstname,lastname',
+    // 'techniciangroup:id,name,completename',
+    // 'usersidlastupdater:id,name,firstname,lastname',
+    // 'usersidrecipient:id,name,firstname,lastname',
     // 'itilcategorie:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   // public function requester()

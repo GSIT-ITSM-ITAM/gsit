@@ -26,7 +26,7 @@ class Tickettemplate extends Common
   ];
 
   protected $with = [
-    'entity:id,name',
+    'entity:id,name,completename',
     'mandatoryfields:id,num',
     'predefinedfields:id,num,value',
     'hiddenfields:id,num',

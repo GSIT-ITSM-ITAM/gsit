@@ -10,6 +10,7 @@ class Tasktemplate extends Common
   protected $definition = '\App\Models\Definitions\Tasktemplate';
   protected $titles = ['Task template', 'Task templates'];
   protected $icon = 'edit';
+  protected $hasEntityField = false;
 
   protected $appends = [
     'category',
@@ -25,8 +26,8 @@ class Tasktemplate extends Common
 
   protected $with = [
     'category:id,name',
-    'users:id,name',
-    'groups:id,name',
+    'users:id,name,firstname,lastname',
+    'groups:id,name,completename',
   ];
 
   public function category(): BelongsTo

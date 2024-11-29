@@ -30,6 +30,6 @@ class Operatingsystemkernelversion extends Common
 
   public function kernel(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Operatingsystemkernel');
+    return $this->belongsTo('\App\Models\Operatingsystemkernel', 'operatingsystemkernel_id');
   }
 }

@@ -1,0 +1,37 @@
+{{ include('header.html.twig') }}
+{{ include('headerForm.html.twig') }}
+
+<table class="ui blue table">
+  <thead>
+    <tr>
+      <th>{{ translation.name }}</th>
+      <th>{{ translation.type }}</th>
+      <th>{{ translation.max_duration }}</th>
+      <th>{{ translation.calendar }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,slaola in data.slaola %}
+      <tr>
+        <td>
+          {% if slaola.url != '' %}
+              <a href="{{ slaola.url }}">{{ slaola.name }}</a>
+          {% else %}
+              {{ slaola.name }}
+          {% endif %}
+        </td>
+        <td>{{ slaola.type.title }}</td>
+        <td>{{ slaola.max_duration }}</td>
+        <td>
+          {% if slaola.calendar_url != '' %}
+              <a href="{{ slaola.calendar_url }}">{{ slaola.calendar_name }}</a>
+          {% else %}
+              {{ slaola.calendar_name }}
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ include('footer.html.twig') }}

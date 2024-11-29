@@ -123,12 +123,12 @@ class Budget
       [
         'title' => $translator->translate('Main'),
         'icon' => 'caret square down outline',
-        'link' => '',
+        'link' => $rootUrl . '/budgetmain',
       ],
       [
         'title' => $translator->translatePlural('Item', 'Items', 2),
         'icon' => 'desktop',
-        'link' => '',
+        'link' => $rootUrl . '/attacheditems',
       ],
       [
         'title' => $translator->translatePlural('Document', 'Documents', 2),

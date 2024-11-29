@@ -28,6 +28,7 @@ class Peripheral extends Common
     'userstech',
     'location',
     'entity',
+    'infocom',
   ];
 
   protected $visible = [
@@ -72,6 +73,8 @@ class Peripheral extends Common
     'devicegraphiccards',
     'devicedrives',
     'connections',
+    'infocom',
+    'reservations',
   ];
 
   protected $with = [
@@ -79,13 +82,13 @@ class Peripheral extends Common
     'model:id,name',
     'state:id,name',
     'manufacturer:id,name',
-    'user:id,name',
-    'group:id,name',
+    'user:id,name,firstname,lastname',
+    'group:id,name,completename',
     'network:id,name',
-    'groupstech:id,name',
-    'userstech:id,name',
+    'groupstech:id,name,completename',
+    'userstech:id,name,firstname,lastname',
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'certificates:id,name',
     'domains:id,name',
     'appliances:id,name',
@@ -116,6 +119,8 @@ class Peripheral extends Common
     'devicegraphiccards:id,name',
     'devicedrives:id,name',
     'connections:id,name',
+    'infocom',
+    'reservations',
   ];
 
 
@@ -319,6 +324,9 @@ class Peripheral extends Common
       'serial',
       'busID',
       'location_id',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -331,6 +339,10 @@ class Peripheral extends Common
     )->withPivot(
       'devicefirmware_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -346,6 +358,11 @@ class Peripheral extends Common
       'nbcores',
       'nbthreads',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -360,6 +377,10 @@ class Peripheral extends Common
       'capacity',
       'serial',
       'location_id',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -374,6 +395,9 @@ class Peripheral extends Common
       'manufacturing_date',
       'serial',
       'location_id',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -386,6 +410,11 @@ class Peripheral extends Common
     )->withPivot(
       'devicesoundcard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -398,6 +427,11 @@ class Peripheral extends Common
     )->withPivot(
       'devicecontrol_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -410,6 +444,10 @@ class Peripheral extends Common
     )->withPivot(
       'devicepowersupply_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -422,6 +460,10 @@ class Peripheral extends Common
     )->withPivot(
       'devicesensor_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -434,6 +476,11 @@ class Peripheral extends Common
     )->withPivot(
       'devicepci_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -446,6 +493,10 @@ class Peripheral extends Common
     )->withPivot(
       'devicegeneric_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -458,6 +509,12 @@ class Peripheral extends Common
     )->withPivot(
       'devicenetworkcard_id',
       'location_id',
+      'mac',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -470,6 +527,14 @@ class Peripheral extends Common
     )->withPivot(
       'devicesimcard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'msin',
+      'user_id',
+      'group_id',
+      'line_id',
+      'id',
     );
   }
 
@@ -482,6 +547,10 @@ class Peripheral extends Common
     )->withPivot(
       'devicemotherboard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -494,6 +563,10 @@ class Peripheral extends Common
     )->withPivot(
       'devicecase_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'id',
     );
   }
 
@@ -506,6 +579,12 @@ class Peripheral extends Common
     )->withPivot(
       'devicegraphiccard_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'memory',
+      'id',
     );
   }
 
@@ -518,6 +597,11 @@ class Peripheral extends Common
     )->withPivot(
       'devicedrive_id',
       'location_id',
+      'serial',
+      'otherserial',
+      'state_id',
+      'busID',
+      'id',
     );
   }
 
@@ -530,6 +614,22 @@ class Peripheral extends Common
     )->withPivot(
       'computer_id',
       'is_dynamic',
+    );
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
+    );
+  }
+
+  public function reservations(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Reservationitem',
+      'item',
     );
   }
 }

@@ -11,6 +11,7 @@ final class Networkequipment extends Common
 {
   protected $model = '\App\Models\Networkequipment';
   protected $rootUrl2 = '/networkequipments/';
+  protected $choose = 'networkequipments';
 
   public function getAll(Request $request, Response $response, $args): Response
   {

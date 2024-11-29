@@ -17,16 +17,22 @@ class Slm extends Common
   protected $appends = [
     'calendar',
     'entity',
+    'slas',
+    'olas',
   ];
 
   protected $visible = [
     'calendar',
     'entity',
+    'slas',
+    'olas',
   ];
 
   protected $with = [
     'calendar:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
+    'slas',
+    'olas',
   ];
 
   public function calendar(): BelongsTo
@@ -37,5 +43,15 @@ class Slm extends Common
   public function entity(): BelongsTo
   {
     return $this->belongsTo('\App\Models\Entity');
+  }
+
+  public function slas(): HasMany
+  {
+    return $this->hasMany('\App\Models\Sla', 'slm_id');
+  }
+
+  public function olas(): HasMany
+  {
+    return $this->hasMany('\App\Models\Ola', 'slm_id');
   }
 }

@@ -25,7 +25,7 @@ class Ticketcost extends Common
   ];
 
   protected $with = [
-    'entity:id,name',
+    'entity:id,name,completename',
     'budget:id,name',
   ];
 

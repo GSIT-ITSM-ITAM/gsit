@@ -22,8 +22,20 @@
               {{ supplier.name }}
           {% endif %}
         </td>
-        <td>{{ supplier.entity }}</td>
-        <td>{{ supplier.type }}</td>
+        <td>
+          {% if supplier.entity_url != '' %}
+              <a href="{{ supplier.entity_url }}">{{ supplier.entity }}</a>
+          {% else %}
+              {{ supplier.entity }}
+          {% endif %}
+        </td>
+        <td>
+          {% if supplier.type_url != '' %}
+              <a href="{{ supplier.type_url }}">{{ supplier.type }}</a>
+          {% else %}
+              {{ supplier.type }}
+          {% endif %}
+        </td>
         <td>{{ supplier.phone }}</td>
         <td>{{ supplier.fax }}</td>
         <td>

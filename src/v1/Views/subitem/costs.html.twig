@@ -13,7 +13,7 @@
       <th>{{ translation.begin_date }}</th>
       <th>{{ translation.end_date }}</th>
       <th>{{ translation.budget }}</th>
-      {% if data.show == 'ticket' %}
+      {% if data.show == 'tickets' or data.show == 'problems' or data.show == 'changes' %}
       <th>{{ translation.actiontime }}</th>
       <th>{{ translation.cost_time }}</th>
       <th>{{ translation.cost_fixed }}</th>
@@ -35,7 +35,7 @@
               {{ cost.budget }}
           {% endif %}
         </td>
-        {% if data.show == 'ticket' %}
+        {% if data.show == 'tickets' or data.show == 'problems' or data.show == 'changes' %}
         <td>{{ cost.actiontime }}</td>
         <td>{{ cost.cost_time }}</td>
         <td>{{ cost.cost_fixed }}</td>
@@ -46,7 +46,7 @@
     {% endfor %}
     {% if data.costs|length > 0 %}
     <tr>
-      {% if data.show == 'ticket' %}
+      {% if data.show == 'tickets' or data.show == 'problems' or data.show == 'changes' %}
       <td colspan="4" style="text-align: right;">{{ translation.total }}</td>
       <td>{{ data.total_actiontime }}</td>
       <td>{{ data.total_cost_time }}</td>
@@ -61,7 +61,7 @@
   </tbody>
 </table>
 
-{% if data.show == 'project' %}
+{% if data.show == 'projects' %}
 <table class="ui blue table">
   <thead>
     <tr>

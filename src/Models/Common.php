@@ -32,7 +32,9 @@ class Common extends Model
           if (isset($definition['dbname']))
           {
             $this->fillable[] = $definition['dbname'];
-          } else {
+          }
+          else
+          {
             $this->fillable[] = $definition['name'];
           }
         }
@@ -90,7 +92,9 @@ class Common extends Model
     if (count($items) == 0)
     {
       return '';
-    } else {
+    }
+    else
+    {
       return current($items)['name'];
     }
   }
@@ -300,10 +304,13 @@ class Common extends Model
    */
   public function getFormData($myItem, $otherDefs = false)
   {
-    $def = $myItem->getDefinitions();
     if ($otherDefs !== false)
     {
       $def = $otherDefs;
+    }
+    else
+    {
+      $def = $myItem->getDefinitions();
     }
     if ($myItem == null)
     {
@@ -346,23 +353,30 @@ class Common extends Model
           }
           $field['value'] = implode(',', $values);
           $field['valuename'] = implode(',', $valuenames);
-        } else {
+        }
+        else
+        {
           // var_dump($field['name']);                   // #EB
           // var_dump($myItem->{$field['name']}->id);    // #EB
 
           $field['value'] = $myItem->{$field['name']}->id;
           $field['valuename'] = $myItem->{$field['name']}->name;
         }
-      } elseif ($field['type'] == 'textarea')
+      }
+      elseif ($field['type'] == 'textarea')
       {
         if (is_null($myItem->{$field['name']}))
         {
           $field['value'] = '';
-        } else {
+        }
+        else
+        {
           // We convert html to markdown
           $field['value'] = \App\v1\Controllers\Toolbox::convertHtmlToMarkdown($myItem->{$field['name']});
         }
-      } else {
+      }
+      else
+      {
         $field['value'] = $myItem->{$field['name']};
       }
       if (isset($field['readonly']))

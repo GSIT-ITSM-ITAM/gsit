@@ -17,7 +17,7 @@
           <th>{{ translation.requesters }}</th>
           <th>{{ translation.technicians }}</th>
           <th>{{ translation.associated_items }}</th>
-          <th>{{ translation.planification }}</th>
+          {# <th>{{ translation.planification }}</th> #}
         </tr>
       </thead>
       <tbody>
@@ -30,7 +30,13 @@
                   {{ ticket.title }}
               {% endif %}
             </td>
-            <td>{{ ticket.category }}</td>
+            <td>
+              {% if ticket.category_url != '' %}
+                  <a href="{{ ticket.category_url }}">{{ ticket.category }}</a>
+              {% else %}
+                  {{ ticket.category }}
+              {% endif %}
+            </td>
             {% if ticket.status is iterable %}
               <td class="left {% if ticket.status.color is defined %}
                   {{ ticket.status.color }}
@@ -55,7 +61,13 @@
             {% endif %}
             <td>{{ ticket.date }}</td>
             <td>{{ ticket.last_update }}</td>
-            <td>{{ ticket.entity }}</td>
+            <td>
+              {% if ticket.entity_url != '' %}
+                  <a href="{{ ticket.entity_url }}">{{ ticket.entity }}</a>
+              {% else %}
+                  {{ ticket.entity }}
+              {% endif %}
+            </td>
             </td>
             {% if ticket.priority is iterable %}
               <td class="left {% if ticket.priority.color is defined %}
@@ -81,20 +93,38 @@
             {% endif %}
             <td>
             {% for requester in ticket.requesters %}
-            <p>{{ requester.name }}</p>
+            <p>
+              {% if requester.url != '' %}
+                  <a href="{{ requester.url }}">{{ requester.name }}</a>
+              {% else %}
+                  {{ requester.name }}
+              {% endif %}
+            </p>
             {% endfor %}
             </td>
             <td>
             {% for technician in ticket.technicians %}
-            <p>{{ technician.name }}</p>
+              <p>
+                {% if technician.url != '' %}
+                    <a href="{{ technician.url }}">{{ technician.name }}</a>
+                {% else %}
+                    {{ technician.name }}
+                {% endif %}
+              </p>
             {% endfor %}
             </td>
             <td>
             {% for associated_item in ticket.associated_items %}
-            <p>{{ associated_item.name }}</p>
+            <p>
+              {% if associated_item.url != '' %}
+                {{ associated_item.type }}<a href="{{ associated_item.url }}">{{ associated_item.name }}</a>
+              {% else %}
+                {{ associated_item.type }}{{ associated_item.name }}
+              {% endif %}
+            </p>
             {% endfor %}
             </td>
-            <td>{{ ticket.planification }}</td>
+            {# <td>{{ ticket.planification }}</td> #}
           </tr>
         {% endfor %}
       </tbody>
@@ -118,7 +148,7 @@
           <th>{{ translation.requesters }}</th>
           <th>{{ translation.technicians }}</th>
           <th>{{ translation.associated_items }}</th>
-          <th>{{ translation.planification }}</th>
+          {# <th>{{ translation.planification }}</th> #}
         </tr>
       </thead>
       <tbody>
@@ -131,7 +161,13 @@
                   {{ ticket.title }}
               {% endif %}
             </td>
-            <td>{{ ticket.category }}</td>
+            <td>
+              {% if ticket.category_url != '' %}
+                  <a href="{{ ticket.category_url }}">{{ ticket.category }}</a>
+              {% else %}
+                  {{ ticket.category }}
+              {% endif %}
+            </td>
             {% if ticket.status is iterable %}
               <td class="left {% if ticket.status.color is defined %}
                   {{ ticket.status.color }}
@@ -156,7 +192,13 @@
             {% endif %}
             <td>{{ ticket.date }}</td>
             <td>{{ ticket.last_update }}</td>
-            <td>{{ ticket.entity }}</td>
+            <td>
+              {% if ticket.entity_url != '' %}
+                  <a href="{{ ticket.entity_url }}">{{ ticket.entity }}</a>
+              {% else %}
+                  {{ ticket.entity }}
+              {% endif %}
+            </td>
             </td>
             {% if ticket.priority is iterable %}
               <td class="left {% if ticket.priority.color is defined %}
@@ -182,12 +224,24 @@
             {% endif %}
             <td>
             {% for requester in ticket.requesters %}
-            <p>{{ requester.name }}</p>
+              <p>
+                {% if requester.url != '' %}
+                    <a href="{{ requester.url }}">{{ requester.name }}</a>
+                {% else %}
+                    {{ requester.name }}
+                {% endif %}
+              </p>
             {% endfor %}
             </td>
             <td>
             {% for technician in ticket.technicians %}
-            <p>{{ technician.name }}</p>
+              <p>
+                {% if technician.url != '' %}
+                    <a href="{{ technician.url }}">{{ technician.name }}</a>
+                {% else %}
+                    {{ technician.name }}
+                {% endif %}
+              </p>
             {% endfor %}
             </td>
             <td>
@@ -195,7 +249,7 @@
             <p>{{ associated_item.name }}</p>
             {% endfor %}
             </td>
-            <td>{{ ticket.planification }}</td>
+            {# <td>{{ ticket.planification }}</td> #}
           </tr>
         {% endfor %}
       </tbody>
@@ -221,7 +275,7 @@
           <th>{{ translation.priority }}</th>
           <th>{{ translation.requesters }}</th>
           <th>{{ translation.technicians }}</th>
-          <th>{{ translation.planification }}</th>
+          {# <th>{{ translation.planification }}</th> #}
         </tr>
       </thead>
       <tbody>
@@ -234,7 +288,13 @@
                   {{ problem.title }}
               {% endif %}
             </td>
-            <td>{{ problem.category }}</td>
+            <td>
+              {% if problem.category_url != '' %}
+                  <a href="{{ problem.category_url }}">{{ problem.category }}</a>
+              {% else %}
+                  {{ problem.category }}
+              {% endif %}
+            </td>
             {% if problem.status is iterable %}
               <td class="left {% if problem.status.color is defined %}
                   {{ problem.status.color }}
@@ -259,7 +319,13 @@
             {% endif %}
             <td>{{ problem.date }}</td>
             <td>{{ problem.last_update }}</td>
-            <td>{{ problem.entity }}</td>
+            <td>
+              {% if problem.entity_url != '' %}
+                  <a href="{{ problem.entity_url }}">{{ problem.entity }}</a>
+              {% else %}
+                  {{ problem.entity }}
+              {% endif %}
+            </td>
             </td>
             {% if problem.priority is iterable %}
               <td class="left {% if problem.priority.color is defined %}
@@ -285,15 +351,27 @@
             {% endif %}
             <td>
             {% for requester in problem.requesters %}
-            <p>{{ requester.name }}</p>
+              <p>
+                {% if requester.url != '' %}
+                    <a href="{{ requester.url }}">{{ requester.name }}</a>
+                {% else %}
+                    {{ requester.name }}
+                {% endif %}
+              </p>
             {% endfor %}
             </td>
             <td>
             {% for technician in problem.technicians %}
-            <p>{{ technician.name }}</p>
+              <p>
+                {% if technician.url != '' %}
+                    <a href="{{ technician.url }}">{{ technician.name }}</a>
+                {% else %}
+                    {{ technician.name }}
+                {% endif %}
+              </p>
             {% endfor %}
             </td>
-            <td>{{ problem.planification }}</td>
+            {# <td>{{ problem.planification }}</td> #}
           </tr>
         {% endfor %}
       </tbody>
@@ -316,7 +394,7 @@
           <th>{{ translation.priority }}</th>
           <th>{{ translation.requesters }}</th>
           <th>{{ translation.technicians }}</th>
-          <th>{{ translation.planification }}</th>
+          {# <th>{{ translation.planification }}</th> #}
         </tr>
       </thead>
       <tbody>
@@ -329,7 +407,13 @@
                   {{ problem.title }}
               {% endif %}
             </td>
-            <td>{{ problem.category }}</td>
+            <td>
+              {% if problem.category_url != '' %}
+                  <a href="{{ problem.category_url }}">{{ problem.category }}</a>
+              {% else %}
+                  {{ problem.category }}
+              {% endif %}
+            </td>
             {% if problem.status is iterable %}
               <td class="left {% if problem.status.color is defined %}
                   {{ problem.status.color }}
@@ -354,7 +438,13 @@
             {% endif %}
             <td>{{ problem.date }}</td>
             <td>{{ problem.last_update }}</td>
-            <td>{{ problem.entity }}</td>
+            <td>
+              {% if problem.entity_url != '' %}
+                  <a href="{{ problem.entity_url }}">{{ problem.entity }}</a>
+              {% else %}
+                  {{ problem.entity }}
+              {% endif %}
+            </td>
             </td>
             {% if problem.priority is iterable %}
               <td class="left {% if problem.priority.color is defined %}
@@ -380,15 +470,27 @@
             {% endif %}
             <td>
             {% for requester in problem.requesters %}
-            <p>{{ requester.name }}</p>
+              <p>
+                {% if requester.url != '' %}
+                    <a href="{{ requester.url }}">{{ requester.name }}</a>
+                {% else %}
+                    {{ requester.name }}
+                {% endif %}
+              </p>
             {% endfor %}
             </td>
             <td>
             {% for technician in problem.technicians %}
-            <p>{{ technician.name }}</p>
+              <p>
+                {% if technician.url != '' %}
+                    <a href="{{ technician.url }}">{{ technician.name }}</a>
+                {% else %}
+                    {{ technician.name }}
+                {% endif %}
+              </p>
             {% endfor %}
             </td>
-            <td>{{ problem.planification }}</td>
+            {# <td>{{ problem.planification }}</td> #}
           </tr>
         {% endfor %}
       </tbody>
@@ -413,7 +515,7 @@
           <th>{{ translation.priority }}</th>
           <th>{{ translation.requesters }}</th>
           <th>{{ translation.technicians }}</th>
-          <th>{{ translation.planification }}</th>
+          {# <th>{{ translation.planification }}</th> #}
         </tr>
       </thead>
       <tbody>
@@ -426,7 +528,13 @@
                   {{ change.title }}
               {% endif %}
             </td>
-            <td>{{ change.category }}</td>
+            <td>
+              {% if change.category_url != '' %}
+                  <a href="{{ change.category_url }}">{{ change.category }}</a>
+              {% else %}
+                  {{ change.category }}
+              {% endif %}
+            </td>
             {% if change.status is iterable %}
               <td class="left {% if change.status.color is defined %}
                   {{ change.status.color }}
@@ -451,7 +559,13 @@
             {% endif %}
             <td>{{ change.date }}</td>
             <td>{{ change.last_update }}</td>
-            <td>{{ change.entity }}</td>
+            <td>
+              {% if change.entity_url != '' %}
+                  <a href="{{ change.entity_url }}">{{ change.entity }}</a>
+              {% else %}
+                  {{ change.entity }}
+              {% endif %}
+            </td>
             </td>
             {% if change.priority is iterable %}
               <td class="left {% if change.priority.color is defined %}
@@ -477,15 +591,27 @@
             {% endif %}
             <td>
             {% for requester in change.requesters %}
-            <p>{{ requester.name }}</p>
+              <p>
+                {% if requester.url != '' %}
+                    <a href="{{ requester.url }}">{{ requester.name }}</a>
+                {% else %}
+                    {{ requester.name }}
+                {% endif %}
+              </p>
             {% endfor %}
             </td>
             <td>
             {% for technician in change.technicians %}
-            <p>{{ technician.name }}</p>
+              <p>
+                {% if technician.url != '' %}
+                    <a href="{{ technician.url }}">{{ technician.name }}</a>
+                {% else %}
+                    {{ technician.name }}
+                {% endif %}
+              </p>
             {% endfor %}
             </td>
-            <td>{{ change.planification }}</td>
+            {# <td>{{ change.planification }}</td> #}
           </tr>
         {% endfor %}
       </tbody>
@@ -508,7 +634,7 @@
           <th>{{ translation.priority }}</th>
           <th>{{ translation.requesters }}</th>
           <th>{{ translation.technicians }}</th>
-          <th>{{ translation.planification }}</th>
+          {# <th>{{ translation.planification }}</th> #}
         </tr>
       </thead>
       <tbody>
@@ -521,7 +647,13 @@
                   {{ change.title }}
               {% endif %}
             </td>
-            <td>{{ change.category }}</td>
+            <td>
+              {% if change.category_url != '' %}
+                  <a href="{{ change.category_url }}">{{ change.category }}</a>
+              {% else %}
+                  {{ change.category }}
+              {% endif %}
+            </td>
             {% if change.status is iterable %}
               <td class="left {% if change.status.color is defined %}
                   {{ change.status.color }}
@@ -546,7 +678,13 @@
             {% endif %}
             <td>{{ change.date }}</td>
             <td>{{ change.last_update }}</td>
-            <td>{{ change.entity }}</td>
+            <td>
+              {% if change.entity_url != '' %}
+                  <a href="{{ change.entity_url }}">{{ change.entity }}</a>
+              {% else %}
+                  {{ change.entity }}
+              {% endif %}
+            </td>
             </td>
             {% if change.priority is iterable %}
               <td class="left {% if change.priority.color is defined %}
@@ -572,15 +710,27 @@
             {% endif %}
             <td>
             {% for requester in change.requesters %}
-            <p>{{ requester.name }}</p>
+              <p>
+                {% if requester.url != '' %}
+                    <a href="{{ requester.url }}">{{ requester.name }}</a>
+                {% else %}
+                    {{ requester.name }}
+                {% endif %}
+              </p>
             {% endfor %}
             </td>
             <td>
             {% for technician in change.technicians %}
-            <p>{{ technician.name }}</p>
+              <p>
+                {% if technician.url != '' %}
+                    <a href="{{ technician.url }}">{{ technician.name }}</a>
+                {% else %}
+                    {{ technician.name }}
+                {% endif %}
+              </p>
             {% endfor %}
             </td>
-            <td>{{ change.planification }}</td>
+            {# <td>{{ change.planification }}</td> #}
           </tr>
         {% endfor %}
       </tbody>

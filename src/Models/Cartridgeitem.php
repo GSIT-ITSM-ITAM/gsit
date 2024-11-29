@@ -24,6 +24,7 @@ class Cartridgeitem extends Common
     'userstech',
     'location',
     'entity',
+    'infocom',
   ];
 
   protected $visible = [
@@ -37,19 +38,21 @@ class Cartridgeitem extends Common
     'documents',
     'cartridges',
     'printermodels',
+    'infocom',
   ];
 
   protected $with = [
     'type:id,name',
     'manufacturer:id,name',
-    'groupstech:id,name',
-    'userstech:id,name',
+    'groupstech:id,name,completename',
+    'userstech:id,name,firstname,lastname',
     'location:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
     'notes:id',
     'documents:id,name',
     'cartridges:id',
     'printermodels:id,name',
+    'infocom',
   ];
 
 
@@ -115,6 +118,14 @@ class Cartridgeitem extends Common
       'cartridgeitem_printermodel',
       'cartridgeitem_id',
       'printermodel_id'
+    );
+  }
+
+  public function infocom(): MorphMany
+  {
+    return $this->morphMany(
+      '\App\Models\Infocom',
+      'item',
     );
   }
 }

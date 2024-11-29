@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Change extends Common
 {
@@ -14,7 +15,7 @@ class Change extends Common
 
   protected $definition = '\App\Models\Definitions\Change';
   protected $titles = ['Change', 'Changes'];
-  protected $icon = 'clipboard check';
+  protected $icon = 'paint roller';
 
   protected $appends = [
     'itilcategorie',
@@ -22,6 +23,9 @@ class Change extends Common
     'usersidrecipient',
     'entity',
     'notes',
+    'costs',
+    'items',
+    'approvals',
   ];
 
   protected $visible = [
@@ -35,19 +39,25 @@ class Change extends Common
     'requestergroup',
     'technician',
     'techniciangroup',
+    'costs',
+    'items',
+    'approvals',
   ];
 
   protected $with = [
     'itilcategorie:id,name',
-    'usersidlastupdater:id,name',
-    'usersidrecipient:id,name',
-    'entity:id,name',
+    'usersidlastupdater:id,name,firstname,lastname',
+    'usersidrecipient:id,name,firstname,lastname',
+    'entity:id,name,completename',
     'notes:id',
     'knowbaseitems:id,name',
-    'requester',
-    'requestergroup',
-    'technician',
-    'techniciangroup',
+    'requester:id,name,firstname,lastname',
+    'requestergroup:id,name,completename',
+    'technician:id,name,firstname,lastname',
+    'techniciangroup:id,name,completename',
+    'costs',
+    'items',
+    'approvals',
   ];
 
   public function itilcategorie(): BelongsTo
@@ -107,5 +117,28 @@ class Change extends Common
   public function techniciangroup()
   {
     return $this->belongsToMany('\App\Models\Group')->wherePivot('type', 2);
+  }
+
+  public function costs(): HasMany
+  {
+    return $this->hasMany('App\Models\Changecost', 'change_id');
+  }
+
+  public function getFeeds($id)
+  {
+    global $translator;
+    $feeds = [];
+
+    return $feeds;
+  }
+
+  public function items(): HasMany
+  {
+    return $this->hasMany('\App\Models\ChangeItem', 'change_id');
+  }
+
+  public function approvals(): HasMany
+  {
+    return $this->hasMany('\App\Models\Changevalidation', 'change_id');
   }
 }

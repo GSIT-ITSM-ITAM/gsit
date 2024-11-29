@@ -10,6 +10,9 @@ final class Supplier extends Common
 {
   protected $model = '\App\Models\Supplier';
   protected $rootUrl2 = '/suppliers/';
+  protected $choose = 'suppliers';
+  protected $associateditems_model = '\App\Models\Infocom';
+  protected $associateditems_model_id = 'supplier_id';
 
   public function getAll(Request $request, Response $response, $args): Response
   {
@@ -39,48 +42,47 @@ final class Supplier extends Common
 
     $myItem = $item->find($args['id']);
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/contracts');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
-
     $item2 = new \App\Models\Contract();
     $myItem2 = $item2::with('suppliers')->orderBy('name', 'asc')->get();
+
+    $rootUrl = $this->genereRootUrl($request, '/contracts');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $myContracts = [];
     foreach ($myItem2 as $contract)
     {
       $is_supplier_contract = false;
-      if ($contract->suppliers != null)
+      if ($contract->suppliers !== null)
       {
-        foreach ($contract->suppliers as $supplier) {
-          if ($supplier->id == $args['id']) {
+        foreach ($contract->suppliers as $supplier)
+        {
+          if ($supplier->id == $args['id'])
+          {
             $is_supplier_contract = true;
             break;
           }
         }
       }
 
-      if ($is_supplier_contract == true) {
-        $url = '';
-        if ($rootUrl2 != '') {
-          $url = $rootUrl2 . "/contracts/" . $contract->id;
-        }
+      if ($is_supplier_contract == true)
+      {
+        $url = $this->genereRootUrl2Link($rootUrl2, '/contracts/', $contract->id);
 
         $entity = '';
-        if ($contract->entity != null)
+        $entity_url = '';
+        if ($contract->entity !== null)
         {
-          $entity = $contract->entity->name;
+          $entity = $contract->entity->completename;
+          $entity_url = $this->genereRootUrl2Link($rootUrl2, '/entities/', $contract->entity->id);
         }
 
         $type = '';
-        if ($contract->type != null)
+        $contracttype_url = '';
+        if ($contract->type !== null)
         {
           $type = $contract->type->name;
+          $contracttype_url = $this->genereRootUrl2Link($rootUrl2, '/dropdowns/contracttypes/', $contract->type->id);
         }
-
 
         $duration = $contract->duration;
         if ($duration == 0)
@@ -99,12 +101,14 @@ final class Supplier extends Common
           );
         }
 
-        if ($contract->begin_date != null) {
+        if ($contract->begin_date !== null)
+        {
           $ladate = $contract->begin_date;
           if ($duration != 0)
           {
             $end_date = date('Y-m-d', strtotime('+' . $duration . ' month', strtotime($ladate)));
-            if ($end_date < date('Y-m-d')) {
+            if ($end_date < date('Y-m-d'))
+            {
               $end_date = "<span style=\"color: red;\">" . $end_date . "</span>";
             }
             $initial_contract_period = $initial_contract_period . ' => ' . $end_date;
@@ -115,14 +119,15 @@ final class Supplier extends Common
           'name'                      => $contract->name,
           'url'                       => $url,
           'entity'                    => $entity,
+          'entity_url'                => $entity_url,
           'number'                    => $contract->num,
           'type'                      => $type,
+          'contracttype_url'          => $contracttype_url,
           'start_date'                => $contract->begin_date,
           'initial_contract_period'   => $initial_contract_period,
         ];
       }
     }
-
 
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));
@@ -152,62 +157,68 @@ final class Supplier extends Common
 
     $myItem = $item->find($args['id']);
 
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/contacts');
-    $rootUrl2 = '';
-    if ($this->rootUrl2 != '') {
-      $rootUrl2 = rtrim($rootUrl, $this->rootUrl2 . $args['id']);
-    }
-
     $item2 = new \App\Models\Contact();
     $myItem2 = $item2::with('suppliers')->orderBy('name', 'asc')->get();
+
+    $rootUrl = $this->genereRootUrl($request, '/contacts');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
 
     $myContacts = [];
     foreach ($myItem2 as $contact)
     {
       $is_supplier_contact = false;
-      if ($contact->suppliers != null)
+      if ($contact->suppliers !== null)
       {
-        foreach ($contact->suppliers as $supplier) {
-          if ($supplier->id == $args['id']) {
+        foreach ($contact->suppliers as $supplier)
+        {
+          if ($supplier->id == $args['id'])
+          {
             $is_supplier_contact = true;
             break;
           }
         }
       }
 
-      if ($is_supplier_contact == true) {
+      if ($is_supplier_contact == true)
+      {
+        $url = $this->genereRootUrl2Link($rootUrl2, '/contacts/', $contact->id);
         $url = '';
-        if ($rootUrl2 != '') {
+        if ($rootUrl2 != '')
+        {
           $url = $rootUrl2 . "/contacts/" . $contact->id;
         }
 
         $entity = '';
-        if ($contact->entity != null)
+        $entity_url = '';
+        if ($contact->entity !== null)
         {
-          $entity = $contact->entity->name;
+          $entity = $contact->entity->completename;
+          $entity_url = $this->genereRootUrl2Link($rootUrl2, '/entities/', $contact->entity->id);
         }
 
         $type = '';
-        if ($contact->type != null)
+        $type_url = '';
+        if ($contact->type !== null)
         {
           $type = $contact->type->name;
+          $type_url = $this->genereRootUrl2Link($rootUrl2, '/dropdowns/contacttypes/', $contact->type->id);
         }
 
         $myContacts[$contact->id] = [
-          'name'        => $contact->name . ' ' . $contact->firstname,
+          'name'        => $this->genereUserName($contact->name, $contact->name, $contact->firstname),
           'url'         => $url,
           'entity'      => $entity,
+          'entity_url'  => $entity_url,
           'phone'       => $contact->phone,
           'phone2'      => $contact->phone2,
           'mobile'      => $contact->mobile,
           'fax'         => $contact->fax,
           'email'       => $contact->email,
           'type'        => $type,
+          'type_url'    => $type_url,
         ];
       }
     }
-
 
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));

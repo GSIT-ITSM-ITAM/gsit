@@ -123,7 +123,7 @@ final class Menu
             'link' => $basePath . '/view/itemdevicesimcards',
             'icon' => 'sim card',
             'class' => $activePath == $basePath . '/view/item_devicesimcards' ? 'active blue' : '',
-            'display' => $this->getRightForModel('\App\Models\Devicesimcard'),
+            'display' => $this->getRightForModel('\App\Models\ItemDevicesimcard'),
           ],
         ],
       ],
@@ -141,14 +141,14 @@ final class Menu
           [
             'name'  => $translator->translatePlural('Problem', 'Problems', 2),
             'link'  => $basePath . '/view/problems',
-            'icon'  => 'exclamation triangle',
+            'icon'  => 'drafting compass',
             'class' => $activePath == $basePath . '/view/problems' ? 'active blue' : '',
             'display' => $this->getRightForModel('\App\Models\Problem'),
           ],
           [
             'name'  => $translator->translatePlural('Change', 'Changes', 2),
             'link'  => $basePath . '/view/changes',
-            'icon'  => 'clipboard check',
+            'icon'  => 'paint roller',
             'class' => $activePath == $basePath . '/view/changes' ? 'active blue' : '',
             'display' => $this->getRightForModel('\App\Models\Change'),
           ],
@@ -507,20 +507,20 @@ final class Menu
             'class' => $activePath == $basePath . '/view/dropdowns/ticketemplates' ? 'active blue' : '',
             'display' => $this->getRightForModel('\App\Models\Tickettemplate'),
           ],
-          [
-            'name' => $translator->translatePlural('Task category', 'Task categories', 2),
-            'link' => $basePath . '/view/dropdowns/taskcategory',
-            'icon' => 'edit',
-            'class' => $activePath == $basePath . '/view/dropdowns/taskcategories' ? 'active blue' : '',
-            'display' => $this->getRightForModel('\App\Models\Taskcategories'),
-          ],
-          [
-            'name' => $translator->translatePlural('Task template', 'Task templates', 2),
-            'link' => $basePath . '/view/dropdowns/tasktemplates',
-            'icon' => 'edit',
-            'class' => $activePath == $basePath . '/view/dropdowns/tasktemplates' ? 'active blue' : '',
-            'display' => $this->getRightForModel('\App\Models\Tasktemplate'),
-          ],
+          // [
+          //   'name' => $translator->translatePlural('Task category', 'Task categories', 2),
+          //   'link' => $basePath . '/view/dropdowns/taskcategory',
+          //   'icon' => 'edit',
+          //   'class' => $activePath == $basePath . '/view/dropdowns/taskcategories' ? 'active blue' : '',
+          //   'display' => $this->getRightForModel('\App\Models\Taskcategories'),
+          // ],
+          // [
+          //   'name' => $translator->translatePlural('Task template', 'Task templates', 2),
+          //   'link' => $basePath . '/view/dropdowns/tasktemplates',
+          //   'icon' => 'edit',
+          //   'class' => $activePath == $basePath . '/view/dropdowns/tasktemplates' ? 'active blue' : '',
+          //   'display' => $this->getRightForModel('\App\Models\Tasktemplate'),
+          // ],
           [
             'name' => $translator->translatePlural('Solution type', 'Solution types', 2),
             'link' => $basePath . '/view/dropdowns/solutiontypes',
@@ -562,6 +562,13 @@ final class Menu
             'icon' => 'edit',
             'class' => $activePath == $basePath . '/view/dropdowns/projecttypes' ? 'active blue' : '',
             'display' => $this->getRightForModel('\App\Models\Projecttype'),
+          ],
+          [
+            'name' => $translator->translatePlural('Project task', 'Project tasks', 2),
+            'link' => $basePath . '/view/dropdowns/projecttasks',
+            'icon' => 'edit',
+            'class' => $activePath == $basePath . '/view/dropdowns/projecttasks' ? 'active blue' : '',
+            'display' => $this->getRightForModel('\App\Models\Projecttask'),
           ],
           [
             'name' => $translator->translatePlural('Project tasks type', 'Project tasks types', 2),
@@ -708,8 +715,7 @@ final class Menu
             'display' => $this->getRightForModel('\App\Models\Interfacetype'),
           ],
           [
-            'name' => $translator->translatePlural('Dropdown', 'Dropdowns', 2) . ' - ' .
-            $translator->translatePlural('Case type', 'Case types', 2),
+            'name' => $translator->translatePlural('Case type', 'Case types', 2),
             'link' => $basePath . '/view/dropdowns/devicecasetype',
             'icon' => 'edit',
             'class' => $activePath == $basePath . '/view/dropdowns/devicecasetype' ? 'active blue' : '',
@@ -1237,7 +1243,7 @@ final class Menu
           ],
           [
             'name' => $translator->translatePlural('Oauth IMAP application', 'Oauth IMAP applications', 2),
-            'link' => $basePath . '/view/dropdowns/oauthimapPpplications',
+            'link' => $basePath . '/view/dropdowns/oauthimapapplications',
             'icon' => 'edit',
             'class' => $activePath == $basePath . '/view/dropdowns/oauthimapapplications' ? 'active blue' : '',
             'display' => $this->getRightForModel('\App\Models\OauthimapApplication'),
@@ -1414,7 +1420,9 @@ final class Menu
           if (count($submenu) >= 6)
           {
             $more[] = $subitem;
-          } else {
+          }
+          else
+          {
             $submenu[] = $subitem;
           }
         }

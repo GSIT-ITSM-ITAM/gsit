@@ -15,13 +15,25 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.manufacturer }}</a>
-              <div class="description">{{ firmware.manufacturer }}</div>
+              <div class="description">
+                {% if firmware.manufacturer_url != '' %}
+                    <a href="{{ firmware.manufacturer_url }}">{{ firmware.manufacturer }}</a>
+                {% else %}
+                    {{ firmware.manufacturer }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.type }}</a>
-              <div class="description">{{ firmware.type }}</div>
+              <div class="description">
+                {% if firmware.type_url != '' %}
+                    <a href="{{ firmware.type_url }}">{{ firmware.type }}</a>
+                {% else %}
+                    {{ firmware.type }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
@@ -38,8 +50,52 @@
           </div>
           <div class="item">
             <div class="content">
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ firmware.serial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ firmware.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
               <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ firmware.location }}</div>
+              <div class="description">
+                {% if firmware.location_url != '' %}
+                    <a href="{{ firmware.location_url }}">{{ firmware.location }}</a>
+                {% else %}
+                    {{ firmware.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if firmware.state_url != '' %}
+                    <a href="{{ firmware.state_url }}">{{ firmware.state }}</a>
+                {% else %}
+                    {{ firmware.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.documents }}</a>
+              {% for document in firmware.documents %}
+                <div class="description">
+                  {% if document.url != '' %}
+                      <a href="{{ document.url }}">{{ document.name }}</a>
+                  {% else %}
+                      {{ document.name }}
+                  {% endif %}
+                </div>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -58,13 +114,55 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.manufacturer }}</a>
-              <div class="description">{{ processor.manufacturer }}</div>
+              <div class="description">
+                {% if processor.manufacturer_url != '' %}
+                    <a href="{{ processor.manufacturer_url }}">{{ processor.manufacturer }}</a>
+                {% else %}
+                    {{ processor.manufacturer }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.frequence_mhz }}</a>
               <div class="description">{{ processor.frequency }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ processor.serial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ processor.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.location }}</a>
+              <div class="description">
+                {% if processor.location_url != '' %}
+                    <a href="{{ processor.location_url }}">{{ processor.location }}</a>
+                {% else %}
+                    {{ processor.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if processor.state_url != '' %}
+                    <a href="{{ processor.state_url }}">{{ processor.state }}</a>
+                {% else %}
+                    {{ processor.state }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
@@ -77,6 +175,26 @@
             <div class="content">
               <a class="header">{{ translation.nbthreads }}</a>
               <div class="description">{{ processor.nbthreads }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.busID }}</a>
+              <div class="description">{{ processor.busID }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.documents }}</a>
+              {% for document in processor.documents %}
+                <div class="description">
+                  {% if document.url != '' %}
+                      <a href="{{ document.url }}">{{ document.name }}</a>
+                  {% else %}
+                      {{ document.name }}
+                  {% endif %}
+                </div>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -95,13 +213,25 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.manufacturer }}</a>
-              <div class="description">{{ memory.manufacturer }}</div>
+              <div class="description">
+                {% if memory.manufacturer_url != '' %}
+                    <a href="{{ memory.manufacturer_url }}">{{ memory.manufacturer }}</a>
+                {% else %}
+                    {{ memory.manufacturer }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.type }}</a>
-              <div class="description">{{ memory.type }}</div>
+              <div class="description">
+                {% if memory.type_url != '' %}
+                    <a href="{{ memory.type_url }}">{{ memory.type }}</a>
+                {% else %}
+                    {{ memory.type }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
@@ -124,14 +254,52 @@
           </div>
           <div class="item">
             <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ memory.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
               <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ memory.location }}</div>
+              <div class="description">
+                {% if memory.location_url != '' %}
+                    <a href="{{ memory.location_url }}">{{ memory.location }}</a>
+                {% else %}
+                    {{ memory.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if memory.state_url != '' %}
+                    <a href="{{ memory.state_url }}">{{ memory.state }}</a>
+                {% else %}
+                    {{ memory.state }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.busID }}</a>
               <div class="description">{{ memory.busID }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.documents }}</a>
+              {% for document in memory.documents %}
+                <div class="description">
+                  {% if document.url != '' %}
+                      <a href="{{ document.url }}">{{ document.name }}</a>
+                  {% else %}
+                      {{ document.name }}
+                  {% endif %}
+                </div>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -150,7 +318,13 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.manufacturer }}</a>
-              <div class="description">{{ harddrive.manufacturer }}</div>
+              <div class="description">
+                {% if harddrive.manufacturer_url != '' %}
+                    <a href="{{ harddrive.manufacturer_url }}">{{ harddrive.manufacturer }}</a>
+                {% else %}
+                    {{ harddrive.manufacturer }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
@@ -168,7 +342,13 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.interface }}</a>
-              <div class="description">{{ harddrive.interface }}</div>
+              <div class="description">
+                {% if harddrive.interface_url != '' %}
+                    <a href="{{ harddrive.interface_url }}">{{ harddrive.interface }}</a>
+                {% else %}
+                    {{ harddrive.interface }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
@@ -179,8 +359,58 @@
           </div>
           <div class="item">
             <div class="content">
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ harddrive.serial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ harddrive.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
               <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ harddrive.location }}</div>
+              <div class="description">
+                {% if harddrive.location_url != '' %}
+                    <a href="{{ harddrive.location_url }}">{{ harddrive.location }}</a>
+                {% else %}
+                    {{ harddrive.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if harddrive.state_url != '' %}
+                    <a href="{{ harddrive.state_url }}">{{ harddrive.state }}</a>
+                {% else %}
+                    {{ harddrive.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.busID }}</a>
+              <div class="description">{{ harddrive.busID }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.documents }}</a>
+              {% for document in harddrive.documents %}
+                <div class="description">
+                  {% if document.url != '' %}
+                      <a href="{{ document.url }}">{{ document.name }}</a>
+                  {% else %}
+                      {{ document.name }}
+                  {% endif %}
+                </div>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -199,13 +429,25 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.manufacturer }}</a>
-              <div class="description">{{ battery.manufacturer }}</div>
+              <div class="description">
+                {% if battery.manufacturer_url != '' %}
+                    <a href="{{ battery.manufacturer_url }}">{{ battery.manufacturer }}</a>
+                {% else %}
+                    {{ battery.manufacturer }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.type }}</a>
-              <div class="description">{{ battery.type }}</div>
+              <div class="description">
+                {% if battery.type_url != '' %}
+                    <a href="{{ battery.type_url }}">{{ battery.type }}</a>
+                {% else %}
+                    {{ battery.type }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
@@ -228,14 +470,52 @@
           </div>
           <div class="item">
             <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ battery.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
               <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ battery.location }}</div>
+              <div class="description">
+                {% if battery.location_url != '' %}
+                    <a href="{{ battery.location_url }}">{{ battery.location }}</a>
+                {% else %}
+                    {{ battery.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if battery.state_url != '' %}
+                    <a href="{{ battery.state_url }}">{{ battery.state }}</a>
+                {% else %}
+                    {{ battery.state }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.manufacturing_date }}</a>
               <div class="description">{{ battery.manufacturing_date }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.documents }}</a>
+              {% for document in battery.documents %}
+                <div class="description">
+                  {% if document.url != '' %}
+                      <a href="{{ document.url }}">{{ document.name }}</a>
+                  {% else %}
+                      {{ document.name }}
+                  {% endif %}
+                </div>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -254,7 +534,13 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.manufacturer }}</a>
-              <div class="description">{{ soundcard.manufacturer }}</div>
+              <div class="description">
+                {% if soundcard.manufacturer_url != '' %}
+                    <a href="{{ soundcard.manufacturer_url }}">{{ soundcard.manufacturer }}</a>
+                {% else %}
+                    {{ soundcard.manufacturer }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
@@ -265,8 +551,58 @@
           </div>
           <div class="item">
             <div class="content">
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ soundcard.serial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ soundcard.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
               <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ soundcard.location }}</div>
+              <div class="description">
+                {% if soundcard.location_url != '' %}
+                    <a href="{{ soundcard.location_url }}">{{ soundcard.location }}</a>
+                {% else %}
+                    {{ soundcard.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if soundcard.state_url != '' %}
+                    <a href="{{ soundcard.state_url }}">{{ soundcard.state }}</a>
+                {% else %}
+                    {{ soundcard.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.busID }}</a>
+              <div class="description">{{ soundcard.busID }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.documents }}</a>
+              {% for document in soundcard.documents %}
+                <div class="description">
+                  {% if document.url != '' %}
+                      <a href="{{ document.url }}">{{ document.name }}</a>
+                  {% else %}
+                      {{ document.name }}
+                  {% endif %}
+                </div>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -285,19 +621,81 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.manufacturer }}</a>
-              <div class="description">{{ controller.manufacturer }}</div>
+              <div class="description">
+                {% if controller.manufacturer_url != '' %}
+                    <a href="{{ controller.manufacturer_url }}">{{ controller.manufacturer }}</a>
+                {% else %}
+                    {{ controller.manufacturer }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.interface }}</a>
-              <div class="description">{{ controller.interface }}</div>
+              <div class="description">
+                {% if controller.interface_url != '' %}
+                    <a href="{{ controller.interface_url }}">{{ controller.interface }}</a>
+                {% else %}
+                    {{ controller.interface }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ controller.serial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ controller.otherserial }}</div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ controller.location }}</div>
+              <div class="description">
+                {% if controller.location_url != '' %}
+                    <a href="{{ controller.location_url }}">{{ controller.location }}</a>
+                {% else %}
+                    {{ controller.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if controller.state_url != '' %}
+                    <a href="{{ controller.state_url }}">{{ controller.state }}</a>
+                {% else %}
+                    {{ controller.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.busID }}</a>
+              <div class="description">{{ controller.busID }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.documents }}</a>
+              {% for document in controller.documents %}
+                <div class="description">
+                  {% if document.url != '' %}
+                      <a href="{{ document.url }}">{{ document.name }}</a>
+                  {% else %}
+                      {{ document.name }}
+                  {% endif %}
+                </div>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -315,11 +713,52 @@
         <div class="ui relaxed list">
           <div class="item">
             <div class="content">
-              <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ powersupply.location }}</div>
+              <a class="header">{{ translation.manufacturer }}</a>
+              <div class="description">
+                {% if powersupply.manufacturer_url != '' %}
+                    <a href="{{ powersupply.manufacturer_url }}">{{ powersupply.manufacturer }}</a>
+                {% else %}
+                    {{ powersupply.manufacturer }}
+                {% endif %}
+              </div>
             </div>
           </div>
-          {% if powersupply.documents|length > 0%}
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ powersupply.serial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ powersupply.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.location }}</a>
+              <div class="description">
+                {% if powersupply.location_url != '' %}
+                    <a href="{{ powersupply.location_url }}">{{ powersupply.location }}</a>
+                {% else %}
+                    {{ powersupply.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if powersupply.state_url != '' %}
+                    <a href="{{ powersupply.state_url }}">{{ powersupply.state }}</a>
+                {% else %}
+                    {{ powersupply.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.documents }}</a>
@@ -334,7 +773,6 @@
               {% endfor %}
             </div>
           </div>
-          {% endif %}
         </div>
       </div>
     </div>
@@ -351,16 +789,51 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.manufacturer }}</a>
-              <div class="description">{{ sensor.manufacturer }}</div>
+              <div class="description">
+                {% if sensor.manufacturer_url != '' %}
+                    <a href="{{ sensor.manufacturer_url }}">{{ sensor.manufacturer }}</a>
+                {% else %}
+                    {{ sensor.manufacturer }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ sensor.serial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ sensor.otherserial }}</div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ sensor.location }}</div>
+              <div class="description">
+                {% if sensor.location_url != '' %}
+                    <a href="{{ sensor.location_url }}">{{ sensor.location }}</a>
+                {% else %}
+                    {{ sensor.location }}
+                {% endif %}
+              </div>
             </div>
           </div>
-          {% if sensor.documents|length > 0%}
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if sensor.state_url != '' %}
+                    <a href="{{ sensor.state_url }}">{{ sensor.state }}</a>
+                {% else %}
+                    {{ sensor.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.documents }}</a>
@@ -375,7 +848,6 @@
               {% endfor %}
             </div>
           </div>
-          {% endif %}
         </div>
       </div>
     </div>
@@ -391,11 +863,46 @@
         <div class="ui relaxed list">
           <div class="item">
             <div class="content">
-              <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ devicepci.location }}</div>
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ devicepci.serial }}</div>
             </div>
           </div>
-          {% if devicepci.documents|length > 0%}
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ devicepci.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.location }}</a>
+              <div class="description">
+                {% if devicepci.location_url != '' %}
+                    <a href="{{ devicepci.location_url }}">{{ devicepci.location }}</a>
+                {% else %}
+                    {{ devicepci.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if devicepci.state_url != '' %}
+                    <a href="{{ devicepci.state_url }}">{{ devicepci.state }}</a>
+                {% else %}
+                    {{ devicepci.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.busID }}</a>
+              <div class="description">{{ devicepci.busID }}</div>
+            </div>
+          </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.documents }}</a>
@@ -410,7 +917,6 @@
               {% endfor %}
             </div>
           </div>
-          {% endif %}
         </div>
       </div>
     </div>
@@ -426,11 +932,52 @@
         <div class="ui relaxed list">
           <div class="item">
             <div class="content">
-              <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ devicegeneric.location }}</div>
+              <a class="header">{{ translation.manufacturer }}</a>
+              <div class="description">
+                {% if devicegeneric.manufacturer_url != '' %}
+                    <a href="{{ devicegeneric.manufacturer_url }}">{{ devicegeneric.manufacturer }}</a>
+                {% else %}
+                    {{ devicegeneric.manufacturer }}
+                {% endif %}
+              </div>
             </div>
           </div>
-          {% if devicegeneric.documents|length > 0%}
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ devicegeneric.serial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ devicegeneric.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.location }}</a>
+              <div class="description">
+                {% if devicegeneric.location_url != '' %}
+                    <a href="{{ devicegeneric.location_url }}">{{ devicegeneric.location }}</a>
+                {% else %}
+                    {{ devicegeneric.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if devicegeneric.state_url != '' %}
+                    <a href="{{ devicegeneric.state_url }}">{{ devicegeneric.state }}</a>
+                {% else %}
+                    {{ devicegeneric.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.documents }}</a>
@@ -445,7 +992,6 @@
               {% endfor %}
             </div>
           </div>
-          {% endif %}
         </div>
       </div>
     </div>
@@ -461,8 +1007,20 @@
         <div class="ui relaxed list">
           <div class="item">
             <div class="content">
-              <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ devicenetworkcard.location }}</div>
+              <a class="header">{{ translation.manufacturer }}</a>
+              <div class="description">
+                {% if devicenetworkcard.manufacturer_url != '' %}
+                    <a href="{{ devicenetworkcard.manufacturer_url }}">{{ devicenetworkcard.manufacturer }}</a>
+                {% else %}
+                    {{ devicenetworkcard.manufacturer }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.flow }}</a>
+              <div class="description">{{ devicenetworkcard.speed }}</div>
             </div>
           </div>
           <div class="item">
@@ -471,7 +1029,48 @@
               <div class="description">{{ devicenetworkcard.mac_address }}</div>
             </div>
           </div>
-          {% if devicenetworkcard.documents|length > 0%}
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ devicenetworkcard.serial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ devicenetworkcard.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.location }}</a>
+              <div class="description">
+                {% if devicenetworkcard.location_url != '' %}
+                    <a href="{{ devicenetworkcard.location_url }}">{{ devicenetworkcard.location }}</a>
+                {% else %}
+                    {{ devicenetworkcard.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if devicenetworkcard.state_url != '' %}
+                    <a href="{{ devicenetworkcard.state_url }}">{{ devicenetworkcard.state }}</a>
+                {% else %}
+                    {{ devicenetworkcard.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.busID }}</a>
+              <div class="description">{{ devicenetworkcard.busID }}</div>
+            </div>
+          </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.documents }}</a>
@@ -486,7 +1085,6 @@
               {% endfor %}
             </div>
           </div>
-          {% endif %}
         </div>
       </div>
     </div>
@@ -502,11 +1100,82 @@
         <div class="ui relaxed list">
           <div class="item">
             <div class="content">
-              <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ devicesimcard.location }}</div>
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ devicesimcard.serial }}</div>
             </div>
           </div>
-          {% if devicesimcard.documents|length > 0%}
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ devicesimcard.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.location }}</a>
+              <div class="description">
+                {% if devicesimcard.location_url != '' %}
+                    <a href="{{ devicesimcard.location_url }}">{{ devicesimcard.location }}</a>
+                {% else %}
+                    {{ devicesimcard.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if devicesimcard.state_url != '' %}
+                    <a href="{{ devicesimcard.state_url }}">{{ devicesimcard.state }}</a>
+                {% else %}
+                    {{ devicesimcard.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.line }}</a>
+              <div class="description">
+                {% if devicesimcard.line_url != '' %}
+                    <a href="{{ devicesimcard.line_url }}">{{ devicesimcard.line }}</a>
+                {% else %}
+                    {{ devicesimcard.line }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.msin }}</a>
+              <div class="description">{{ devicesimcard.msin }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.user }}</a>
+              <div class="description">
+                {% if devicesimcard.user_url != '' %}
+                    <a href="{{ devicesimcard.user_url }}">{{ devicesimcard.user }}</a>
+                {% else %}
+                    {{ devicesimcard.user }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.group }}</a>
+              <div class="description">
+                {% if devicesimcard.group_url != '' %}
+                    <a href="{{ devicesimcard.group_url }}">{{ devicesimcard.group }}</a>
+                {% else %}
+                    {{ devicesimcard.group }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.documents }}</a>
@@ -521,7 +1190,6 @@
               {% endfor %}
             </div>
           </div>
-          {% endif %}
         </div>
       </div>
     </div>
@@ -537,11 +1205,52 @@
         <div class="ui relaxed list">
           <div class="item">
             <div class="content">
-              <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ devicemotherboard.location }}</div>
+              <a class="header">{{ translation.manufacturer }}</a>
+              <div class="description">
+                {% if devicemotherboard.manufacturer_url != '' %}
+                    <a href="{{ devicemotherboard.manufacturer_url }}">{{ devicemotherboard.manufacturer }}</a>
+                {% else %}
+                    {{ devicemotherboard.manufacturer }}
+                {% endif %}
+              </div>
             </div>
           </div>
-          {% if devicemotherboard.documents|length > 0%}
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ devicemotherboard.serial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ devicemotherboard.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.location }}</a>
+              <div class="description">
+                {% if devicemotherboard.location_url != '' %}
+                    <a href="{{ devicemotherboard.location_url }}">{{ devicemotherboard.location }}</a>
+                {% else %}
+                    {{ devicemotherboard.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if devicemotherboard.state_url != '' %}
+                    <a href="{{ devicemotherboard.state_url }}">{{ devicemotherboard.state }}</a>
+                {% else %}
+                    {{ devicemotherboard.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.documents }}</a>
@@ -556,7 +1265,6 @@
               {% endfor %}
             </div>
           </div>
-          {% endif %}
         </div>
       </div>
     </div>
@@ -573,13 +1281,49 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.manufacturer }}</a>
-              <div class="description">{{ devicecase.manufacturer }}</div>
+              <div class="description">
+                {% if devicecase.manufacturer_url != '' %}
+                    <a href="{{ devicecase.manufacturer_url }}">{{ devicecase.manufacturer }}</a>
+                {% else %}
+                    {{ devicecase.manufacturer }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ devicecase.serial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ devicecase.otherserial }}</div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ devicecase.location }}</div>
+              <div class="description">
+                {% if devicecase.location_url != '' %}
+                    <a href="{{ devicecase.location_url }}">{{ devicecase.location }}</a>
+                {% else %}
+                    {{ devicecase.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if devicecase.state_url != '' %}
+                    <a href="{{ devicecase.state_url }}">{{ devicecase.state }}</a>
+                {% else %}
+                    {{ devicecase.state }}
+                {% endif %}
+              </div>
             </div>
           </div>
           {% if devicecase.documents|length > 0%}
@@ -614,13 +1358,25 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.manufacturer }}</a>
-              <div class="description">{{ devicegraphiccard.manufacturer }}</div>
+              <div class="description">
+                {% if devicegraphiccard.manufacturer_url != '' %}
+                    <a href="{{ devicegraphiccard.manufacturer_url }}">{{ devicegraphiccard.manufacturer }}</a>
+                {% else %}
+                    {{ devicegraphiccard.manufacturer }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.interface }}</a>
-              <div class="description">{{ devicegraphiccard.interface }}</div>
+              <div class="description">
+                {% if devicegraphiccard.interface_url != '' %}
+                    <a href="{{ devicegraphiccard.interface_url }}">{{ devicegraphiccard.interface }}</a>
+                {% else %}
+                    {{ devicegraphiccard.interface }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
@@ -637,11 +1393,46 @@
           </div>
           <div class="item">
             <div class="content">
-              <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ devicegraphiccard.location }}</div>
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ devicegraphiccard.serial }}</div>
             </div>
           </div>
-          {% if devicegraphiccard.documents|length > 0%}
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ devicegraphiccard.otherserial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.location }}</a>
+              <div class="description">
+                {% if devicegraphiccard.location_url != '' %}
+                    <a href="{{ devicegraphiccard.location_url }}">{{ devicegraphiccard.location }}</a>
+                {% else %}
+                    {{ devicegraphiccard.location }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if devicegraphiccard.state_url != '' %}
+                    <a href="{{ devicegraphiccard.state_url }}">{{ devicegraphiccard.state }}</a>
+                {% else %}
+                    {{ devicegraphiccard.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.busID }}</a>
+              <div class="description">{{ devicegraphiccard.busID }}</div>
+            </div>
+          </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.documents }}</a>
@@ -656,7 +1447,6 @@
               {% endfor %}
             </div>
           </div>
-          {% endif %}
         </div>
       </div>
     </div>
@@ -673,7 +1463,13 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.manufacturer }}</a>
-              <div class="description">{{ devicedrive.manufacturer }}</div>
+              <div class="description">
+                {% if devicedrive.manufacturer_url != '' %}
+                    <a href="{{ devicedrive.manufacturer_url }}">{{ devicedrive.manufacturer }}</a>
+                {% else %}
+                    {{ devicedrive.manufacturer }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">
@@ -683,12 +1479,12 @@
                 {% if devicedrive.write %}
                   <div style="box-shadow: 0 0 0 #a3c293 inset;background: #fcfff5;color: #2c662d;">
                     <i class="check circle outline icon"></i>
-                    Yes
+                    {{ devicedrive.write_val }}
                   </div>
                 {% else %}
                   <div style="box-shadow: 0 0 0 #e0b4b4 inset;background: #fff6f6;color: #9f3a38;">
                     <i class="times circle outline icon"></i>
-                    No
+                    {{ devicedrive.write_val }}
                   </div>
                 {% endif %}
               </div>
@@ -703,16 +1499,57 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.interface }}</a>
-              <div class="description">{{ devicedrive.interface }}</div>
+              <div class="description">
+                {% if devicedrive.interface_url != '' %}
+                    <a href="{{ devicedrive.interface_url }}">{{ devicedrive.interface }}</a>
+                {% else %}
+                    {{ devicedrive.interface }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.serial }}</a>
+              <div class="description">{{ devicedrive.serial }}</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.inventaire_number }}</a>
+              <div class="description">{{ devicedrive.otherserial }}</div>
             </div>
           </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.location }}</a>
-              <div class="description">{{ devicedrive.location }}</div>
+              <div class="description">
+                {% if devicedrive.location_url != '' %}
+                    <a href="{{ devicedrive.location_url }}">{{ devicedrive.location }}</a>
+                {% else %}
+                    {{ devicedrive.location }}
+                {% endif %}
+              </div>
             </div>
           </div>
-          {% if devicedrive.documents|length > 0%}
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.status }}</a>
+              <div class="description">
+                {% if devicedrive.state_url != '' %}
+                    <a href="{{ devicedrive.state_url }}">{{ devicedrive.state }}</a>
+                {% else %}
+                    {{ devicedrive.state }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="content">
+              <a class="header">{{ translation.busID }}</a>
+              <div class="description">{{ devicedrive.busID }}</div>
+            </div>
+          </div>
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.documents }}</a>
@@ -727,7 +1564,6 @@
               {% endfor %}
             </div>
           </div>
-          {% endif %}
         </div>
       </div>
     </div>

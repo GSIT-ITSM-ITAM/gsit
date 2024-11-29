@@ -142,7 +142,7 @@ class Document
       ],
       [
         'title' => $translator->translatePlural('Associated item', 'Associated items', 2),
-        'icon' => 'caret square down outline',
+        'icon' => 'desktop',
         'link' => $rootUrl . '/associateditems',
       ],
       [

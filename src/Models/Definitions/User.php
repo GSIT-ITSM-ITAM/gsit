@@ -490,13 +490,15 @@ class User
       ],
       [
         'title' => $translator->translatePlural('Problem', 'Problems', 2),
-        'icon' => 'caret square down outline',
+        'icon' => 'drafting compass',
         'link' => $rootUrl . '/problems',
+        'rightModel' => '\App\Models\Problem',
       ],
       [
         'title' => $translator->translatePlural('Change', 'Changes', 2),
-        'icon' => 'caret square down outline',
+        'icon' => 'paint roller',
         'link' => $rootUrl . '/changes',
+        'rightModel' => '\App\Models\Change',
       ],
       [
         'title' => $translator->translatePlural('Document', 'Documents', 2),
@@ -506,7 +508,7 @@ class User
       [
         'title' => $translator->translatePlural('Reservation', 'Reservations', 2),
         'icon' => 'caret square down outline',
-        'link' => '',
+        'link' => $rootUrl . '/reservations',
       ],
       [
         'title' => $translator->translate('Synchronization'),

@@ -30,7 +30,7 @@ class Group extends Common
   ];
 
   protected $with = [
-    'entity:id,name',
+    'entity:id,name,completename',
     'notes:id',
     'parents:id,name,group_id,entity_id',
   ];
@@ -72,5 +72,10 @@ class Group extends Common
   public function parents(): HasMany
   {
     return $this->hasMany('\App\Models\Group', 'group_id');
+  }
+
+  public function child(): BelongsTo
+  {
+    return $this->belongsTo('\App\Models\Group', 'group_id');
   }
 }

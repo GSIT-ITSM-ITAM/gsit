@@ -51,7 +51,9 @@ final class Criterium
             $criterias_results[$criteria] = $pattern;
             return true;
           }
-        } else {
+        }
+        else
+        {
           //Perform comparison with fields in lower case
           $field                        = \App\v1\Controllers\Toolbox::strtolower($field);
           $pattern                      = \App\v1\Controllers\Toolbox::strtolower($pattern);

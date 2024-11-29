@@ -10,6 +10,9 @@ final class Domain extends Common
 {
   protected $model = '\App\Models\Domain';
   protected $rootUrl2 = '/domains/';
+  protected $choose = 'domains';
+  protected $associateditems_model = '\App\Models\DomainItem';
+  protected $associateditems_model_id = 'domain_id';
 
   public function getAll(Request $request, Response $response, $args): Response
   {
@@ -39,25 +42,28 @@ final class Domain extends Common
 
     $myItem = $item::with('records')->find($args['id']);
 
+    $rootUrl = $this->genereRootUrl($request, '/records');
+    $rootUrl2 = $this->genereRootUrl2($rootUrl, $this->rootUrl2 . $args['id']);
+
     $myRecords = [];
     foreach ($myItem->records as $record)
     {
       $type = '';
+      $type_url = '';
       if ($record->type !== null)
       {
         $type = $record->type->name;
+        $type_url = $this->genereRootUrl2Link($rootUrl2, '/dropdowns/domainrecordtypes/', $record->type->id);
       }
 
       $myRecords[] = [
-        'name'     => $record->name,
-        'type'     => $type,
-        'ttl'      => $record->ttl,
-        'target'   => $record->data,
+        'name'        => $record->name,
+        'type'        => $type,
+        'type_url'    => $type_url,
+        'ttl'         => $record->ttl,
+        'target'      => $record->data,
       ];
     }
-
-    $rootUrl = $this->getUrlWithoutQuery($request);
-    $rootUrl = rtrim($rootUrl, '/records');
 
     $viewData = new \App\v1\Controllers\Datastructures\Viewdata($myItem, $request);
     $viewData->addRelatedPages($item->getRelatedPages($rootUrl));

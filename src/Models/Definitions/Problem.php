@@ -110,9 +110,9 @@ class Problem
         'id'    => 7,
         'title' => $translator->translate('Category'),
         'type'  => 'dropdown_remote',
-        'name'  => 'itilcategorie',
-        'dbname' => 'itilcategorie_id',
-        'itemtype' => '\App\Models\ITILCategory',
+        'name'  => 'category',
+        'dbname' => 'category_id',
+        'itemtype' => '\App\Models\Category',
         'fillable' => true,
       ],
       [
@@ -525,7 +525,9 @@ class Problem
         {
           $day  = 0;
           $hour = floor($i / $HOUR_TIMESTAMP);
-        } else {
+        }
+        else
+        {
           $day  = floor($i / $DAY_TIMESTAMP);
           $hour = floor(($i % $DAY_TIMESTAMP) / $HOUR_TIMESTAMP);
         }
@@ -552,10 +554,13 @@ class Problem
               $hour,
               $minute
             );
-          } else {
+          }
+          else
+          {
             $values[$i] = sprintf($translator->translatePlural('%d day', '%d days', $day), $day);
           }
-        } elseif ($hour > 0 || $minute > 0)
+        }
+        elseif ($hour > 0 || $minute > 0)
         {
           if ($minute < 10)
           {
@@ -577,6 +582,31 @@ class Problem
     return $tab;
   }
 
+  public static function getDefinitionAnalysis()
+  {
+    global $translator;
+    return [
+      [
+        'id'    => 1,
+        'title' => $translator->translate('Impacts'),
+        'type'  => 'textarea',
+        'name'  => 'impactcontent',
+      ],
+      [
+        'id'    => 2,
+        'title' => $translator->translate('Causes'),
+        'type'  => 'textarea',
+        'name'  => 'causecontent',
+      ],
+      [
+        'id'    => 3,
+        'title' => $translator->translate('Symptoms'),
+        'type'  => 'textarea',
+        'name'  => 'symptomcontent',
+      ],
+    ];
+  }
+
   public static function getRelatedPages($rootUrl)
   {
     global $translator;
@@ -592,44 +622,42 @@ class Problem
         'link' => '',
       ],
       [
-        'title' => $translator->translatePlural('Problem', 'Problems', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
-      ],
-      [
         'title' => $translator->translate('Analysis'),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'edit',
+        'link' => $rootUrl . '/analysis',
       ],
       [
         'title' => $translator->translate('Statistics'),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'chartline',
+        'link' => $rootUrl . '/stats',
       ],
       [
         'title' => $translator->translatePlural('Ticket', 'Tickets', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'hands helping',
+        'link' => $rootUrl . '/tickets',
+        'rightModel' => '\App\Models\Ticket',
       ],
       [
         'title' => $translator->translatePlural('Change', 'Changes', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'paint roller',
+        'link' => $rootUrl . '/changes',
+        'rightModel' => '\App\Models\Change',
       ],
       [
         'title' => $translator->translatePlural('Cost', 'Costs', 2),
         'icon' => 'money bill alternate',
-        'link' => '',
+        'link' => $rootUrl . '/costs',
       ],
       [
         'title' => $translator->translatePlural('Project', 'Projects', 2),
         'icon' => 'folder open',
-        'link' => '',
+        'link' => $rootUrl . '/projects',
+        'rightModel' => '\App\Models\Project',
       ],
       [
         'title' => $translator->translatePlural('Item', 'Items', 2),
         'icon' => 'desktop',
-        'link' => '',
+        'link' => $rootUrl . '/items',
       ],
       [
         'title' => $translator->translatePlural('Note', 'Notes', 2),

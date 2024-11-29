@@ -92,7 +92,9 @@ final class Displaypreference extends Common
       if ($data->type == 'user')
       {
         $dpref->user_id = $GLOBALS['user_id'];
-      } else {
+      }
+      else
+      {
         $dpref->user_id = 0;
       }
       $dpref->itemtype = $datap->m;
@@ -106,7 +108,9 @@ final class Displaypreference extends Common
       if (is_null($dprefmax))
       {
         $dpref->rank = 1;
-      } else {
+      }
+      else
+      {
         $dpref->rank = $dprefmax->rank + 1;
       }
       $dpref->save();

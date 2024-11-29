@@ -13,11 +13,17 @@
             <div class="content">
               <a class="header">{{ translation.auto }}</a>
               <div class="description">
-                  {% if volume.auto == 1 %}
-                      <i class="check circle outline icon"></i>{{ volume.auto_val }}
-                  {% else %}
-                      <i class="times circle outline icon"></i>{{ volume.auto_val }}
-                  {% endif %}
+                {% if volume.auto == 1 %}
+                  <div style="box-shadow: 0 0 0 #a3c293 inset;background: #fcfff5;color: #2c662d;">
+                    <i class="check circle outline icon"></i>
+                    {{ volume.auto_val }}
+                  </div>
+                {% else %}
+                  <div style="box-shadow: 0 0 0 #e0b4b4 inset;background: #fff6f6;color: #9f3a38;">
+                    <i class="times circle outline icon"></i>
+                    {{ volume.auto_val }}
+                  </div>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -36,7 +42,13 @@
           <div class="item">
             <div class="content">
               <a class="header">{{ translation.filesystem }}</a>
-              <div class="description">{{ volume.filesystem }}</div>
+              <div class="description">
+                {% if volume.filesystem_url != '' %}
+                    <a href="{{ volume.filesystem_url }}">{{ volume.filesystem }}</a>
+                {% else %}
+                    {{ volume.filesystem }}
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="item">

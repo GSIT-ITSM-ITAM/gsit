@@ -17,13 +17,19 @@
     {% for key,cartridge in data.cartridges_use %}
       <tr>
         <td>
-          {% if cartridge.url != '' %}
-              <a href="{{ cartridge.url }}">{{ cartridge.model }}</a>
+          {% if cartridge.model_url != '' %}
+              <a href="{{ cartridge.model_url }}">{{ cartridge.model }}</a>
           {% else %}
               {{ cartridge.model }}
           {% endif %}
         </td>
-        <td>{{ cartridge.type }}</td>
+        <td>
+          {% if cartridge.type_url != '' %}
+              <a href="{{ cartridge.type_url }}">{{ cartridge.type }}</a>
+          {% else %}
+              {{ cartridge.type }}
+          {% endif %}
+        </td>
         <td>{{ cartridge.date_add }}</td>
         <td>{{ cartridge.date_use }}</td>
       </tr>
@@ -50,13 +56,19 @@
     {% for key,cartridge in data.cartridges_out %}
       <tr>
         <td>
-          {% if cartridge.url != '' %}
-              <a href="{{ cartridge.url }}">{{ cartridge.model }}</a>
+          {% if cartridge.model_url != '' %}
+              <a href="{{ cartridge.model_url }}">{{ cartridge.model }}</a>
           {% else %}
               {{ cartridge.model }}
           {% endif %}
         </td>
-        <td>{{ cartridge.type }}</td>
+        <td>
+          {% if cartridge.type_url != '' %}
+              <a href="{{ cartridge.type_url }}">{{ cartridge.type }}</a>
+          {% else %}
+              {{ cartridge.type }}
+          {% endif %}
+        </td>
         <td>{{ cartridge.date_add }}</td>
         <td>{{ cartridge.date_use }}</td>
         <td>{{ cartridge.date_end }}</td>

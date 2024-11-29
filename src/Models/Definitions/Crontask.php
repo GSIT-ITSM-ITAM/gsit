@@ -282,7 +282,8 @@ class Crontask
     if ($number == "")
     {
       $number = 0;
-    } elseif ($number == "-")
+    }
+    elseif ($number == "-")
     { // used for not defines value (from Infocom::Amort, p.e.)
       return "-";
     }
@@ -337,7 +338,9 @@ class Crontask
       if ($size > 1024)
       {
         $size = $size / 1024;
-      } else {
+      }
+      else
+      {
         break;
       }
     }

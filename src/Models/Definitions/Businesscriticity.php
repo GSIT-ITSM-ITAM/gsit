@@ -73,8 +73,8 @@ class Businesscriticity
       ],
       [
         'title' => $translator->translatePlural('Business criticity', 'Business criticities', 2),
-        'icon' => 'caret square down outline',
-        'link' => '',
+        'icon' => 'edit',
+        'link' => $rootUrl . '/businesscriticities',
       ],
       [
         'title' => $translator->translate('Historical'),

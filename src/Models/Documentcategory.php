@@ -29,6 +29,6 @@ class Documentcategory extends Common
 
   public function category(): BelongsTo
   {
-    return $this->belongsTo('\App\Models\Documentcategory');
+    return $this->belongsTo('\App\Models\Documentcategory', 'documentcategory_id');
   }
 }

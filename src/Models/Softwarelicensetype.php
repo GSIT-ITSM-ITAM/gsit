@@ -26,7 +26,7 @@ class Softwarelicensetype extends Common
 
   protected $with = [
     'softwarelicensetype:id,name',
-    'entity:id,name',
+    'entity:id,name,completename',
   ];
 
   public function softwarelicensetype(): BelongsTo

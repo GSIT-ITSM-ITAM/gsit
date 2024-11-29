@@ -20,6 +20,7 @@ class Devicepowersupply extends Common
     'manufacturer',
     'model',
     'entity',
+    'items',
   ];
 
   protected $visible = [
@@ -27,13 +28,15 @@ class Devicepowersupply extends Common
     'model',
     'entity',
     'documents',
+    'items',
   ];
 
   protected $with = [
     'manufacturer:id,name',
     'model:id,name',
-    'entity:id,name',
-    'documents:id,name',
+    'entity:id,name,completename',
+    'documents',
+    'items',
   ];
 
   public function manufacturer(): BelongsTo
@@ -61,5 +64,10 @@ class Devicepowersupply extends Common
       'document_id',
       'updated_at',
     );
+  }
+
+  public function items(): HasMany
+  {
+    return $this->hasMany('\App\Models\ItemDevicepowersupply', 'devicepowersupply_id');
   }
 }
