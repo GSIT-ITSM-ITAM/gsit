@@ -1,5 +1,11 @@
 # GSIT (Gestionnaire de Services IT)
 
+## NO LONGER SUPPORTED
+
+> [!CAUTION]
+> **ATTENTION: THIS APPLICATION IS NO LONGER MAINTAINED SINCE DECEMBER 2024**
+
+
 ## Introduction
 
 This version is a secure and cleaned fork version of [GLPI](https://github.com/glpi-project/glpi/).
